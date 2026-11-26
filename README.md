@@ -5,8 +5,8 @@ services (DBaaS) from non-hyperscaler cloud providers: Scaleway, UpCloud, Vultr,
 OVHcloud and Exoscale.
 
 Interactive results:
-[MySQL](https://percona-lab-results.github.io/2026-cloud-perf/analysis-mysql/)
-[PostgreSQL](https://percona-lab-results.github.io/2026-cloud-perf/analysis-pg/)
+[MySQL](https://percona-lab-results.github.io/2026-cloud-nhs/analysis-mysql/)
+[PostgreSQL](https://percona-lab-results.github.io/2026-cloud-nhs/analysis-pg/)
 
 ## Research objectives
 
