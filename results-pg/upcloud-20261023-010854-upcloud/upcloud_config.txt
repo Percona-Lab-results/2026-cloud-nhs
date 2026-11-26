@@ -1,0 +1,24 @@
+provider          upcloud
+engine            postgresql
+started_utc       2026-10-23T01:08:54Z
+client_host       upcloud-compute
+client_cpus       4
+client_sysbench   n/a
+client_psql       psql (PostgreSQL) 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)
+hammerdb_home     /opt/HammerDB-6.0
+target            upadmin@upcloud-pg-4cpu-16gb-odqiztpebptc.db.upclouddatabases.com:11569 (sslmode=prefer)
+maintenance_db    defaultdb
+benchmarks        hammerdb
+runs              2
+threads           4 8 16 32 64
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+hammerdb_procs    stored_procs=true, schema owner=upadmin
+configurations    30 (sysbench 0, hammerdb 30)
+schema_rebuild    dropped and reloaded before every measured run
+vacuum_after_load VACUUM ANALYZE
+status_sampling   every 10s
+detail_stats      off (--detail-stats to enable)
+estimated_runtime 750 min (~12h, excluding 30 schema rebuilds)

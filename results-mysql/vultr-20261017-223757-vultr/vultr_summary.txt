@@ -1,0 +1,38 @@
+provider          vultr
+started_utc       2026-10-17T22:37:57Z
+client_host       vultr-compute
+client_cpus       4
+client_sysbench   sysbench 1.0.20
+client_mysql      mysql  Ver 8.4.11-0ubuntu0.26.04.1 for Linux on x86_64 ((Ubuntu))
+hammerdb_home     /opt/HammerDB-6.0
+target            vultradmin@vultr-prod-8bc13ae7-fb94-4ef0-975c-9177772f624a-vultr-prod-def3.vultrdb.com:23473 (ssl=0)
+benchmarks        hammerdb
+runs              3
+threads           4 8 16 32
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+configurations    36 (sysbench 0, hammerdb 36)
+schema_rebuild    dropped and reloaded before every measured run
+status_sampling   every 10s
+innodb_status     off (--innodb-status to enable)
+estimated_runtime 900 min (~15h, excluding 36 schema rebuilds)
+
+HammerDB TPC-C - mean over 3 run(s)
+  warehouses     vu               nopm          tpm
+  160            4             21744.7      50514.3
+  160            8             27849.0      64723.0
+  160            16            35358.3      82172.7
+  160            32            33922.7      78808.3
+  320            4             19524.0      45376.3
+  320            8             24280.0      56398.0
+  320            16            29510.7      68570.3
+  320            32            28516.3      66195.7
+  640            4             15817.0      36739.7
+  640            8             20410.7      47398.0
+  640            16            25861.7      60096.7
+  640            32            25306.0      58813.7
+
+finished_utc      2026-10-19T03:10:16Z
+results           /root/2026-cloud-perf/results/vultr-20261017-223757-vultr

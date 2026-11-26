@@ -1,0 +1,88 @@
+activity.idle	2	1	-1
+bgwriter.buffers_alloc	450065935	458050585	7984650
+bgwriter.buffers_clean	34065932	34798712	732780
+bgwriter.maxwritten_clean	338960	346287	7327
+checkpointer.buffers_written	49285095	49875488	590393
+checkpointer.num_done	421	426	5
+checkpointer.num_requested	414	418	4
+checkpointer.slru_written	15641	15866	225
+checkpointer.sync_time	1652380	1684057	31677
+checkpointer.write_time	65705826	67112913	1407087
+db.defaultdb.active_time	190899.454	192310.052	1410.6
+db.defaultdb.blks_hit	4870720	5009856	139136
+db.defaultdb.blks_read	15736	16028	292
+db.defaultdb.idle_in_transaction_time	9039.654	9124.5	84.846
+db.defaultdb.session_time	91678235.318	94704303.01	3.02607e+06
+db.defaultdb.sessions	8217	8427	210
+db.defaultdb.sessions_abandoned	31	32	1
+db.defaultdb.tup_fetched	3136779	3229467	92688
+db.defaultdb.tup_returned	6845236	7002256	157020
+db.defaultdb.xact_commit	25000	25633	633
+db.defaultdb.xact_rollback	30	31	1
+db.tpcc.active_time	6163728.191	11223962.9	5.06023e+06
+db.tpcc.blks_hit	260501828	434892687	174390859
+db.tpcc.blks_read	1357613	9574964	8217351
+db.tpcc.idle_in_transaction_time	33.87	159.396	125.526
+db.tpcc.session_time	9938487.464	17466725.321	7.52824e+06
+db.tpcc.sessions	37	94	57
+db.tpcc.sessions_fatal	0	1	1
+db.tpcc.tup_deleted	136	497961	497825
+db.tpcc.tup_fetched	36583	45719244	45682661
+db.tpcc.tup_inserted	79949607	86385650	6436043
+db.tpcc.tup_returned	9663811	57954469	48290658
+db.tpcc.tup_updated	629	12900369	12899740
+db.tpcc.xact_commit	177133	1315693	1138560
+io.autovacuum worker.relation.normal.evictions	114728	116627	1899
+io.autovacuum worker.relation.normal.extend_bytes	36765696	36872192	106496
+io.autovacuum worker.relation.normal.extends	4446	4457	11
+io.autovacuum worker.relation.normal.hits	111490292	111714166	223874
+io.autovacuum worker.relation.normal.read_bytes	912637952	928129024	15491072
+io.autovacuum worker.relation.normal.reads	104188	105976	1788
+io.autovacuum worker.relation.normal.write_bytes	447004672	454115328	7110656
+io.autovacuum worker.relation.normal.writes	54566	55434	868
+io.autovacuum worker.relation.vacuum.evictions	150003	152620	2617
+io.autovacuum worker.relation.vacuum.hits	29733009	29818002	84993
+io.autovacuum worker.relation.vacuum.read_bytes	879058821120	882409472000	3350650880
+io.autovacuum worker.relation.vacuum.reads	16076051	16226779	150728
+io.autovacuum worker.relation.vacuum.reuses	107141491	107547889	406398
+io.autovacuum worker.relation.vacuum.write_bytes	705842872320	707511828480	1668956160
+io.autovacuum worker.relation.vacuum.writes	86162460	86366190	203730
+io.autovacuum worker.wal.normal.fsyncs	199036	199826	790
+io.autovacuum worker.wal.normal.write_bytes	404874158080	405213831168	339673088
+io.autovacuum worker.wal.normal.writes	588526	589316	790
+io.background writer.relation.normal.write_bytes	279068925952	285071040512	6002114560
+io.background writer.relation.normal.writebacks	34065984	34798656	732672
+io.background writer.relation.normal.writes	34066031	34798711	732680
+io.background writer.wal.normal.fsyncs	105	107	2
+io.background writer.wal.normal.write_bytes	689741824	698949632	9207808
+io.background writer.wal.normal.writes	108	110	2
+io.checkpointer.relation.normal.fsyncs	31712	32014	302
+io.checkpointer.relation.normal.write_bytes	403741908992	408578408448	4836499456
+io.checkpointer.relation.normal.writebacks	49285070	49875488	590418
+io.checkpointer.relation.normal.writes	49284901	49875294	590393
+io.checkpointer.wal.normal.fsyncs	14620	14855	235
+io.checkpointer.wal.normal.write_bytes	41725149184	42269851648	544702464
+io.checkpointer.wal.normal.writes	14632	14867	235
+io.client backend.relation.normal.evictions	343762073	351742144	7980071
+io.client backend.relation.normal.extend_bytes	218111246336	219512242176	1400995840
+io.client backend.relation.normal.extends	26529371	26700193	170822
+io.client backend.relation.normal.hits	24557237411	24731574109	174336698
+io.client backend.relation.normal.read_bytes	2613263843328	2677235638272	63971794944
+io.client backend.relation.normal.reads	318692415	326501430	7809015
+io.client backend.relation.normal.write_bytes	1697536475136	1739175501824	41639026688
+io.client backend.relation.normal.writes	207218808	212301697	5082889
+io.client backend.wal.normal.fsyncs	12201	12255	54
+io.client backend.wal.normal.write_bytes	57772679168	57856712704	84033536
+io.client backend.wal.normal.writes	5488938	5489088	150
+io.walsender.wal.normal.read_bytes	3076325660544	3112250770664	35925110120
+io.walsender.wal.normal.reads	24536069	24828265	292196
+io.walwriter.wal.init.fsyncs	10013	10027	14
+io.walwriter.wal.init.write_bytes	167990263808	168225144832	234881024
+io.walwriter.wal.init.writes	10013	10027	14
+io.walwriter.wal.normal.fsyncs	2164945	2197677	32732
+io.walwriter.wal.normal.write_bytes	3006160117760	3042341060608	36180942848
+io.walwriter.wal.normal.writes	3748074	3809154	61080
+wal.wal_buffers_full	10889772	10889869	97
+wal.wal_bytes	3560923685275	3597761247866	36837562591
+wal.wal_fpi	277049594	281047549	3997955
+wal.wal_records	7006854162	7048766384	41912222

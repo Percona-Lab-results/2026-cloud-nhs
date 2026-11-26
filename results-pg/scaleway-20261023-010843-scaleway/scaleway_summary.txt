@@ -1,0 +1,45 @@
+provider          scaleway
+engine            postgresql
+started_utc       2026-10-23T01:08:43Z
+client_host       scaleway-compute
+client_cpus       4
+client_sysbench   n/a
+client_psql       psql (PostgreSQL) 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)
+hammerdb_home     /opt/HammerDB-6.0
+target            scaledbs@78.232.128.21:23299 (sslmode=prefer)
+maintenance_db    rdb
+benchmarks        hammerdb
+runs              2
+threads           4 8 16 32 64
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+hammerdb_procs    stored_procs=true, schema owner=scaledbs
+configurations    30 (sysbench 0, hammerdb 30)
+schema_rebuild    dropped and reloaded before every measured run
+vacuum_after_load VACUUM ANALYZE
+status_sampling   every 10s
+detail_stats      off (--detail-stats to enable)
+estimated_runtime 750 min (~12h, excluding 30 schema rebuilds)
+
+HammerDB TPC-C - mean over 2 run(s)
+  warehouses     vu               nopm          tpm
+  160            4             12231.0      28212.5
+  160            8             18741.5      43242.0
+  160            16            27187.0      62560.5
+  160            32            30880.5      71124.0
+  160            64            36121.5      83127.5
+  320            4              9477.5      21895.5
+  320            8             15832.0      36530.5
+  320            16            22462.0      51827.0
+  320            32            24819.0      57168.0
+  320            64            25665.5      59069.5
+  640            4              7682.5      17765.0
+  640            8             13330.0      30694.0
+  640            16            17113.5      39502.0
+  640            32            17814.5      41066.0
+  640            64            17586.5      40595.0
+
+finished_utc      2026-10-24T00:52:50Z
+results           /root/2026-cloud-perf/results/scaleway-20261023-010843-scaleway

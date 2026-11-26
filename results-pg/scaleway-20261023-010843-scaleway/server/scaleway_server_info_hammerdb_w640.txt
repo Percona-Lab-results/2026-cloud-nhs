@@ -1,0 +1,55 @@
+-- version
+                                                           version                                                            | version_num | encoding 
+------------------------------------------------------------------------------------------------------------------------------+-------------+----------
+ PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit | 170011      | UTF8
+(1 row)
+
+-- sizing
+              name               |    setting     | unit 
+---------------------------------+----------------+------
+ autovacuum                      | on             | 
+ autovacuum_max_workers          | 4              | 
+ checkpoint_completion_target    | 0.9            | 
+ checkpoint_timeout              | 30             | s
+ default_transaction_isolation   | read committed | 
+ effective_cache_size            | 1344000        | 8kB
+ fsync                           | on             | 
+ full_page_writes                | on             | 
+ huge_pages                      | try            | 
+ maintenance_work_mem            | 614400         | kB
+ max_connections                 | 350            | 
+ max_parallel_workers_per_gather | 1              | 
+ max_wal_size                    | 1024           | MB
+ max_worker_processes            | 36             | 
+ min_wal_size                    | 80             | MB
+ random_page_cost                | 4              | 
+ seq_page_cost                   | 1              | 
+ shared_buffers                  | 486400         | 8kB
+ synchronous_commit              | on             | 
+ wal_compression                 | off            | 
+ wal_level                       | replica        | 
+ work_mem                        | 16384          | kB
+(22 rows)
+
+-- database sizes
+ datname | size  |    bytes    
+---------+-------+-------------
+ tpcc    | 61 GB | 65617117711
+(1 row)
+
+-- largest relations in sbtest
+(database does not exist)
+-- largest relations in tpcc
+  relname   |  total  
+------------+---------
+ order_line | 22 GB
+ stock      | 22 GB
+ customer   | 13 GB
+ orders     | 2260 MB
+ history    | 1471 MB
+ new_order  | 417 MB
+ item       | 12 MB
+ district   | 984 kB
+ warehouse  | 736 kB
+(9 rows)
+

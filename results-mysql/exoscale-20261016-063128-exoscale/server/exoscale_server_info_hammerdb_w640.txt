@@ -1,0 +1,10 @@
+-- version
+version	comment	hostname
+8.4.11	Source distribution	exoscale4vcpu16gb-1
+-- sizing
+innodb_buffer_pool_size	max_connections	flush_log_at_trx_commit	sync_binlog	innodb_io_capacity	log_bin	transaction_isolation
+7516192768	1601	1	1	10000	1	REPEATABLE-READ
+-- schema sizes
+TABLE_SCHEMA	tables	data_gb	index_gb
+sbtest	10	78.97	0.00
+tpcc	9	51.67	2.13

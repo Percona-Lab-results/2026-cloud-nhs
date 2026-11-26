@@ -1,0 +1,857 @@
+HammerDB CLI v6.0
+Copyright © HammerDB Ltd hosted by tpc.org 2019-2026
+Type "help" for a list of commands
+Initialized Jobs on-disk database /tmp/cloud-pg-perf.IhOsDS/hammerdb-tmp/hammer.DB using existing tables (5,910,528 bytes)
+Database set to PostgreSQL
+Benchmark set to TPC-C for PostgreSQL
+Value postgresql-4338e31a-o59368f7f.database.cloud.ovh.net for connection:pg_host is the same as existing value postgresql-4338e31a-o59368f7f.database.cloud.ovh.net, no change made
+Value 20184 for connection:pg_port is the same as existing value 20184, no change made
+Value prefer for connection:pg_sslmode is the same as existing value prefer, no change made
+Value avnadmin for tpcc:pg_superuser is the same as existing value avnadmin, no change made
+<password line redacted>
+Value defaultdb for tpcc:pg_defaultdbase is the same as existing value defaultdb, no change made
+Value avnadmin for tpcc:pg_user is the same as existing value avnadmin, no change made
+<password line redacted>
+Value tpcc for tpcc:pg_dbase is the same as existing value tpcc, no change made
+Value 160 for tpcc:pg_count_ware is the same as existing value 160, no change made
+Value timed for tpcc:pg_driver is the same as existing value timed, no change made
+Value 5 for tpcc:pg_rampup is the same as existing value 5, no change made
+Value 20 for tpcc:pg_duration is the same as existing value 20, no change made
+Value true for tpcc:pg_allwarehouse is the same as existing value true, no change made
+Value true for tpcc:pg_timeprofile is the same as existing value true, no change made
+Value true for tpcc:pg_raiseerror is the same as existing value true, no change made
+Value false for tpcc:pg_keyandthink is the same as existing value false, no change made
+Value true for tpcc:pg_storedprocs is the same as existing value true, no change made
+Script loaded, Type "print script" to view
+Vuser 1 created MONITOR - WAIT IDLE
+Vuser 2 created - WAIT IDLE
+Vuser 3 created - WAIT IDLE
+Vuser 4 created - WAIT IDLE
+Vuser 5 created - WAIT IDLE
+Vuser 6 created - WAIT IDLE
+Vuser 7 created - WAIT IDLE
+Vuser 8 created - WAIT IDLE
+Vuser 9 created - WAIT IDLE
+Vuser 10 created - WAIT IDLE
+Vuser 11 created - WAIT IDLE
+Vuser 12 created - WAIT IDLE
+Vuser 13 created - WAIT IDLE
+Vuser 14 created - WAIT IDLE
+Vuser 15 created - WAIT IDLE
+Vuser 16 created - WAIT IDLE
+Vuser 17 created - WAIT IDLE
+Vuser 18 created - WAIT IDLE
+Vuser 19 created - WAIT IDLE
+Vuser 20 created - WAIT IDLE
+Vuser 21 created - WAIT IDLE
+Vuser 22 created - WAIT IDLE
+Vuser 23 created - WAIT IDLE
+Vuser 24 created - WAIT IDLE
+Vuser 25 created - WAIT IDLE
+Vuser 26 created - WAIT IDLE
+Vuser 27 created - WAIT IDLE
+Vuser 28 created - WAIT IDLE
+Vuser 29 created - WAIT IDLE
+Vuser 30 created - WAIT IDLE
+Vuser 31 created - WAIT IDLE
+Vuser 32 created - WAIT IDLE
+Vuser 33 created - WAIT IDLE
+Vuser 34 created - WAIT IDLE
+Vuser 35 created - WAIT IDLE
+Vuser 36 created - WAIT IDLE
+Vuser 37 created - WAIT IDLE
+Vuser 38 created - WAIT IDLE
+Vuser 39 created - WAIT IDLE
+Vuser 40 created - WAIT IDLE
+Vuser 41 created - WAIT IDLE
+Vuser 42 created - WAIT IDLE
+Vuser 43 created - WAIT IDLE
+Vuser 44 created - WAIT IDLE
+Vuser 45 created - WAIT IDLE
+Vuser 46 created - WAIT IDLE
+Vuser 47 created - WAIT IDLE
+Vuser 48 created - WAIT IDLE
+Vuser 49 created - WAIT IDLE
+Vuser 50 created - WAIT IDLE
+Vuser 51 created - WAIT IDLE
+Vuser 52 created - WAIT IDLE
+Vuser 53 created - WAIT IDLE
+Vuser 54 created - WAIT IDLE
+Vuser 55 created - WAIT IDLE
+Vuser 56 created - WAIT IDLE
+Vuser 57 created - WAIT IDLE
+Vuser 58 created - WAIT IDLE
+Vuser 59 created - WAIT IDLE
+Vuser 60 created - WAIT IDLE
+Vuser 61 created - WAIT IDLE
+Vuser 62 created - WAIT IDLE
+Vuser 63 created - WAIT IDLE
+Vuser 64 created - WAIT IDLE
+Vuser 65 created - WAIT IDLE
+Logging activated to /tmp/cloud-pg-perf.IhOsDS/hammerdb-tmp/hammerdb.log
+65 Virtual Users Created with Monitor VU
+Transaction Counter Started
+Vuser 1:RUNNING
+Vuser 1:Initializing xtprof time profiler
+0 PostgreSQL tpm
+Vuser 1:DBVersion:18.6
+Vuser 1:Beginning rampup time of 5 minutes
+Vuser 2:RUNNING
+Vuser 2:Initializing xtprof time profiler
+Vuser 2:Assigned 3 WIDs = 1 65 129 based on VU count 64, Warehouses = 3 out of 160
+Vuser 2:Processing 10000000 transactions with output suppressed...
+Vuser 3:RUNNING
+Vuser 3:Initializing xtprof time profiler
+Vuser 3:Assigned 3 WIDs = 2 66 130 based on VU count 64, Warehouses = 3 out of 160
+Vuser 3:Processing 10000000 transactions with output suppressed...
+Vuser 4:RUNNING
+Vuser 4:Initializing xtprof time profiler
+Vuser 4:Assigned 3 WIDs = 3 67 131 based on VU count 64, Warehouses = 3 out of 160
+Vuser 4:Processing 10000000 transactions with output suppressed...
+Vuser 5:RUNNING
+Vuser 5:Initializing xtprof time profiler
+Vuser 5:Assigned 3 WIDs = 4 68 132 based on VU count 64, Warehouses = 3 out of 160
+Vuser 5:Processing 10000000 transactions with output suppressed...
+Vuser 6:RUNNING
+Vuser 6:Initializing xtprof time profiler
+Vuser 6:Assigned 3 WIDs = 5 69 133 based on VU count 64, Warehouses = 3 out of 160
+Vuser 6:Processing 10000000 transactions with output suppressed...
+Vuser 7:RUNNING
+Vuser 7:Initializing xtprof time profiler
+Vuser 7:Assigned 3 WIDs = 6 70 134 based on VU count 64, Warehouses = 3 out of 160
+Vuser 7:Processing 10000000 transactions with output suppressed...
+Vuser 8:RUNNING
+Vuser 8:Initializing xtprof time profiler
+Vuser 8:Assigned 3 WIDs = 7 71 135 based on VU count 64, Warehouses = 3 out of 160
+Vuser 8:Processing 10000000 transactions with output suppressed...
+Vuser 9:RUNNING
+Vuser 9:Initializing xtprof time profiler
+Vuser 9:Assigned 3 WIDs = 8 72 136 based on VU count 64, Warehouses = 3 out of 160
+Vuser 9:Processing 10000000 transactions with output suppressed...
+Vuser 10:RUNNING
+Vuser 10:Initializing xtprof time profiler
+Vuser 10:Assigned 3 WIDs = 9 73 137 based on VU count 64, Warehouses = 3 out of 160
+Vuser 10:Processing 10000000 transactions with output suppressed...
+Vuser 11:RUNNING
+Vuser 11:Initializing xtprof time profiler
+Vuser 11:Assigned 3 WIDs = 10 74 138 based on VU count 64, Warehouses = 3 out of 160
+Vuser 11:Processing 10000000 transactions with output suppressed...
+Vuser 12:RUNNING
+Vuser 12:Initializing xtprof time profiler
+Vuser 12:Assigned 3 WIDs = 11 75 139 based on VU count 64, Warehouses = 3 out of 160
+Vuser 12:Processing 10000000 transactions with output suppressed...
+Vuser 13:RUNNING
+Vuser 13:Initializing xtprof time profiler
+Vuser 13:Assigned 3 WIDs = 12 76 140 based on VU count 64, Warehouses = 3 out of 160
+Vuser 13:Processing 10000000 transactions with output suppressed...
+Vuser 14:RUNNING
+Vuser 14:Initializing xtprof time profiler
+Vuser 14:Assigned 3 WIDs = 13 77 141 based on VU count 64, Warehouses = 3 out of 160
+Vuser 14:Processing 10000000 transactions with output suppressed...
+Vuser 15:RUNNING
+Vuser 15:Initializing xtprof time profiler
+Vuser 15:Assigned 3 WIDs = 14 78 142 based on VU count 64, Warehouses = 3 out of 160
+Vuser 15:Processing 10000000 transactions with output suppressed...
+Vuser 16:RUNNING
+Vuser 16:Initializing xtprof time profiler
+Vuser 16:Assigned 3 WIDs = 15 79 143 based on VU count 64, Warehouses = 3 out of 160
+Vuser 16:Processing 10000000 transactions with output suppressed...
+Vuser 17:RUNNING
+Vuser 17:Initializing xtprof time profiler
+Vuser 17:Assigned 3 WIDs = 16 80 144 based on VU count 64, Warehouses = 3 out of 160
+Vuser 17:Processing 10000000 transactions with output suppressed...
+Vuser 18:RUNNING
+Vuser 18:Initializing xtprof time profiler
+Vuser 18:Assigned 3 WIDs = 17 81 145 based on VU count 64, Warehouses = 3 out of 160
+Vuser 18:Processing 10000000 transactions with output suppressed...
+Vuser 19:RUNNING
+Vuser 19:Initializing xtprof time profiler
+Vuser 19:Assigned 3 WIDs = 18 82 146 based on VU count 64, Warehouses = 3 out of 160
+Vuser 19:Processing 10000000 transactions with output suppressed...
+Vuser 20:RUNNING
+Vuser 20:Initializing xtprof time profiler
+Vuser 20:Assigned 3 WIDs = 19 83 147 based on VU count 64, Warehouses = 3 out of 160
+Vuser 20:Processing 10000000 transactions with output suppressed...
+Vuser 21:RUNNING
+Vuser 21:Initializing xtprof time profiler
+Vuser 21:Assigned 3 WIDs = 20 84 148 based on VU count 64, Warehouses = 3 out of 160
+Vuser 21:Processing 10000000 transactions with output suppressed...
+45264 PostgreSQL tpm
+Vuser 22:RUNNING
+Vuser 22:Initializing xtprof time profiler
+Vuser 22:Assigned 3 WIDs = 21 85 149 based on VU count 64, Warehouses = 3 out of 160
+Vuser 22:Processing 10000000 transactions with output suppressed...
+Vuser 23:RUNNING
+Vuser 23:Initializing xtprof time profiler
+Vuser 23:Assigned 3 WIDs = 22 86 150 based on VU count 64, Warehouses = 3 out of 160
+Vuser 23:Processing 10000000 transactions with output suppressed...
+Vuser 24:RUNNING
+Vuser 24:Initializing xtprof time profiler
+Vuser 24:Assigned 3 WIDs = 23 87 151 based on VU count 64, Warehouses = 3 out of 160
+Vuser 24:Processing 10000000 transactions with output suppressed...
+Vuser 25:RUNNING
+Vuser 25:Initializing xtprof time profiler
+Vuser 25:Assigned 3 WIDs = 24 88 152 based on VU count 64, Warehouses = 3 out of 160
+Vuser 25:Processing 10000000 transactions with output suppressed...
+Vuser 26:RUNNING
+Vuser 26:Initializing xtprof time profiler
+Vuser 26:Assigned 3 WIDs = 25 89 153 based on VU count 64, Warehouses = 3 out of 160
+Vuser 26:Processing 10000000 transactions with output suppressed...
+Vuser 27:RUNNING
+Vuser 27:Initializing xtprof time profiler
+Vuser 27:Assigned 3 WIDs = 26 90 154 based on VU count 64, Warehouses = 3 out of 160
+Vuser 27:Processing 10000000 transactions with output suppressed...
+Vuser 28:RUNNING
+Vuser 28:Initializing xtprof time profiler
+Vuser 28:Assigned 3 WIDs = 27 91 155 based on VU count 64, Warehouses = 3 out of 160
+Vuser 28:Processing 10000000 transactions with output suppressed...
+Vuser 29:RUNNING
+Vuser 29:Initializing xtprof time profiler
+Vuser 29:Assigned 3 WIDs = 28 92 156 based on VU count 64, Warehouses = 3 out of 160
+Vuser 29:Processing 10000000 transactions with output suppressed...
+Vuser 30:RUNNING
+Vuser 30:Initializing xtprof time profiler
+Vuser 30:Assigned 3 WIDs = 29 93 157 based on VU count 64, Warehouses = 3 out of 160
+Vuser 30:Processing 10000000 transactions with output suppressed...
+Vuser 31:RUNNING
+Vuser 31:Initializing xtprof time profiler
+Vuser 31:Assigned 3 WIDs = 30 94 158 based on VU count 64, Warehouses = 3 out of 160
+Vuser 31:Processing 10000000 transactions with output suppressed...
+Vuser 32:RUNNING
+Vuser 32:Initializing xtprof time profiler
+Vuser 32:Assigned 3 WIDs = 31 95 159 based on VU count 64, Warehouses = 3 out of 160
+Vuser 32:Processing 10000000 transactions with output suppressed...
+Vuser 33:RUNNING
+Vuser 33:Initializing xtprof time profiler
+Vuser 34:RUNNING
+Vuser 34:Initializing xtprof time profiler
+Vuser 35:RUNNING
+Vuser 35:Initializing xtprof time profiler
+Vuser 33:Assigned 3 WIDs = 32 96 160 based on VU count 64, Warehouses = 3 out of 160
+Vuser 34:Assigned 3 WIDs = 33 97 1 based on VU count 64, Warehouses = 3 out of 160
+Vuser 35:Assigned 3 WIDs = 34 98 2 based on VU count 64, Warehouses = 3 out of 160
+Vuser 33:Processing 10000000 transactions with output suppressed...
+Vuser 34:Processing 10000000 transactions with output suppressed...
+Vuser 35:Processing 10000000 transactions with output suppressed...
+Vuser 36:RUNNING
+Vuser 36:Initializing xtprof time profiler
+Vuser 36:Assigned 3 WIDs = 35 99 3 based on VU count 64, Warehouses = 3 out of 160
+Vuser 36:Processing 10000000 transactions with output suppressed...
+Vuser 37:RUNNING
+Vuser 37:Initializing xtprof time profiler
+Vuser 37:Assigned 3 WIDs = 36 100 4 based on VU count 64, Warehouses = 3 out of 160
+Vuser 37:Processing 10000000 transactions with output suppressed...
+Vuser 38:RUNNING
+Vuser 38:Initializing xtprof time profiler
+Vuser 38:Assigned 3 WIDs = 37 101 5 based on VU count 64, Warehouses = 3 out of 160
+Vuser 38:Processing 10000000 transactions with output suppressed...
+Vuser 39:RUNNING
+Vuser 39:Initializing xtprof time profiler
+Vuser 39:Assigned 3 WIDs = 38 102 6 based on VU count 64, Warehouses = 3 out of 160
+Vuser 40:RUNNING
+Vuser 40:Initializing xtprof time profiler
+Vuser 40:Assigned 3 WIDs = 39 103 7 based on VU count 64, Warehouses = 3 out of 160
+Vuser 40:Processing 10000000 transactions with output suppressed...
+Vuser 39:Processing 10000000 transactions with output suppressed...
+Vuser 41:RUNNING
+Vuser 41:Initializing xtprof time profiler
+32274 PostgreSQL tpm
+Vuser 42:RUNNING
+Vuser 42:Initializing xtprof time profiler
+Vuser 41:Assigned 3 WIDs = 40 104 8 based on VU count 64, Warehouses = 3 out of 160
+Vuser 41:Processing 10000000 transactions with output suppressed...
+Vuser 42:Assigned 3 WIDs = 41 105 9 based on VU count 64, Warehouses = 3 out of 160
+Vuser 42:Processing 10000000 transactions with output suppressed...
+Vuser 43:RUNNING
+Vuser 43:Initializing xtprof time profiler
+Vuser 43:Assigned 3 WIDs = 42 106 10 based on VU count 64, Warehouses = 3 out of 160
+Vuser 43:Processing 10000000 transactions with output suppressed...
+Vuser 44:RUNNING
+Vuser 44:Initializing xtprof time profiler
+Vuser 44:Assigned 3 WIDs = 43 107 11 based on VU count 64, Warehouses = 3 out of 160
+Vuser 44:Processing 10000000 transactions with output suppressed...
+Vuser 45:RUNNING
+Vuser 45:Initializing xtprof time profiler
+Vuser 45:Assigned 3 WIDs = 44 108 12 based on VU count 64, Warehouses = 3 out of 160
+Vuser 45:Processing 10000000 transactions with output suppressed...
+Vuser 46:RUNNING
+Vuser 46:Initializing xtprof time profiler
+Vuser 46:Assigned 3 WIDs = 45 109 13 based on VU count 64, Warehouses = 3 out of 160
+Vuser 46:Processing 10000000 transactions with output suppressed...
+Vuser 47:RUNNING
+Vuser 47:Initializing xtprof time profiler
+Vuser 47:Assigned 3 WIDs = 46 110 14 based on VU count 64, Warehouses = 3 out of 160
+Vuser 47:Processing 10000000 transactions with output suppressed...
+Vuser 48:RUNNING
+Vuser 48:Initializing xtprof time profiler
+Vuser 48:Assigned 3 WIDs = 47 111 15 based on VU count 64, Warehouses = 3 out of 160
+Vuser 48:Processing 10000000 transactions with output suppressed...
+Vuser 49:RUNNING
+Vuser 49:Initializing xtprof time profiler
+Vuser 49:Assigned 3 WIDs = 48 112 16 based on VU count 64, Warehouses = 3 out of 160
+Vuser 50:RUNNING
+Vuser 50:Initializing xtprof time profiler
+Vuser 50:Assigned 3 WIDs = 49 113 17 based on VU count 64, Warehouses = 3 out of 160
+Vuser 50:Processing 10000000 transactions with output suppressed...
+Vuser 49:Processing 10000000 transactions with output suppressed...
+Vuser 51:RUNNING
+Vuser 51:Initializing xtprof time profiler
+Vuser 51:Assigned 3 WIDs = 50 114 18 based on VU count 64, Warehouses = 3 out of 160
+Vuser 51:Processing 10000000 transactions with output suppressed...
+Vuser 52:RUNNING
+Vuser 52:Initializing xtprof time profiler
+Vuser 52:Assigned 3 WIDs = 51 115 19 based on VU count 64, Warehouses = 3 out of 160
+Vuser 52:Processing 10000000 transactions with output suppressed...
+Vuser 53:RUNNING
+Vuser 53:Initializing xtprof time profiler
+Vuser 54:RUNNING
+Vuser 54:Initializing xtprof time profiler
+Vuser 53:Assigned 3 WIDs = 52 116 20 based on VU count 64, Warehouses = 3 out of 160
+Vuser 54:Assigned 3 WIDs = 53 117 21 based on VU count 64, Warehouses = 3 out of 160
+Vuser 53:Processing 10000000 transactions with output suppressed...
+Vuser 54:Processing 10000000 transactions with output suppressed...
+Vuser 55:RUNNING
+Vuser 55:Initializing xtprof time profiler
+Vuser 55:Assigned 3 WIDs = 54 118 22 based on VU count 64, Warehouses = 3 out of 160
+Vuser 55:Processing 10000000 transactions with output suppressed...
+Vuser 56:RUNNING
+Vuser 56:Initializing xtprof time profiler
+Vuser 56:Assigned 3 WIDs = 55 119 23 based on VU count 64, Warehouses = 3 out of 160
+Vuser 56:Processing 10000000 transactions with output suppressed...
+Vuser 57:RUNNING
+Vuser 57:Initializing xtprof time profiler
+Vuser 57:Assigned 3 WIDs = 56 120 24 based on VU count 64, Warehouses = 3 out of 160
+Vuser 57:Processing 10000000 transactions with output suppressed...
+Vuser 58:RUNNING
+Vuser 58:Initializing xtprof time profiler
+Vuser 58:Assigned 3 WIDs = 57 121 25 based on VU count 64, Warehouses = 3 out of 160
+Vuser 59:RUNNING
+Vuser 59:Initializing xtprof time profiler
+Vuser 59:Assigned 3 WIDs = 58 122 26 based on VU count 64, Warehouses = 3 out of 160
+Vuser 58:Processing 10000000 transactions with output suppressed...
+Vuser 59:Processing 10000000 transactions with output suppressed...
+Vuser 60:RUNNING
+Vuser 60:Initializing xtprof time profiler
+Vuser 60:Assigned 3 WIDs = 59 123 27 based on VU count 64, Warehouses = 3 out of 160
+Vuser 60:Processing 10000000 transactions with output suppressed...
+Vuser 61:RUNNING
+Vuser 61:Initializing xtprof time profiler
+Vuser 61:Assigned 3 WIDs = 60 124 28 based on VU count 64, Warehouses = 3 out of 160
+48774 PostgreSQL tpm
+Vuser 62:RUNNING
+Vuser 62:Initializing xtprof time profiler
+Vuser 62:Assigned 3 WIDs = 61 125 29 based on VU count 64, Warehouses = 3 out of 160
+Vuser 62:Processing 10000000 transactions with output suppressed...
+Vuser 61:Processing 10000000 transactions with output suppressed...
+Vuser 63:RUNNING
+Vuser 63:Initializing xtprof time profiler
+Vuser 63:Assigned 3 WIDs = 62 126 30 based on VU count 64, Warehouses = 3 out of 160
+Vuser 63:Processing 10000000 transactions with output suppressed...
+Vuser 64:RUNNING
+Vuser 64:Initializing xtprof time profiler
+Vuser 64:Assigned 3 WIDs = 63 127 31 based on VU count 64, Warehouses = 3 out of 160
+Vuser 64:Processing 10000000 transactions with output suppressed...
+Vuser 65:RUNNING
+Vuser 65:Initializing xtprof time profiler
+Vuser 65:Assigned 3 WIDs = 64 128 32 based on VU count 64, Warehouses = 3 out of 160
+Vuser 65:Processing 10000000 transactions with output suppressed...
+71670 PostgreSQL tpm
+74088 PostgreSQL tpm
+Vuser 1:Rampup 1 minutes complete ...
+64272 PostgreSQL tpm
+76518 PostgreSQL tpm
+69306 PostgreSQL tpm
+73722 PostgreSQL tpm
+52734 PostgreSQL tpm
+40494 PostgreSQL tpm
+Vuser 1:Rampup 2 minutes complete ...
+39318 PostgreSQL tpm
+57582 PostgreSQL tpm
+70020 PostgreSQL tpm
+62256 PostgreSQL tpm
+52632 PostgreSQL tpm
+72750 PostgreSQL tpm
+Vuser 1:Rampup 3 minutes complete ...
+61968 PostgreSQL tpm
+68046 PostgreSQL tpm
+60420 PostgreSQL tpm
+67998 PostgreSQL tpm
+74004 PostgreSQL tpm
+58308 PostgreSQL tpm
+Vuser 1:Rampup 4 minutes complete ...
+69246 PostgreSQL tpm
+68670 PostgreSQL tpm
+68976 PostgreSQL tpm
+69792 PostgreSQL tpm
+71094 PostgreSQL tpm
+89250 PostgreSQL tpm
+Vuser 1:Rampup 5 minutes complete ...
+Vuser 1:Rampup complete, Taking start Transaction Count.
+80496 PostgreSQL tpm
+Vuser 1:Timing test period of 20 in minutes
+50346 PostgreSQL tpm
+49068 PostgreSQL tpm
+44634 PostgreSQL tpm
+46470 PostgreSQL tpm
+53400 PostgreSQL tpm
+55302 PostgreSQL tpm
+Vuser 1:1 ...,
+89490 PostgreSQL tpm
+38556 PostgreSQL tpm
+55338 PostgreSQL tpm
+65958 PostgreSQL tpm
+76506 PostgreSQL tpm
+54606 PostgreSQL tpm
+Vuser 1:2 ...,
+63228 PostgreSQL tpm
+63936 PostgreSQL tpm
+67056 PostgreSQL tpm
+62868 PostgreSQL tpm
+62226 PostgreSQL tpm
+74268 PostgreSQL tpm
+Vuser 1:3 ...,
+68940 PostgreSQL tpm
+71316 PostgreSQL tpm
+64194 PostgreSQL tpm
+77682 PostgreSQL tpm
+42396 PostgreSQL tpm
+43080 PostgreSQL tpm
+Vuser 1:4 ...,
+67278 PostgreSQL tpm
+39150 PostgreSQL tpm
+79722 PostgreSQL tpm
+36966 PostgreSQL tpm
+61638 PostgreSQL tpm
+46668 PostgreSQL tpm
+Vuser 1:5 ...,
+71052 PostgreSQL tpm
+53754 PostgreSQL tpm
+63936 PostgreSQL tpm
+44472 PostgreSQL tpm
+56142 PostgreSQL tpm
+62202 PostgreSQL tpm
+Vuser 1:6 ...,
+68646 PostgreSQL tpm
+60510 PostgreSQL tpm
+78594 PostgreSQL tpm
+49386 PostgreSQL tpm
+55890 PostgreSQL tpm
+71346 PostgreSQL tpm
+Vuser 1:7 ...,
+78258 PostgreSQL tpm
+53970 PostgreSQL tpm
+38628 PostgreSQL tpm
+45924 PostgreSQL tpm
+72822 PostgreSQL tpm
+50310 PostgreSQL tpm
+Vuser 1:8 ...,
+48930 PostgreSQL tpm
+65934 PostgreSQL tpm
+35976 PostgreSQL tpm
+55962 PostgreSQL tpm
+57186 PostgreSQL tpm
+49614 PostgreSQL tpm
+Vuser 1:9 ...,
+61746 PostgreSQL tpm
+56580 PostgreSQL tpm
+65520 PostgreSQL tpm
+60120 PostgreSQL tpm
+63906 PostgreSQL tpm
+58068 PostgreSQL tpm
+Vuser 1:10 ...,
+68754 PostgreSQL tpm
+68964 PostgreSQL tpm
+55788 PostgreSQL tpm
+68250 PostgreSQL tpm
+56052 PostgreSQL tpm
+82152 PostgreSQL tpm
+Vuser 1:11 ...,
+67092 PostgreSQL tpm
+63024 PostgreSQL tpm
+59526 PostgreSQL tpm
+54924 PostgreSQL tpm
+43404 PostgreSQL tpm
+72834 PostgreSQL tpm
+Vuser 1:12 ...,
+24024 PostgreSQL tpm
+65232 PostgreSQL tpm
+58560 PostgreSQL tpm
+85500 PostgreSQL tpm
+47088 PostgreSQL tpm
+46758 PostgreSQL tpm
+Vuser 1:13 ...,
+55806 PostgreSQL tpm
+58686 PostgreSQL tpm
+46962 PostgreSQL tpm
+64044 PostgreSQL tpm
+48570 PostgreSQL tpm
+83520 PostgreSQL tpm
+Vuser 1:14 ...,
+48294 PostgreSQL tpm
+60150 PostgreSQL tpm
+57810 PostgreSQL tpm
+74142 PostgreSQL tpm
+69672 PostgreSQL tpm
+65832 PostgreSQL tpm
+Vuser 1:15 ...,
+78966 PostgreSQL tpm
+57204 PostgreSQL tpm
+72096 PostgreSQL tpm
+73218 PostgreSQL tpm
+67590 PostgreSQL tpm
+65280 PostgreSQL tpm
+Vuser 1:16 ...,
+61572 PostgreSQL tpm
+65490 PostgreSQL tpm
+43710 PostgreSQL tpm
+42342 PostgreSQL tpm
+62454 PostgreSQL tpm
+95856 PostgreSQL tpm
+Vuser 1:17 ...,
+33282 PostgreSQL tpm
+63924 PostgreSQL tpm
+59364 PostgreSQL tpm
+77742 PostgreSQL tpm
+62592 PostgreSQL tpm
+56262 PostgreSQL tpm
+Vuser 1:18 ...,
+67746 PostgreSQL tpm
+73710 PostgreSQL tpm
+63942 PostgreSQL tpm
+67506 PostgreSQL tpm
+56286 PostgreSQL tpm
+66450 PostgreSQL tpm
+Vuser 1:19 ...,
+51702 PostgreSQL tpm
+55668 PostgreSQL tpm
+50184 PostgreSQL tpm
+67086 PostgreSQL tpm
+65862 PostgreSQL tpm
+53700 PostgreSQL tpm
+Vuser 1:20 ...,
+Vuser 1:Test complete, Taking end Transaction Count.
+Vuser 1:64 Active Virtual Users configured
+Vuser 1:TEST RESULT : System achieved 25838 NOPM from 60345 PostgreSQL TPM
+Vuser 1:Gathering timing data from Active Virtual Users...
+Vuser 63:FINISHED SUCCESS
+Vuser 40:FINISHED SUCCESS
+Vuser 34:FINISHED SUCCESS
+Vuser 24:FINISHED SUCCESS
+Vuser 19:FINISHED SUCCESS
+Vuser 32:FINISHED SUCCESS
+Vuser 15:FINISHED SUCCESS
+Vuser 43:FINISHED SUCCESS
+Vuser 49:FINISHED SUCCESS
+Vuser 39:FINISHED SUCCESS
+Vuser 21:FINISHED SUCCESS
+Vuser 7:FINISHED SUCCESS
+Vuser 51:FINISHED SUCCESS
+Vuser 27:FINISHED SUCCESS
+Vuser 35:FINISHED SUCCESS
+Vuser 41:FINISHED SUCCESS
+Vuser 44:FINISHED SUCCESS
+Vuser 45:FINISHED SUCCESS
+Vuser 25:FINISHED SUCCESS
+Vuser 57:FINISHED SUCCESS
+Vuser 58:FINISHED SUCCESS
+Vuser 16:FINISHED SUCCESS
+Vuser 30:FINISHED SUCCESS
+Vuser 46:FINISHED SUCCESS
+Vuser 36:FINISHED SUCCESS
+Vuser 61:FINISHED SUCCESS
+Vuser 59:FINISHED SUCCESS
+Vuser 62:FINISHED SUCCESS
+Vuser 50:FINISHED SUCCESS
+Vuser 3:FINISHED SUCCESS
+Vuser 38:FINISHED SUCCESS
+Vuser 14:FINISHED SUCCESS
+Vuser 22:FINISHED SUCCESS
+Vuser 64:FINISHED SUCCESS
+Vuser 42:FINISHED SUCCESS
+Vuser 29:FINISHED SUCCESS
+Vuser 52:FINISHED SUCCESS
+Vuser 10:FINISHED SUCCESS
+Vuser 9:FINISHED SUCCESS
+Vuser 6:FINISHED SUCCESS
+Vuser 26:FINISHED SUCCESS
+Vuser 8:FINISHED SUCCESS
+Vuser 60:FINISHED SUCCESS
+Vuser 23:FINISHED SUCCESS
+Vuser 2:FINISHED SUCCESS
+Vuser 4:FINISHED SUCCESS
+Vuser 20:FINISHED SUCCESS
+Vuser 13:FINISHED SUCCESS
+Vuser 12:FINISHED SUCCESS
+Vuser 11:FINISHED SUCCESS
+Vuser 53:FINISHED SUCCESS
+Vuser 5:FINISHED SUCCESS
+Vuser 17:FINISHED SUCCESS
+Vuser 65:FINISHED SUCCESS
+Vuser 54:FINISHED SUCCESS
+Vuser 33:FINISHED SUCCESS
+Vuser 47:FINISHED SUCCESS
+Vuser 18:FINISHED SUCCESS
+Vuser 55:FINISHED SUCCESS
+Vuser 31:FINISHED SUCCESS
+Vuser 28:FINISHED SUCCESS
+75666 PostgreSQL tpm
+Vuser 56:FINISHED SUCCESS
+Vuser 37:FINISHED SUCCESS
+Vuser 48:FINISHED SUCCESS
+Vuser 1:Calculating timings...
+Vuser 1:Writing timing data to /tmp/cloud-pg-perf.IhOsDS/hammerdb-tmp/hdbxtprofile.log
+6780 PostgreSQL tpm
+Vuser 1:Checkpoint and Vacuum
+Error in Virtual User 1: ERROR:  permission denied to execute CHECKPOINT command
+DETAIL:  Only roles with privileges of the "pg_checkpoint" role may execute this command.
+
+Vuser 1:FINISHED FAILED
+ALL VIRTUAL USERS COMPLETE
+vudestroy success
+Transaction Counter thread running with threadid:tid0x7c1c34fe96c0
+Stopping Transaction Counter
+JOBID 6ADAD58CA4FC03E253632353
+TRANSACTION RESPONSE TIMES
+{
+  "NEWORD": {
+    "elapsed_ms": "1491422.0",
+    "calls": "657635",
+    "min_ms": "0.487",
+    "avg_ms": "86.778",
+    "max_ms": "6276.521",
+    "total_ms": "57068017.439",
+    "p99_ms": "1034.946",
+    "p95_ms": "331.248",
+    "p75_ms": "65.112",
+    "p50_ms": "39.756",
+    "p25_ms": "23.188",
+    "sd": "207.458",
+    "ratio_pct": "59.788"
+  },
+  "PAYMENT": {
+    "elapsed_ms": "1491422.0",
+    "calls": "658364",
+    "min_ms": "0.283",
+    "avg_ms": "41.795",
+    "max_ms": "6225.649",
+    "total_ms": "27516455.391",
+    "p99_ms": "724.796",
+    "p95_ms": "105.639",
+    "p75_ms": "26.094",
+    "p50_ms": "11.864",
+    "p25_ms": "5.005",
+    "sd": "155.128",
+    "ratio_pct": "28.828"
+  },
+  "DELIVERY": {
+    "elapsed_ms": "1491422.0",
+    "calls": "65997",
+    "min_ms": "0.898",
+    "avg_ms": "94.153",
+    "max_ms": "6251.446",
+    "total_ms": "6213810.39",
+    "p99_ms": "1225.259",
+    "p95_ms": "438.336",
+    "p75_ms": "63.085",
+    "p50_ms": "40.367",
+    "p25_ms": "24.427",
+    "sd": "267.242",
+    "ratio_pct": "6.51"
+  },
+  "OSTAT": {
+    "elapsed_ms": "1491422.0",
+    "calls": "65538",
+    "min_ms": "0.244",
+    "avg_ms": "51.112",
+    "max_ms": "5401.011",
+    "total_ms": "3349787.796",
+    "p99_ms": "779.307",
+    "p95_ms": "120.48",
+    "p75_ms": "40.109",
+    "p50_ms": "21.698",
+    "p25_ms": "9.249",
+    "sd": "169.61",
+    "ratio_pct": "3.509"
+  },
+  "SLEV": {
+    "elapsed_ms": "1491422.0",
+    "calls": "66046",
+    "min_ms": "0.495",
+    "avg_ms": "18.258",
+    "max_ms": "6045.016",
+    "total_ms": "1205866.335",
+    "p99_ms": "143.078",
+    "p95_ms": "32.444",
+    "p75_ms": "13.743",
+    "p50_ms": "5.546",
+    "p25_ms": "2.564",
+    "sd": "92.824",
+    "ratio_pct": "1.263"
+  }
+}
+
+TRANSACTION COUNT
+{"PostgreSQL tpm": {
+    "2026-10-23 03:33:32": "0",
+    "2026-10-23 03:33:42": "45264",
+    "2026-10-23 03:33:52": "32274",
+    "2026-10-23 03:34:02": "48774",
+    "2026-10-23 03:34:12": "71670",
+    "2026-10-23 03:34:22": "74088",
+    "2026-10-23 03:34:32": "64272",
+    "2026-10-23 03:34:42": "76518",
+    "2026-10-23 03:34:52": "69306",
+    "2026-10-23 03:35:02": "73722",
+    "2026-10-23 03:35:12": "52734",
+    "2026-10-23 03:35:22": "40494",
+    "2026-10-23 03:35:32": "39318",
+    "2026-10-23 03:35:42": "57582",
+    "2026-10-23 03:35:52": "70020",
+    "2026-10-23 03:36:02": "62256",
+    "2026-10-23 03:36:12": "52632",
+    "2026-10-23 03:36:22": "72750",
+    "2026-10-23 03:36:32": "61968",
+    "2026-10-23 03:36:42": "68046",
+    "2026-10-23 03:36:52": "60420",
+    "2026-10-23 03:37:02": "67998",
+    "2026-10-23 03:37:12": "74004",
+    "2026-10-23 03:37:22": "58308",
+    "2026-10-23 03:37:32": "69246",
+    "2026-10-23 03:37:42": "68670",
+    "2026-10-23 03:37:52": "68976",
+    "2026-10-23 03:38:02": "69792",
+    "2026-10-23 03:38:12": "71094",
+    "2026-10-23 03:38:22": "89250",
+    "2026-10-23 03:38:32": "80496",
+    "2026-10-23 03:38:42": "50346",
+    "2026-10-23 03:38:52": "49068",
+    "2026-10-23 03:39:02": "44634",
+    "2026-10-23 03:39:12": "46470",
+    "2026-10-23 03:39:22": "53400",
+    "2026-10-23 03:39:32": "55302",
+    "2026-10-23 03:39:42": "89490",
+    "2026-10-23 03:39:52": "38556",
+    "2026-10-23 03:40:02": "55338",
+    "2026-10-23 03:40:12": "65958",
+    "2026-10-23 03:40:22": "76506",
+    "2026-10-23 03:40:32": "54606",
+    "2026-10-23 03:40:42": "63228",
+    "2026-10-23 03:40:52": "63936",
+    "2026-10-23 03:41:02": "67056",
+    "2026-10-23 03:41:12": "62868",
+    "2026-10-23 03:41:23": "62226",
+    "2026-10-23 03:41:33": "74268",
+    "2026-10-23 03:41:43": "68940",
+    "2026-10-23 03:41:53": "71316",
+    "2026-10-23 03:42:03": "64194",
+    "2026-10-23 03:42:13": "77682",
+    "2026-10-23 03:42:23": "42396",
+    "2026-10-23 03:42:33": "43080",
+    "2026-10-23 03:42:43": "67278",
+    "2026-10-23 03:42:53": "39150",
+    "2026-10-23 03:43:03": "79722",
+    "2026-10-23 03:43:13": "36966",
+    "2026-10-23 03:43:23": "61638",
+    "2026-10-23 03:43:33": "46668",
+    "2026-10-23 03:43:43": "71052",
+    "2026-10-23 03:43:53": "53754",
+    "2026-10-23 03:44:03": "63936",
+    "2026-10-23 03:44:13": "44472",
+    "2026-10-23 03:44:23": "56142",
+    "2026-10-23 03:44:33": "62202",
+    "2026-10-23 03:44:43": "68646",
+    "2026-10-23 03:44:53": "60510",
+    "2026-10-23 03:45:03": "78594",
+    "2026-10-23 03:45:13": "49386",
+    "2026-10-23 03:45:23": "55890",
+    "2026-10-23 03:45:33": "71346",
+    "2026-10-23 03:45:43": "78258",
+    "2026-10-23 03:45:53": "53970",
+    "2026-10-23 03:46:03": "38628",
+    "2026-10-23 03:46:13": "45924",
+    "2026-10-23 03:46:23": "72822",
+    "2026-10-23 03:46:33": "50310",
+    "2026-10-23 03:46:43": "48930",
+    "2026-10-23 03:46:53": "65934",
+    "2026-10-23 03:47:03": "35976",
+    "2026-10-23 03:47:13": "55962",
+    "2026-10-23 03:47:23": "57186",
+    "2026-10-23 03:47:33": "49614",
+    "2026-10-23 03:47:43": "61746",
+    "2026-10-23 03:47:53": "56580",
+    "2026-10-23 03:48:03": "65520",
+    "2026-10-23 03:48:13": "60120",
+    "2026-10-23 03:48:23": "63906",
+    "2026-10-23 03:48:33": "58068",
+    "2026-10-23 03:48:43": "68754",
+    "2026-10-23 03:48:53": "68964",
+    "2026-10-23 03:49:03": "55788",
+    "2026-10-23 03:49:13": "68250",
+    "2026-10-23 03:49:23": "56052",
+    "2026-10-23 03:49:33": "82152",
+    "2026-10-23 03:49:43": "67092",
+    "2026-10-23 03:49:53": "63024",
+    "2026-10-23 03:50:03": "59526",
+    "2026-10-23 03:50:13": "54924",
+    "2026-10-23 03:50:23": "43404",
+    "2026-10-23 03:50:33": "72834",
+    "2026-10-23 03:50:43": "24024",
+    "2026-10-23 03:50:53": "65232",
+    "2026-10-23 03:51:03": "58560",
+    "2026-10-23 03:51:13": "85500",
+    "2026-10-23 03:51:23": "47088",
+    "2026-10-23 03:51:33": "46758",
+    "2026-10-23 03:51:43": "55806",
+    "2026-10-23 03:51:53": "58686",
+    "2026-10-23 03:52:03": "46962",
+    "2026-10-23 03:52:13": "64044",
+    "2026-10-23 03:52:23": "48570",
+    "2026-10-23 03:52:33": "83520",
+    "2026-10-23 03:52:43": "48294",
+    "2026-10-23 03:52:53": "60150",
+    "2026-10-23 03:53:03": "57810",
+    "2026-10-23 03:53:14": "74142",
+    "2026-10-23 03:53:24": "69672",
+    "2026-10-23 03:53:34": "65832",
+    "2026-10-23 03:53:44": "78966",
+    "2026-10-23 03:53:54": "57204",
+    "2026-10-23 03:54:04": "72096",
+    "2026-10-23 03:54:14": "73218",
+    "2026-10-23 03:54:24": "67590",
+    "2026-10-23 03:54:34": "65280",
+    "2026-10-23 03:54:44": "61572",
+    "2026-10-23 03:54:54": "65490",
+    "2026-10-23 03:55:04": "43710",
+    "2026-10-23 03:55:14": "42342",
+    "2026-10-23 03:55:24": "62454",
+    "2026-10-23 03:55:34": "95856",
+    "2026-10-23 03:55:44": "33282",
+    "2026-10-23 03:55:54": "63924",
+    "2026-10-23 03:56:04": "59364",
+    "2026-10-23 03:56:14": "77742",
+    "2026-10-23 03:56:24": "62592",
+    "2026-10-23 03:56:34": "56262",
+    "2026-10-23 03:56:44": "67746",
+    "2026-10-23 03:56:54": "73710",
+    "2026-10-23 03:57:04": "63942",
+    "2026-10-23 03:57:14": "67506",
+    "2026-10-23 03:57:24": "56286",
+    "2026-10-23 03:57:34": "66450",
+    "2026-10-23 03:57:44": "51702",
+    "2026-10-23 03:57:54": "55668",
+    "2026-10-23 03:58:04": "50184",
+    "2026-10-23 03:58:14": "67086",
+    "2026-10-23 03:58:24": "65862",
+    "2026-10-23 03:58:34": "53700",
+    "2026-10-23 03:58:44": "75666",
+    "2026-10-23 03:58:54": "6780"
+  }}
+
+HAMMERDB RESULT
+[
+  "6ADAD58CA4FC03E253632353",
+  "2026-10-23 03:33:32",
+  "64 Active Virtual Users configured",
+  "TEST RESULT : System achieved 25838 NOPM from 60345 PostgreSQL TPM"
+]
+

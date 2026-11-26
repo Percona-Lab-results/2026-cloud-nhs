@@ -1,0 +1,300 @@
+
+== PREFLIGHT ==
+[10:00:23] connected to upcloud-perf-odqiztpebptc.db.upclouddatabases.com:11569
+
+== SYSBENCH PREPARE run1_s10M_t4 (10 tables x 10000000 rows) ==
+[10:00:24] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[10:07:31] prepare done (19.75 GB)
+
+== SYSBENCH run 1/3 10x10M rows threads=4 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s10M_t8 (10 tables x 10000000 rows) ==
+[10:32:32] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[10:39:40] prepare done (20.08 GB)
+
+== SYSBENCH run 1/3 10x10M rows threads=8 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s10M_t16 (10 tables x 10000000 rows) ==
+[11:04:40] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[11:11:53] prepare done (20.34 GB)
+
+== SYSBENCH run 1/3 10x10M rows threads=16 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s10M_t32 (10 tables x 10000000 rows) ==
+[11:36:53] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[11:44:04] prepare done (20.00 GB)
+
+== SYSBENCH run 1/3 10x10M rows threads=32 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t4 (10 tables x 20000000 rows) ==
+[12:09:04] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[12:24:02] prepare done (39.66 GB)
+
+== SYSBENCH run 1/3 10x20M rows threads=4 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t8 (10 tables x 20000000 rows) ==
+[12:49:03] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[13:03:44] prepare done (39.51 GB)
+
+== SYSBENCH run 1/3 10x20M rows threads=8 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t16 (10 tables x 20000000 rows) ==
+[13:28:44] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[13:43:57] prepare done (39.79 GB)
+
+== SYSBENCH run 1/3 10x20M rows threads=16 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t32 (10 tables x 20000000 rows) ==
+[14:08:57] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[14:24:34] prepare done (40.30 GB)
+
+== SYSBENCH run 1/3 10x20M rows threads=32 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s40M_t4 (10 tables x 40000000 rows) ==
+[14:49:35] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[15:19:56] prepare done (79.58 GB)
+
+== SYSBENCH run 1/3 10x40M rows threads=4 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s40M_t8 (10 tables x 40000000 rows) ==
+[15:44:56] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:35] prepare done (? GB)
+
+== SYSBENCH run 1/3 10x40M rows threads=8 (5m ramp + 20m) ==
+[16:06:35] WARN: sysbench run 1 rows=40000000 t=8 exited non-zero
+
+== SYSBENCH PREPARE run1_s40M_t16 (10 tables x 40000000 rows) ==
+[16:06:35] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:35] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:35] WARN: could not create sbtest - assuming it exists
+[16:06:35] prepare done (? GB)
+
+== SYSBENCH run 1/3 10x40M rows threads=16 (5m ramp + 20m) ==
+[16:06:35] WARN: sysbench run 1 rows=40000000 t=16 exited non-zero
+
+== SYSBENCH PREPARE run1_s40M_t32 (10 tables x 40000000 rows) ==
+[16:06:35] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:35] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:35] WARN: could not create sbtest - assuming it exists
+[16:06:35] prepare done (? GB)
+
+== SYSBENCH run 1/3 10x40M rows threads=32 (5m ramp + 20m) ==
+[16:06:35] WARN: sysbench run 1 rows=40000000 t=32 exited non-zero
+
+== SYSBENCH PREPARE run2_s10M_t4 (10 tables x 10000000 rows) ==
+[16:06:36] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:36] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:36] WARN: could not create sbtest - assuming it exists
+[16:06:36] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x10M rows threads=4 (5m ramp + 20m) ==
+[16:06:36] WARN: sysbench run 2 rows=10000000 t=4 exited non-zero
+
+== SYSBENCH PREPARE run2_s10M_t8 (10 tables x 10000000 rows) ==
+[16:06:36] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:36] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:36] WARN: could not create sbtest - assuming it exists
+[16:06:36] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x10M rows threads=8 (5m ramp + 20m) ==
+[16:06:36] WARN: sysbench run 2 rows=10000000 t=8 exited non-zero
+
+== SYSBENCH PREPARE run2_s10M_t16 (10 tables x 10000000 rows) ==
+[16:06:36] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:36] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:36] WARN: could not create sbtest - assuming it exists
+[16:06:36] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x10M rows threads=16 (5m ramp + 20m) ==
+[16:06:36] WARN: sysbench run 2 rows=10000000 t=16 exited non-zero
+
+== SYSBENCH PREPARE run2_s10M_t32 (10 tables x 10000000 rows) ==
+[16:06:36] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:36] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:36] WARN: could not create sbtest - assuming it exists
+[16:06:36] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x10M rows threads=32 (5m ramp + 20m) ==
+[16:06:36] WARN: sysbench run 2 rows=10000000 t=32 exited non-zero
+
+== SYSBENCH PREPARE run2_s20M_t4 (10 tables x 20000000 rows) ==
+[16:06:36] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:36] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:36] WARN: could not create sbtest - assuming it exists
+[16:06:36] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x20M rows threads=4 (5m ramp + 20m) ==
+[16:06:36] WARN: sysbench run 2 rows=20000000 t=4 exited non-zero
+
+== SYSBENCH PREPARE run2_s20M_t8 (10 tables x 20000000 rows) ==
+[16:06:36] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:36] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:36] WARN: could not create sbtest - assuming it exists
+[16:06:36] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x20M rows threads=8 (5m ramp + 20m) ==
+[16:06:36] WARN: sysbench run 2 rows=20000000 t=8 exited non-zero
+
+== SYSBENCH PREPARE run2_s20M_t16 (10 tables x 20000000 rows) ==
+[16:06:36] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:36] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:36] WARN: could not create sbtest - assuming it exists
+[16:06:37] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x20M rows threads=16 (5m ramp + 20m) ==
+[16:06:37] WARN: sysbench run 2 rows=20000000 t=16 exited non-zero
+
+== SYSBENCH PREPARE run2_s20M_t32 (10 tables x 20000000 rows) ==
+[16:06:37] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:37] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:37] WARN: could not create sbtest - assuming it exists
+[16:06:37] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x20M rows threads=32 (5m ramp + 20m) ==
+[16:06:37] WARN: sysbench run 2 rows=20000000 t=32 exited non-zero
+
+== SYSBENCH PREPARE run2_s40M_t4 (10 tables x 40000000 rows) ==
+[16:06:37] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:37] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:37] WARN: could not create sbtest - assuming it exists
+[16:06:37] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x40M rows threads=4 (5m ramp + 20m) ==
+[16:06:37] WARN: sysbench run 2 rows=40000000 t=4 exited non-zero
+
+== SYSBENCH PREPARE run2_s40M_t8 (10 tables x 40000000 rows) ==
+[16:06:37] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:37] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:37] WARN: could not create sbtest - assuming it exists
+[16:06:37] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x40M rows threads=8 (5m ramp + 20m) ==
+[16:06:37] WARN: sysbench run 2 rows=40000000 t=8 exited non-zero
+
+== SYSBENCH PREPARE run2_s40M_t16 (10 tables x 40000000 rows) ==
+[16:06:37] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:37] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:37] WARN: could not create sbtest - assuming it exists
+[16:06:37] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x40M rows threads=16 (5m ramp + 20m) ==
+[16:06:37] WARN: sysbench run 2 rows=40000000 t=16 exited non-zero
+
+== SYSBENCH PREPARE run2_s40M_t32 (10 tables x 40000000 rows) ==
+[16:06:37] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:37] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:37] WARN: could not create sbtest - assuming it exists
+[16:06:37] prepare done (? GB)
+
+== SYSBENCH run 2/3 10x40M rows threads=32 (5m ramp + 20m) ==
+[16:06:37] WARN: sysbench run 2 rows=40000000 t=32 exited non-zero
+
+== SYSBENCH PREPARE run3_s10M_t4 (10 tables x 10000000 rows) ==
+[16:06:37] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:37] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:37] WARN: could not create sbtest - assuming it exists
+[16:06:37] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x10M rows threads=4 (5m ramp + 20m) ==
+[16:06:37] WARN: sysbench run 3 rows=10000000 t=4 exited non-zero
+
+== SYSBENCH PREPARE run3_s10M_t8 (10 tables x 10000000 rows) ==
+[16:06:37] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:37] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:38] WARN: could not create sbtest - assuming it exists
+[16:06:38] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x10M rows threads=8 (5m ramp + 20m) ==
+[16:06:38] WARN: sysbench run 3 rows=10000000 t=8 exited non-zero
+
+== SYSBENCH PREPARE run3_s10M_t16 (10 tables x 10000000 rows) ==
+[16:06:38] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:38] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:38] WARN: could not create sbtest - assuming it exists
+[16:06:38] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x10M rows threads=16 (5m ramp + 20m) ==
+[16:06:38] WARN: sysbench run 3 rows=10000000 t=16 exited non-zero
+
+== SYSBENCH PREPARE run3_s10M_t32 (10 tables x 10000000 rows) ==
+[16:06:38] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[16:06:38] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:38] WARN: could not create sbtest - assuming it exists
+[16:06:38] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x10M rows threads=32 (5m ramp + 20m) ==
+[16:06:38] WARN: sysbench run 3 rows=10000000 t=32 exited non-zero
+
+== SYSBENCH PREPARE run3_s20M_t4 (10 tables x 20000000 rows) ==
+[16:06:38] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:38] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:38] WARN: could not create sbtest - assuming it exists
+[16:06:38] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x20M rows threads=4 (5m ramp + 20m) ==
+[16:06:38] WARN: sysbench run 3 rows=20000000 t=4 exited non-zero
+
+== SYSBENCH PREPARE run3_s20M_t8 (10 tables x 20000000 rows) ==
+[16:06:38] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:38] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:38] WARN: could not create sbtest - assuming it exists
+[16:06:38] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x20M rows threads=8 (5m ramp + 20m) ==
+[16:06:38] WARN: sysbench run 3 rows=20000000 t=8 exited non-zero
+
+== SYSBENCH PREPARE run3_s20M_t16 (10 tables x 20000000 rows) ==
+[16:06:38] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:38] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:38] WARN: could not create sbtest - assuming it exists
+[16:06:38] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x20M rows threads=16 (5m ramp + 20m) ==
+[16:06:38] WARN: sysbench run 3 rows=20000000 t=16 exited non-zero
+
+== SYSBENCH PREPARE run3_s20M_t32 (10 tables x 20000000 rows) ==
+[16:06:38] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[16:06:38] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:38] WARN: could not create sbtest - assuming it exists
+[16:06:38] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x20M rows threads=32 (5m ramp + 20m) ==
+[16:06:39] WARN: sysbench run 3 rows=20000000 t=32 exited non-zero
+
+== SYSBENCH PREPARE run3_s40M_t4 (10 tables x 40000000 rows) ==
+[16:06:39] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:39] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:39] WARN: could not create sbtest - assuming it exists
+[16:06:39] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x40M rows threads=4 (5m ramp + 20m) ==
+[16:06:39] WARN: sysbench run 3 rows=40000000 t=4 exited non-zero
+
+== SYSBENCH PREPARE run3_s40M_t8 (10 tables x 40000000 rows) ==
+[16:06:39] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:39] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:39] WARN: could not create sbtest - assuming it exists
+[16:06:39] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x40M rows threads=8 (5m ramp + 20m) ==
+[16:06:39] WARN: sysbench run 3 rows=40000000 t=8 exited non-zero
+
+== SYSBENCH PREPARE run3_s40M_t16 (10 tables x 40000000 rows) ==
+[16:06:39] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:39] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:39] WARN: could not create sbtest - assuming it exists
+[16:06:39] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x40M rows threads=16 (5m ramp + 20m) ==
+[16:06:39] WARN: sysbench run 3 rows=40000000 t=16 exited non-zero
+
+== SYSBENCH PREPARE run3_s40M_t32 (10 tables x 40000000 rows) ==
+[16:06:39] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[16:06:39] WARN: cannot drop database sbtest - falling back to 'sysbench cleanup'
+[16:06:39] WARN: could not create sbtest - assuming it exists
+[16:06:39] prepare done (? GB)
+
+== SYSBENCH run 3/3 10x40M rows threads=32 (5m ramp + 20m) ==
+[16:06:39] WARN: sysbench run 3 rows=40000000 t=32 exited non-zero
+
+== SUMMARY ==

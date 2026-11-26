@@ -1,0 +1,35 @@
+provider          ovhcloud
+started_utc       2026-10-19T10:01:18Z
+client_host       ovhcloud4vcpu16gb
+client_cpus       4
+client_sysbench   sysbench 1.0.20
+client_mysql      mysql  Ver 8.4.11-0ubuntu0.26.04.1 for Linux on x86_64 ((Ubuntu))
+hammerdb_home     /opt/HammerDB-6.0
+target            avnadmin@mysql-84cd30a3-o59368f7f.database.cloud.ovh.net:20184 (ssl=0)
+benchmarks        sysbench,hammerdb
+runs              3
+threads           64
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+configurations    18 (sysbench 9, hammerdb 9)
+schema_rebuild    dropped and reloaded before every measured run
+status_sampling   every 10s
+innodb_status     off (--innodb-status to enable)
+estimated_runtime 450 min (~7h, excluding 18 schema rebuilds)
+
+sysbench oltp_read_write - mean over 3 run(s), 10 tables
+  rows/table     threads           tps          qps       avg_ms       p95_ms
+  10000000       64            1129.38     22587.02        60.31       169.07
+  20000000       64            1087.13     21741.78        58.88       143.34
+  40000000       64             963.30     19265.04        66.58       168.30
+
+HammerDB TPC-C - mean over 3 run(s)
+  warehouses     vu               nopm          tpm
+  160            64            36926.0      85758.7
+  320            64            33376.3      77478.3
+  640            64            26592.0      61720.3
+
+finished_utc      2026-10-20T01:43:24Z
+results           /home/ubuntu/2026-cloud-perf/results/ovhcloud-20261019-100118-ovhcloud

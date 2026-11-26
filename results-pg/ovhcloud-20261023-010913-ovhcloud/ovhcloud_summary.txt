@@ -1,0 +1,45 @@
+provider          ovhcloud
+engine            postgresql
+started_utc       2026-10-23T01:09:13Z
+client_host       ohvcloud-compute
+client_cpus       4
+client_sysbench   n/a
+client_psql       psql (PostgreSQL) 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)
+hammerdb_home     /opt/HammerDB-6.0
+target            avnadmin@postgresql-4338e31a-o59368f7f.database.cloud.ovh.net:20184 (sslmode=prefer)
+maintenance_db    defaultdb
+benchmarks        hammerdb
+runs              2
+threads           4 8 16 32 64
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+hammerdb_procs    stored_procs=true, schema owner=avnadmin
+configurations    30 (sysbench 0, hammerdb 30)
+schema_rebuild    dropped and reloaded before every measured run
+vacuum_after_load VACUUM ANALYZE
+status_sampling   every 10s
+detail_stats      off (--detail-stats to enable)
+estimated_runtime 750 min (~12h, excluding 30 schema rebuilds)
+
+HammerDB TPC-C - mean over 2 run(s)
+  warehouses     vu               nopm          tpm
+  160            4             21078.0      49339.5
+  160            8             25441.0      59385.0
+  160            16            24843.5      58000.0
+  160            32            26302.5      61351.0
+  160            64            29005.0      67579.5
+  320            4             13037.5      30925.5
+  320            8             15922.0      37561.0
+  320            16            18793.0      44184.5
+  320            32            18025.0      42325.5
+  320            64            18433.0      43271.0
+  640            4              7690.0      18546.5
+  640            8              9206.5      21977.0
+  640            16            11556.5      27438.0
+  640            32            11386.0      27070.0
+  640            64            11088.0      26334.5
+
+finished_utc      2026-10-23T23:37:45Z
+results           /home/ubuntu/2026-cloud-perf/results/ovhcloud-20261023-010913-ovhcloud

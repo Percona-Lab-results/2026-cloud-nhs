@@ -1,0 +1,400 @@
+HammerDB CLI v6.0
+Copyright © HammerDB Ltd hosted by tpc.org 2019-2026
+Type "help" for a list of commands
+Initialized new Jobs on-disk database /tmp/cloud-mysql-perf.sLubzt/hammerdb-tmp/hammer.DB
+Database set to MySQL
+Benchmark set to TPC-C for MySQL
+Changed connection:mysql_host from 127.0.0.1 to 151.115.40.71 for MySQL
+Changed connection:mysql_port from 3306 to 27590 for MySQL
+Changed tpcc:mysql_user from root to scaledbs for MySQL
+<password line redacted>
+Value tpcc for tpcc:mysql_dbase is the same as existing value tpcc, no change made
+Changed tpcc:mysql_count_ware from 1 to 160 for MySQL
+Changed tpcc:mysql_num_vu from 1 to 16 for MySQL
+Value innodb for tpcc:mysql_storage_engine is the same as existing value innodb, no change made
+Value false for tpcc:mysql_partition is the same as existing value false, no change made
+Value false for tpcc:mysql_no_stored_procs is the same as existing value false, no change made
+Changed tpcc:mysql_history_pk from false to true for MySQL
+Script cleared
+Building 160 Warehouses with 17 Virtual Users, 16 active + 1 Monitor VU(dict value mysql_num_vu is set to 16)
+Ready to create a 160 Warehouse MySQL TPROC-C schema
+in host 151.115.40.71:27590 under user SCALEDBS in database TPCC with storage engine INNODB?
+Enter yes or no: replied yes
+Vuser 1 created - WAIT IDLE
+Vuser 2 created - WAIT IDLE
+Vuser 3 created - WAIT IDLE
+Vuser 4 created - WAIT IDLE
+Vuser 5 created - WAIT IDLE
+Vuser 6 created - WAIT IDLE
+Vuser 7 created - WAIT IDLE
+Vuser 8 created - WAIT IDLE
+Vuser 9 created - WAIT IDLE
+Vuser 10 created - WAIT IDLE
+Vuser 11 created - WAIT IDLE
+Vuser 12 created - WAIT IDLE
+Vuser 13 created - WAIT IDLE
+Vuser 14 created - WAIT IDLE
+Vuser 15 created - WAIT IDLE
+Vuser 16 created - WAIT IDLE
+Vuser 17 created - WAIT IDLE
+Vuser 1:RUNNING
+Vuser 1:Monitor Thread
+Vuser 1:CREATING TPCC SCHEMA
+Vuser 1:Ssl_cipher 
+Vuser 1:CHECKING IF DATABASE tpcc EXISTS
+Vuser 1:CREATING DATABASE tpcc
+Vuser 1:CREATING TPCC TABLES
+Vuser 1:Minimum MySQL version for invisible PK is 8.0.30
+Vuser 1:Loading Item
+Vuser 2:RUNNING
+Vuser 2:Worker Thread
+Vuser 2:Waiting for Monitor Thread...
+Vuser 2:Ssl_cipher 
+Vuser 2:Loading 10 Warehouses start:1 end:10
+Vuser 2:Start:Mon Oct 19 09:58:28 UTC 2026
+Vuser 2:Loading Warehouse
+Vuser 2:Loading Stock Wid=1
+Vuser 3:RUNNING
+Vuser 3:Worker Thread
+Vuser 3:Waiting for Monitor Thread...
+Vuser 3:Ssl_cipher 
+Vuser 3:Loading 10 Warehouses start:11 end:20
+Vuser 3:Start:Mon Oct 19 09:58:28 UTC 2026
+Vuser 3:Loading Warehouse
+Vuser 3:Loading Stock Wid=11
+Vuser 4:RUNNING
+Vuser 4:Worker Thread
+Vuser 4:Waiting for Monitor Thread...
+Vuser 4:Ssl_cipher 
+Vuser 4:Loading 10 Warehouses start:21 end:30
+Vuser 4:Start:Mon Oct 19 09:58:29 UTC 2026
+Vuser 4:Loading Warehouse
+Vuser 4:Loading Stock Wid=21
+Vuser 5:RUNNING
+Vuser 5:Worker Thread
+Vuser 5:Waiting for Monitor Thread...
+Vuser 5:Ssl_cipher 
+Vuser 5:Loading 10 Warehouses start:31 end:40
+Vuser 5:Start:Mon Oct 19 09:58:29 UTC 2026
+Vuser 5:Loading Warehouse
+Vuser 5:Loading Stock Wid=31
+Vuser 6:RUNNING
+Vuser 6:Worker Thread
+Vuser 6:Waiting for Monitor Thread...
+Vuser 6:Ssl_cipher 
+Vuser 6:Loading 10 Warehouses start:41 end:50
+Vuser 6:Start:Mon Oct 19 09:58:30 UTC 2026
+Vuser 6:Loading Warehouse
+Vuser 6:Loading Stock Wid=41
+Vuser 2:Loading Stock - 20000
+Vuser 7:RUNNING
+Vuser 7:Worker Thread
+Vuser 7:Waiting for Monitor Thread...
+Vuser 7:Ssl_cipher 
+Vuser 7:Loading 10 Warehouses start:51 end:60
+Vuser 7:Start:Mon Oct 19 09:58:30 UTC 2026
+Vuser 7:Loading Warehouse
+Vuser 7:Loading Stock Wid=51
+Vuser 3:Loading Stock - 20000
+Vuser 8:RUNNING
+Vuser 8:Worker Thread
+Vuser 8:Waiting for Monitor Thread...
+Vuser 8:Ssl_cipher 
+Vuser 8:Loading 10 Warehouses start:61 end:70
+Vuser 8:Start:Mon Oct 19 09:58:31 UTC 2026
+Vuser 8:Loading Warehouse
+Vuser 8:Loading Stock Wid=61
+Vuser 9:RUNNING
+Vuser 9:Worker Thread
+Vuser 9:Waiting for Monitor Thread...
+Vuser 9:Ssl_cipher 
+Vuser 4:Loading Stock - 20000
+Vuser 9:Loading 10 Warehouses start:71 end:80
+Vuser 9:Start:Mon Oct 19 09:58:31 UTC 2026
+Vuser 9:Loading Warehouse
+Vuser 9:Loading Stock Wid=71
+Vuser 10:RUNNING
+Vuser 10:Worker Thread
+Vuser 10:Waiting for Monitor Thread...
+Vuser 10:Ssl_cipher 
+Vuser 10:Loading 10 Warehouses start:81 end:90
+Vuser 10:Start:Mon Oct 19 09:58:32 UTC 2026
+Vuser 10:Loading Warehouse
+Vuser 10:Loading Stock Wid=81
+Vuser 5:Loading Stock - 20000
+Vuser 11:RUNNING
+Vuser 11:Worker Thread
+Vuser 11:Waiting for Monitor Thread...
+Vuser 11:Ssl_cipher 
+Vuser 11:Loading 10 Warehouses start:91 end:100
+Vuser 11:Start:Mon Oct 19 09:58:32 UTC 2026
+Vuser 11:Loading Warehouse
+Vuser 11:Loading Stock Wid=91
+Vuser 12:RUNNING
+Vuser 12:Worker Thread
+Vuser 12:Waiting for Monitor Thread...
+Vuser 12:Ssl_cipher 
+Vuser 12:Loading 10 Warehouses start:101 end:110
+Vuser 12:Start:Mon Oct 19 09:58:33 UTC 2026
+Vuser 12:Loading Warehouse
+Vuser 12:Loading Stock Wid=101
+Vuser 13:RUNNING
+Vuser 13:Worker Thread
+Vuser 13:Waiting for Monitor Thread...
+Vuser 13:Ssl_cipher 
+Vuser 13:Loading 10 Warehouses start:111 end:120
+Vuser 13:Start:Mon Oct 19 09:58:33 UTC 2026
+Vuser 13:Loading Warehouse
+Vuser 13:Loading Stock Wid=111
+Vuser 14:RUNNING
+Vuser 6:Loading Stock - 20000
+Vuser 14:Worker Thread
+Vuser 14:Waiting for Monitor Thread...
+Vuser 14:Ssl_cipher 
+Vuser 14:Loading 10 Warehouses start:121 end:130
+Vuser 14:Start:Mon Oct 19 09:58:34 UTC 2026
+Vuser 14:Loading Warehouse
+Vuser 14:Loading Stock Wid=121
+Vuser 15:RUNNING
+Vuser 15:Worker Thread
+Vuser 15:Waiting for Monitor Thread...
+Vuser 15:Ssl_cipher 
+Vuser 15:Loading 10 Warehouses start:131 end:140
+Vuser 15:Start:Mon Oct 19 09:58:34 UTC 2026
+Vuser 15:Loading Warehouse
+Vuser 15:Loading Stock Wid=131
+Vuser 2:Loading Stock - 40000
+Vuser 7:Loading Stock - 20000
+Vuser 3:Loading Stock - 40000
+Vuser 16:RUNNING
+Vuser 16:Worker Thread
+Vuser 16:Waiting for Monitor Thread...
+Vuser 16:Ssl_cipher 
+Vuser 16:Loading 10 Warehouses start:141 end:150
+Vuser 16:Start:Mon Oct 19 09:58:35 UTC 2026
+Vuser 16:Loading Warehouse
+Vuser 16:Loading Stock Wid=141
+Vuser 17:RUNNING
+Vuser 17:Worker Thread
+Vuser 17:Waiting for Monitor Thread...
+Vuser 17:Ssl_cipher 
+Vuser 17:Loading 10 Warehouses start:151 end:160
+Vuser 17:Start:Mon Oct 19 09:58:35 UTC 2026
+Vuser 17:Loading Warehouse
+Vuser 17:Loading Stock Wid=151
+Vuser 8:Loading Stock - 20000
+Vuser 9:Loading Stock - 20000
+Vuser 4:Loading Stock - 40000
+Vuser 11:Loading Stock - 20000
+Vuser 10:Loading Stock - 20000
+Vuser 5:Loading Stock - 40000
+Vuser 12:Loading Stock - 20000
+Vuser 13:Loading Stock - 20000
+Vuser 3:Loading Stock - 60000
+Vuser 14:Loading Stock - 20000
+Vuser 6:Loading Stock - 40000
+Vuser 2:Loading Stock - 60000
+Vuser 7:Loading Stock - 40000
+Vuser 15:Loading Stock - 20000
+Vuser 8:Loading Stock - 40000
+Vuser 16:Loading Stock - 20000
+Vuser 17:Loading Stock - 20000
+Vuser 9:Loading Stock - 40000
+Vuser 4:Loading Stock - 60000
+Vuser 5:Loading Stock - 60000
+Vuser 11:Loading Stock - 40000
+Vuser 10:Loading Stock - 40000
+Vuser 13:Loading Stock - 40000
+Vuser 12:Loading Stock - 40000
+Vuser 6:Loading Stock - 60000
+Vuser 3:Loading Stock - 80000
+Vuser 14:Loading Stock - 40000
+Vuser 2:Loading Stock - 80000
+Vuser 15:Loading Stock - 40000
+Vuser 7:Loading Stock - 60000
+Vuser 8:Loading Stock - 60000
+Vuser 16:Loading Stock - 40000
+Vuser 17:Loading Stock - 40000
+Vuser 9:Loading Stock - 60000
+Vuser 4:Loading Stock - 80000
+Vuser 10:Loading Stock - 60000
+Vuser 11:Loading Stock - 60000
+Vuser 5:Loading Stock - 80000
+Vuser 13:Loading Stock - 60000
+Vuser 12:Loading Stock - 60000
+Vuser 6:Loading Stock - 80000
+Vuser 3:Loading Stock - 100000
+Vuser 3:Stock done
+Vuser 3:Loading District
+Vuser 3:District done
+Vuser 3:Loading Stock Wid=12
+Vuser 14:Loading Stock - 60000
+Vuser 15:Loading Stock - 60000
+Vuser 2:Loading Stock - 100000
+Vuser 2:Stock done
+Vuser 2:Loading District
+Vuser 2:District done
+Vuser 2:Loading Stock Wid=2
+Vuser 7:Loading Stock - 80000
+Vuser 8:Loading Stock - 80000
+Vuser 16:Loading Stock - 60000
+Vuser 17:Loading Stock - 60000
+Vuser 9:Loading Stock - 80000
+Vuser 4:Loading Stock - 100000
+Vuser 4:Stock done
+Vuser 4:Loading District
+Vuser 4:District done
+Vuser 4:Loading Stock Wid=22
+Vuser 10:Loading Stock - 80000
+Vuser 5:Loading Stock - 100000
+Vuser 5:Stock done
+Vuser 5:Loading District
+Vuser 11:Loading Stock - 80000
+Vuser 5:District done
+Vuser 5:Loading Stock Wid=32
+Vuser 13:Loading Stock - 80000
+Vuser 6:Loading Stock - 100000
+Vuser 6:Stock done
+Vuser 6:Loading District
+Vuser 6:District done
+Vuser 6:Loading Stock Wid=42
+Vuser 3:Loading Stock - 20000
+Vuser 12:Loading Stock - 80000
+Vuser 14:Loading Stock - 80000
+Vuser 7:Loading Stock - 100000
+Vuser 7:Stock done
+Vuser 7:Loading District
+Vuser 2:Loading Stock - 20000
+Vuser 7:District done
+Vuser 15:Loading Stock - 80000
+Vuser 7:Loading Stock Wid=52
+Vuser 16:Loading Stock - 80000
+Vuser 8:Loading Stock - 100000
+Vuser 17:Loading Stock - 80000
+Vuser 8:Stock done
+Vuser 8:Loading District
+Vuser 8:District done
+Vuser 8:Loading Stock Wid=62
+Vuser 9:Loading Stock - 100000
+Vuser 9:Stock done
+Vuser 9:Loading District
+Vuser 9:District done
+Vuser 9:Loading Stock Wid=72
+Vuser 4:Loading Stock - 20000
+Vuser 5:Loading Stock - 20000
+Vuser 10:Loading Stock - 100000
+Vuser 10:Stock done
+Vuser 10:Loading District
+Vuser 11:Loading Stock - 100000
+Vuser 11:Stock done
+Vuser 10:District done
+Vuser 11:Loading District
+Vuser 10:Loading Stock Wid=82
+Vuser 11:District done
+Vuser 11:Loading Stock Wid=92
+Vuser 13:Loading Stock - 100000
+Vuser 13:Stock done
+Vuser 13:Loading District
+Vuser 13:District done
+Vuser 13:Loading Stock Wid=112
+Vuser 6:Loading Stock - 20000
+Vuser 12:Loading Stock - 100000
+Vuser 12:Stock done
+Vuser 12:Loading District
+Vuser 3:Loading Stock - 40000
+Vuser 12:District done
+Vuser 12:Loading Stock Wid=102
+Vuser 14:Loading Stock - 100000
+Vuser 14:Stock done
+Vuser 14:Loading District
+Vuser 7:Loading Stock - 20000
+Vuser 14:District done
+Vuser 14:Loading Stock Wid=122
+Vuser 15:Loading Stock - 100000
+Vuser 15:Stock done
+Vuser 15:Loading District
+Vuser 2:Loading Stock - 40000
+Vuser 15:District done
+Vuser 15:Loading Stock Wid=132
+Vuser 16:Loading Stock - 100000
+Vuser 16:Stock done
+Vuser 16:Loading District
+Vuser 8:Loading Stock - 20000
+Vuser 16:District done
+Vuser 16:Loading Stock Wid=142
+Vuser 17:Loading Stock - 100000
+Vuser 17:Stock done
+Vuser 17:Loading District
+Vuser 17:District done
+Vuser 17:Loading Stock Wid=152
+Vuser 9:Loading Stock - 20000
+Vuser 4:Loading Stock - 40000
+Vuser 5:Loading Stock - 40000
+Vuser 11:Loading Stock - 20000
+Vuser 10:Loading Stock - 20000
+Vuser 6:Loading Stock - 40000
+Vuser 13:Loading Stock - 20000
+Vuser 12:Loading Stock - 20000
+Vuser 3:Loading Stock - 60000
+Vuser 14:Loading Stock - 20000
+Vuser 7:Loading Stock - 40000
+Vuser 15:Loading Stock - 20000
+Vuser 8:Loading Stock - 40000
+Vuser 16:Loading Stock - 20000
+Vuser 2:Loading Stock - 60000
+Vuser 4:Loading Stock - 60000
+Vuser 17:Loading Stock - 20000
+Vuser 9:Loading Stock - 40000
+Vuser 5:Loading Stock - 60000
+Vuser 10:Loading Stock - 40000
+Vuser 6:Loading Stock - 60000
+Vuser 11:Loading Stock - 40000
+Vuser 13:Loading Stock - 40000
+Vuser 12:Loading Stock - 40000
+Vuser 14:Loading Stock - 40000
+Vuser 7:Loading Stock - 60000
+Vuser 3:Loading Stock - 80000
+Vuser 16:Loading Stock - 40000
+Vuser 8:Loading Stock - 60000
+Vuser 15:Loading Stock - 40000
+Vuser 4:Loading Stock - 80000
+Vuser 2:Loading Stock - 80000
+Vuser 17:Loading Stock - 40000
+Vuser 9:Loading Stock - 60000
+Vuser 5:Loading Stock - 80000
+Vuser 10:Loading Stock - 60000
+Vuser 6:Loading Stock - 80000
+Vuser 11:Loading Stock - 60000
+Vuser 13:Loading Stock - 60000
+Vuser 14:Loading Stock - 60000
+Vuser 7:Loading Stock - 80000
+Vuser 12:Loading Stock - 60000
+Vuser 3:Loading Stock - 100000
+Vuser 3:Stock done
+Vuser 16:Loading Stock - 60000
+Vuser 3:Loading District
+Vuser 3:District done
+Vuser 3:Loading Stock Wid=13
+Vuser 8:Loading Stock - 80000
+Vuser 15:Loading Stock - 60000
+Vuser 4:Loading Stock - 100000
+Vuser 4:Stock done
+Vuser 4:Loading District
+Vuser 4:District done
+Vuser 4:Loading Stock Wid=23
+Vuser 2:Loading Stock - 100000
+Vuser 2:Stock done
+Vuser 2:Loading District
+Vuser 17:Loading Stock - 60000
+Vuser 2:District done
+Vuser 2:Loading Stock Wid=3
+Vuser 9:Loading Stock - 80000
+Vuser 5:Loading Stock - 100000
+Vuser 5:Stock done
+Vuser 5:Loading District
+Vuser 5:District done
+Vuser 5:Loading Stock Wid=33
+Vuser 11:Loading Stock - 80000
+Vuser 1:Loading Items - 50000
+Vuser 10:Loading Stock - 80000
+Vuser 13:Loadin

@@ -1,0 +1,45 @@
+provider          upcloud
+engine            postgresql
+started_utc       2026-10-23T01:08:54Z
+client_host       upcloud-compute
+client_cpus       4
+client_sysbench   n/a
+client_psql       psql (PostgreSQL) 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)
+hammerdb_home     /opt/HammerDB-6.0
+target            upadmin@upcloud-pg-4cpu-16gb-odqiztpebptc.db.upclouddatabases.com:11569 (sslmode=prefer)
+maintenance_db    defaultdb
+benchmarks        hammerdb
+runs              2
+threads           4 8 16 32 64
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+hammerdb_procs    stored_procs=true, schema owner=upadmin
+configurations    30 (sysbench 0, hammerdb 30)
+schema_rebuild    dropped and reloaded before every measured run
+vacuum_after_load VACUUM ANALYZE
+status_sampling   every 10s
+detail_stats      off (--detail-stats to enable)
+estimated_runtime 750 min (~12h, excluding 30 schema rebuilds)
+
+HammerDB TPC-C - mean over 2 run(s)
+  warehouses     vu               nopm          tpm
+  160            4             32278.5      75161.0
+  160            8             36597.5      85185.5
+  160            16            42494.5      98578.0
+  160            32            42800.0      99348.5
+  160            64            40565.5      94127.0
+  320            4             21680.5      50796.0
+  320            8             28410.0      66328.0
+  320            16            33625.0      78339.0
+  320            32            34571.0      80453.0
+  320            64            35586.0      82718.5
+  640            4             20665.5      48526.5
+  640            8             27190.0      63524.5
+  640            16            28872.0      67452.5
+  640            32            28733.5      66946.0
+  640            64            27644.5      64547.0
+
+finished_utc      2026-10-23T23:38:47Z
+results           /root/2026-cloud-perf/results/upcloud-20261023-010854-upcloud

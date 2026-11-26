@@ -1,0 +1,38 @@
+provider          exoscale
+started_utc       2026-10-16T06:31:28Z
+client_host       exoscale-compute
+client_cpus       4
+client_sysbench   sysbench 1.0.20
+client_mysql      mysql  Ver 8.4.11-0ubuntu0.26.04.1 for Linux on x86_64 ((Ubuntu))
+hammerdb_home     /opt/HammerDB-6.0
+target            avnadmin@exoscale4vcpu16gb-exoscale-37d268a1-816e-4c65-8e0e-ff9912ddcfcf.k.aivencloud.com:26071 (ssl=0)
+benchmarks        hammerdb
+runs              3
+threads           4 8 16 32
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+configurations    36 (sysbench 0, hammerdb 36)
+schema_rebuild    dropped and reloaded before every measured run
+status_sampling   every 10s
+innodb_status     off (--innodb-status to enable)
+estimated_runtime 900 min (~15h, excluding 36 schema rebuilds)
+
+HammerDB TPC-C - mean over 3 run(s)
+  warehouses     vu               nopm          tpm
+  160            4             29417.3      68362.0
+  160            8             39029.3      90686.7
+  160            16            56128.7     130455.0
+  160            32            58535.0     136017.7
+  320            4             24232.3      56326.7
+  320            8             32160.3      74740.3
+  320            16            43406.7     100769.3
+  320            32            47278.3     109883.0
+  640            4             21212.3      49305.3
+  640            8             27830.0      64671.3
+  640            16            35482.3      82422.7
+  640            32            40310.3      93664.7
+
+finished_utc      2026-10-17T09:33:44Z
+results           /home/ubuntu/2026-cloud-perf/results/exoscale-20261016-063128-exoscale

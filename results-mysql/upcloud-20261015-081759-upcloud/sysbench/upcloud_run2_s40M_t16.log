@@ -1,0 +1,45 @@
+sysbench 1.0.20 (using system LuaJIT 2.1.1761786044)
+
+Running the test with following options:
+Number of threads: 16
+Report intermediate results every 10 second(s)
+Report checkpoint(s) at 300 seconds
+Initializing random number generator from current time
+
+
+Initializing worker threads...
+
+Threads started!
+
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest6 SET k=k+1 WHERE id=?'
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest4 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+(last message repeated 1 times)
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest5 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest4 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest1 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest4 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest9 SET k=k+1 WHERE id=?'
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest5 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+(last message repeated 1 times)
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest6 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest7 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest10 SET k=k+1 WHERE id=?'
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest3 SET k=k+1 WHERE id=?'
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest1 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+(last message repeated 1 times)
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest6 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest7 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_stmt_execute() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'UPDATE sbtest3 SET k=k+1 WHERE id=?'
+FATAL: `thread_run' function failed: /usr/share/sysbench/oltp_common.lua:458: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement

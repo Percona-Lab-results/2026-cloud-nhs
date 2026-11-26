@@ -1,0 +1,687 @@
+HammerDB CLI v6.0
+Copyright © HammerDB Ltd hosted by tpc.org 2019-2026
+Type "help" for a list of commands
+Initialized Jobs on-disk database /tmp/cloud-mysql-perf.OxBc1L/hammerdb-tmp/hammer.DB using existing tables (64,548,864 bytes)
+Database set to MySQL
+Benchmark set to TPC-C for MySQL
+Value vultr-prod-8bc13ae7-fb94-4ef0-975c-9177772f624a-vultr-prod-def3.vultrdb.com for connection:mysql_host is the same as existing value vultr-prod-8bc13ae7-fb94-4ef0-975c-9177772f624a-vultr-prod-def3.vultrdb.com, no change made
+Value 23473 for connection:mysql_port is the same as existing value 23473, no change made
+Value vultradmin for tpcc:mysql_user is the same as existing value vultradmin, no change made
+<password line redacted>
+Value tpcc for tpcc:mysql_dbase is the same as existing value tpcc, no change made
+Value 640 for tpcc:mysql_count_ware is the same as existing value 640, no change made
+Value timed for tpcc:mysql_driver is the same as existing value timed, no change made
+Value 5 for tpcc:mysql_rampup is the same as existing value 5, no change made
+Value 20 for tpcc:mysql_duration is the same as existing value 20, no change made
+Value true for tpcc:mysql_allwarehouse is the same as existing value true, no change made
+Value true for tpcc:mysql_timeprofile is the same as existing value true, no change made
+Value true for tpcc:mysql_raiseerror is the same as existing value true, no change made
+Value false for tpcc:mysql_keyandthink is the same as existing value false, no change made
+Script loaded, Type "print script" to view
+Vuser 1 created MONITOR - WAIT IDLE
+Vuser 2 created - WAIT IDLE
+Vuser 3 created - WAIT IDLE
+Vuser 4 created - WAIT IDLE
+Vuser 5 created - WAIT IDLE
+Vuser 6 created - WAIT IDLE
+Vuser 7 created - WAIT IDLE
+Vuser 8 created - WAIT IDLE
+Vuser 9 created - WAIT IDLE
+Vuser 10 created - WAIT IDLE
+Vuser 11 created - WAIT IDLE
+Vuser 12 created - WAIT IDLE
+Vuser 13 created - WAIT IDLE
+Vuser 14 created - WAIT IDLE
+Vuser 15 created - WAIT IDLE
+Vuser 16 created - WAIT IDLE
+Vuser 17 created - WAIT IDLE
+Vuser 18 created - WAIT IDLE
+Vuser 19 created - WAIT IDLE
+Vuser 20 created - WAIT IDLE
+Vuser 21 created - WAIT IDLE
+Vuser 22 created - WAIT IDLE
+Vuser 23 created - WAIT IDLE
+Vuser 24 created - WAIT IDLE
+Vuser 25 created - WAIT IDLE
+Vuser 26 created - WAIT IDLE
+Vuser 27 created - WAIT IDLE
+Vuser 28 created - WAIT IDLE
+Vuser 29 created - WAIT IDLE
+Vuser 30 created - WAIT IDLE
+Vuser 31 created - WAIT IDLE
+Vuser 32 created - WAIT IDLE
+Vuser 33 created - WAIT IDLE
+Logging activated to /tmp/cloud-mysql-perf.OxBc1L/hammerdb-tmp/hammerdb.log
+33 Virtual Users Created with Monitor VU
+Transaction Counter Started
+Vuser 1:RUNNING
+Vuser 1:Initializing xtprof time profiler
+Vuser 1:Ssl_cipher 
+Vuser 1:DBVersion:8.4.11
+Vuser 1:Beginning rampup time of 5 minutes
+0 MySQL tpm
+Vuser 2:RUNNING
+Vuser 2:Initializing xtprof time profiler
+Vuser 2:Ssl_cipher 
+Vuser 2:Assigned 20 WIDs = 1 33 65 97 129 161 193 225 257 289 321 353 385 417 449 481 513 545 577 609 based on VU count 32, Warehouses = 20 out of 640
+Vuser 2:Processing 10000000 transactions with output suppressed...
+Vuser 3:RUNNING
+Vuser 3:Initializing xtprof time profiler
+Vuser 3:Ssl_cipher 
+Vuser 3:Assigned 20 WIDs = 2 34 66 98 130 162 194 226 258 290 322 354 386 418 450 482 514 546 578 610 based on VU count 32, Warehouses = 20 out of 640
+Vuser 3:Processing 10000000 transactions with output suppressed...
+Vuser 4:RUNNING
+Vuser 4:Initializing xtprof time profiler
+Vuser 4:Ssl_cipher 
+Vuser 4:Assigned 20 WIDs = 3 35 67 99 131 163 195 227 259 291 323 355 387 419 451 483 515 547 579 611 based on VU count 32, Warehouses = 20 out of 640
+Vuser 4:Processing 10000000 transactions with output suppressed...
+Vuser 5:RUNNING
+Vuser 5:Initializing xtprof time profiler
+Vuser 5:Ssl_cipher 
+Vuser 5:Assigned 20 WIDs = 4 36 68 100 132 164 196 228 260 292 324 356 388 420 452 484 516 548 580 612 based on VU count 32, Warehouses = 20 out of 640
+Vuser 5:Processing 10000000 transactions with output suppressed...
+Vuser 6:RUNNING
+Vuser 6:Initializing xtprof time profiler
+Vuser 6:Ssl_cipher 
+Vuser 6:Assigned 20 WIDs = 5 37 69 101 133 165 197 229 261 293 325 357 389 421 453 485 517 549 581 613 based on VU count 32, Warehouses = 20 out of 640
+Vuser 6:Processing 10000000 transactions with output suppressed...
+Vuser 7:RUNNING
+Vuser 7:Initializing xtprof time profiler
+Vuser 7:Ssl_cipher 
+Vuser 7:Assigned 20 WIDs = 6 38 70 102 134 166 198 230 262 294 326 358 390 422 454 486 518 550 582 614 based on VU count 32, Warehouses = 20 out of 640
+Vuser 7:Processing 10000000 transactions with output suppressed...
+Vuser 8:RUNNING
+Vuser 8:Initializing xtprof time profiler
+Vuser 8:Ssl_cipher 
+Vuser 8:Assigned 20 WIDs = 7 39 71 103 135 167 199 231 263 295 327 359 391 423 455 487 519 551 583 615 based on VU count 32, Warehouses = 20 out of 640
+Vuser 8:Processing 10000000 transactions with output suppressed...
+Vuser 9:RUNNING
+Vuser 9:Initializing xtprof time profiler
+Vuser 9:Ssl_cipher 
+Vuser 9:Assigned 20 WIDs = 8 40 72 104 136 168 200 232 264 296 328 360 392 424 456 488 520 552 584 616 based on VU count 32, Warehouses = 20 out of 640
+Vuser 9:Processing 10000000 transactions with output suppressed...
+Vuser 10:RUNNING
+Vuser 10:Initializing xtprof time profiler
+Vuser 10:Ssl_cipher 
+Vuser 10:Assigned 20 WIDs = 9 41 73 105 137 169 201 233 265 297 329 361 393 425 457 489 521 553 585 617 based on VU count 32, Warehouses = 20 out of 640
+Vuser 10:Processing 10000000 transactions with output suppressed...
+Vuser 11:RUNNING
+Vuser 11:Initializing xtprof time profiler
+Vuser 11:Ssl_cipher 
+Vuser 11:Assigned 20 WIDs = 10 42 74 106 138 170 202 234 266 298 330 362 394 426 458 490 522 554 586 618 based on VU count 32, Warehouses = 20 out of 640
+Vuser 11:Processing 10000000 transactions with output suppressed...
+Vuser 12:RUNNING
+Vuser 12:Initializing xtprof time profiler
+Vuser 12:Ssl_cipher 
+Vuser 12:Assigned 20 WIDs = 11 43 75 107 139 171 203 235 267 299 331 363 395 427 459 491 523 555 587 619 based on VU count 32, Warehouses = 20 out of 640
+Vuser 12:Processing 10000000 transactions with output suppressed...
+Vuser 13:RUNNING
+Vuser 13:Initializing xtprof time profiler
+Vuser 13:Ssl_cipher 
+Vuser 13:Assigned 20 WIDs = 12 44 76 108 140 172 204 236 268 300 332 364 396 428 460 492 524 556 588 620 based on VU count 32, Warehouses = 20 out of 640
+Vuser 13:Processing 10000000 transactions with output suppressed...
+Vuser 14:RUNNING
+Vuser 14:Initializing xtprof time profiler
+Vuser 14:Ssl_cipher 
+Vuser 14:Assigned 20 WIDs = 13 45 77 109 141 173 205 237 269 301 333 365 397 429 461 493 525 557 589 621 based on VU count 32, Warehouses = 20 out of 640
+Vuser 14:Processing 10000000 transactions with output suppressed...
+Vuser 15:RUNNING
+Vuser 15:Initializing xtprof time profiler
+Vuser 15:Ssl_cipher 
+Vuser 15:Assigned 20 WIDs = 14 46 78 110 142 174 206 238 270 302 334 366 398 430 462 494 526 558 590 622 based on VU count 32, Warehouses = 20 out of 640
+Vuser 15:Processing 10000000 transactions with output suppressed...
+Vuser 16:RUNNING
+Vuser 16:Initializing xtprof time profiler
+Vuser 16:Ssl_cipher 
+Vuser 16:Assigned 20 WIDs = 15 47 79 111 143 175 207 239 271 303 335 367 399 431 463 495 527 559 591 623 based on VU count 32, Warehouses = 20 out of 640
+Vuser 16:Processing 10000000 transactions with output suppressed...
+Vuser 17:RUNNING
+Vuser 17:Initializing xtprof time profiler
+Vuser 17:Ssl_cipher 
+Vuser 17:Assigned 20 WIDs = 16 48 80 112 144 176 208 240 272 304 336 368 400 432 464 496 528 560 592 624 based on VU count 32, Warehouses = 20 out of 640
+Vuser 17:Processing 10000000 transactions with output suppressed...
+Vuser 18:RUNNING
+Vuser 18:Initializing xtprof time profiler
+Vuser 18:Ssl_cipher 
+Vuser 18:Assigned 20 WIDs = 17 49 81 113 145 177 209 241 273 305 337 369 401 433 465 497 529 561 593 625 based on VU count 32, Warehouses = 20 out of 640
+Vuser 18:Processing 10000000 transactions with output suppressed...
+Vuser 19:RUNNING
+Vuser 19:Initializing xtprof time profiler
+Vuser 19:Ssl_cipher 
+Vuser 19:Assigned 20 WIDs = 18 50 82 114 146 178 210 242 274 306 338 370 402 434 466 498 530 562 594 626 based on VU count 32, Warehouses = 20 out of 640
+Vuser 19:Processing 10000000 transactions with output suppressed...
+Vuser 20:RUNNING
+Vuser 20:Initializing xtprof time profiler
+Vuser 20:Ssl_cipher 
+Vuser 20:Assigned 20 WIDs = 19 51 83 115 147 179 211 243 275 307 339 371 403 435 467 499 531 563 595 627 based on VU count 32, Warehouses = 20 out of 640
+Vuser 20:Processing 10000000 transactions with output suppressed...
+Vuser 21:RUNNING
+Vuser 21:Initializing xtprof time profiler
+Vuser 21:Ssl_cipher 
+Vuser 21:Assigned 20 WIDs = 20 52 84 116 148 180 212 244 276 308 340 372 404 436 468 500 532 564 596 628 based on VU count 32, Warehouses = 20 out of 640
+Vuser 21:Processing 10000000 transactions with output suppressed...
+31614 MySQL tpm
+Vuser 22:RUNNING
+Vuser 22:Initializing xtprof time profiler
+Vuser 22:Ssl_cipher 
+Vuser 22:Assigned 20 WIDs = 21 53 85 117 149 181 213 245 277 309 341 373 405 437 469 501 533 565 597 629 based on VU count 32, Warehouses = 20 out of 640
+Vuser 22:Processing 10000000 transactions with output suppressed...
+Vuser 23:RUNNING
+Vuser 23:Initializing xtprof time profiler
+Vuser 23:Ssl_cipher 
+Vuser 23:Assigned 20 WIDs = 22 54 86 118 150 182 214 246 278 310 342 374 406 438 470 502 534 566 598 630 based on VU count 32, Warehouses = 20 out of 640
+Vuser 23:Processing 10000000 transactions with output suppressed...
+Vuser 24:RUNNING
+Vuser 24:Initializing xtprof time profiler
+Vuser 24:Ssl_cipher 
+Vuser 24:Assigned 20 WIDs = 23 55 87 119 151 183 215 247 279 311 343 375 407 439 471 503 535 567 599 631 based on VU count 32, Warehouses = 20 out of 640
+Vuser 24:Processing 10000000 transactions with output suppressed...
+Vuser 25:RUNNING
+Vuser 25:Initializing xtprof time profiler
+Vuser 25:Ssl_cipher 
+Vuser 25:Assigned 20 WIDs = 24 56 88 120 152 184 216 248 280 312 344 376 408 440 472 504 536 568 600 632 based on VU count 32, Warehouses = 20 out of 640
+Vuser 25:Processing 10000000 transactions with output suppressed...
+Vuser 26:RUNNING
+Vuser 26:Initializing xtprof time profiler
+Vuser 26:Ssl_cipher 
+Vuser 26:Assigned 20 WIDs = 25 57 89 121 153 185 217 249 281 313 345 377 409 441 473 505 537 569 601 633 based on VU count 32, Warehouses = 20 out of 640
+Vuser 26:Processing 10000000 transactions with output suppressed...
+Vuser 27:RUNNING
+Vuser 27:Initializing xtprof time profiler
+Vuser 27:Ssl_cipher 
+Vuser 27:Assigned 20 WIDs = 26 58 90 122 154 186 218 250 282 314 346 378 410 442 474 506 538 570 602 634 based on VU count 32, Warehouses = 20 out of 640
+Vuser 27:Processing 10000000 transactions with output suppressed...
+Vuser 28:RUNNING
+Vuser 28:Initializing xtprof time profiler
+Vuser 28:Ssl_cipher 
+Vuser 28:Assigned 20 WIDs = 27 59 91 123 155 187 219 251 283 315 347 379 411 443 475 507 539 571 603 635 based on VU count 32, Warehouses = 20 out of 640
+Vuser 28:Processing 10000000 transactions with output suppressed...
+Vuser 29:RUNNING
+Vuser 29:Initializing xtprof time profiler
+Vuser 29:Ssl_cipher 
+Vuser 29:Assigned 20 WIDs = 28 60 92 124 156 188 220 252 284 316 348 380 412 444 476 508 540 572 604 636 based on VU count 32, Warehouses = 20 out of 640
+Vuser 29:Processing 10000000 transactions with output suppressed...
+Vuser 30:RUNNING
+Vuser 30:Initializing xtprof time profiler
+Vuser 30:Ssl_cipher 
+Vuser 30:Assigned 20 WIDs = 29 61 93 125 157 189 221 253 285 317 349 381 413 445 477 509 541 573 605 637 based on VU count 32, Warehouses = 20 out of 640
+Vuser 30:Processing 10000000 transactions with output suppressed...
+Vuser 31:RUNNING
+Vuser 31:Initializing xtprof time profiler
+Vuser 31:Ssl_cipher 
+Vuser 31:Assigned 20 WIDs = 30 62 94 126 158 190 222 254 286 318 350 382 414 446 478 510 542 574 606 638 based on VU count 32, Warehouses = 20 out of 640
+Vuser 31:Processing 10000000 transactions with output suppressed...
+Vuser 32:RUNNING
+Vuser 32:Initializing xtprof time profiler
+Vuser 32:Ssl_cipher 
+Vuser 32:Assigned 20 WIDs = 31 63 95 127 159 191 223 255 287 319 351 383 415 447 479 511 543 575 607 639 based on VU count 32, Warehouses = 20 out of 640
+Vuser 32:Processing 10000000 transactions with output suppressed...
+Vuser 33:RUNNING
+Vuser 33:Initializing xtprof time profiler
+Vuser 33:Ssl_cipher 
+Vuser 33:Assigned 20 WIDs = 32 64 96 128 160 192 224 256 288 320 352 384 416 448 480 512 544 576 608 640 based on VU count 32, Warehouses = 20 out of 640
+Vuser 33:Processing 10000000 transactions with output suppressed...
+47808 MySQL tpm
+50700 MySQL tpm
+54246 MySQL tpm
+55986 MySQL tpm
+Vuser 1:Rampup 1 minutes complete ...
+56628 MySQL tpm
+60204 MySQL tpm
+60594 MySQL tpm
+59382 MySQL tpm
+59868 MySQL tpm
+59952 MySQL tpm
+Vuser 1:Rampup 2 minutes complete ...
+58290 MySQL tpm
+60372 MySQL tpm
+58320 MySQL tpm
+56964 MySQL tpm
+60120 MySQL tpm
+59778 MySQL tpm
+Vuser 1:Rampup 3 minutes complete ...
+58122 MySQL tpm
+60858 MySQL tpm
+59664 MySQL tpm
+57912 MySQL tpm
+60186 MySQL tpm
+58842 MySQL tpm
+Vuser 1:Rampup 4 minutes complete ...
+57996 MySQL tpm
+57156 MySQL tpm
+57570 MySQL tpm
+57312 MySQL tpm
+58146 MySQL tpm
+60036 MySQL tpm
+Vuser 1:Rampup 5 minutes complete ...
+Vuser 1:Rampup complete, Taking start Transaction Count.
+Vuser 1:Timing test period of 20 in minutes
+61518 MySQL tpm
+61422 MySQL tpm
+59886 MySQL tpm
+58824 MySQL tpm
+58998 MySQL tpm
+61272 MySQL tpm
+Vuser 1:1 ...,
+60072 MySQL tpm
+58980 MySQL tpm
+59748 MySQL tpm
+58668 MySQL tpm
+60792 MySQL tpm
+61086 MySQL tpm
+Vuser 1:2 ...,
+59742 MySQL tpm
+57366 MySQL tpm
+59238 MySQL tpm
+57558 MySQL tpm
+59184 MySQL tpm
+59484 MySQL tpm
+Vuser 1:3 ...,
+59196 MySQL tpm
+58188 MySQL tpm
+55758 MySQL tpm
+56898 MySQL tpm
+54954 MySQL tpm
+56412 MySQL tpm
+Vuser 1:4 ...,
+55140 MySQL tpm
+56754 MySQL tpm
+55560 MySQL tpm
+55728 MySQL tpm
+56646 MySQL tpm
+58974 MySQL tpm
+Vuser 1:5 ...,
+57816 MySQL tpm
+56526 MySQL tpm
+57852 MySQL tpm
+58176 MySQL tpm
+60312 MySQL tpm
+60036 MySQL tpm
+Vuser 1:6 ...,
+57180 MySQL tpm
+57864 MySQL tpm
+58692 MySQL tpm
+58206 MySQL tpm
+58452 MySQL tpm
+59076 MySQL tpm
+Vuser 1:7 ...,
+58458 MySQL tpm
+56598 MySQL tpm
+58188 MySQL tpm
+58266 MySQL tpm
+58704 MySQL tpm
+60474 MySQL tpm
+Vuser 1:8 ...,
+59688 MySQL tpm
+61086 MySQL tpm
+61452 MySQL tpm
+59964 MySQL tpm
+59958 MySQL tpm
+61482 MySQL tpm
+Vuser 1:9 ...,
+60840 MySQL tpm
+59598 MySQL tpm
+56040 MySQL tpm
+58236 MySQL tpm
+60522 MySQL tpm
+62646 MySQL tpm
+Vuser 1:10 ...,
+62088 MySQL tpm
+61236 MySQL tpm
+61686 MySQL tpm
+60624 MySQL tpm
+62388 MySQL tpm
+61092 MySQL tpm
+Vuser 1:11 ...,
+58866 MySQL tpm
+59592 MySQL tpm
+61158 MySQL tpm
+60636 MySQL tpm
+60720 MySQL tpm
+61476 MySQL tpm
+Vuser 1:12 ...,
+60732 MySQL tpm
+60036 MySQL tpm
+60168 MySQL tpm
+57888 MySQL tpm
+59334 MySQL tpm
+58566 MySQL tpm
+Vuser 1:13 ...,
+58734 MySQL tpm
+60666 MySQL tpm
+61452 MySQL tpm
+61032 MySQL tpm
+59460 MySQL tpm
+60168 MySQL tpm
+Vuser 1:14 ...,
+60480 MySQL tpm
+58980 MySQL tpm
+60132 MySQL tpm
+61974 MySQL tpm
+61248 MySQL tpm
+60858 MySQL tpm
+Vuser 1:15 ...,
+60306 MySQL tpm
+59214 MySQL tpm
+61290 MySQL tpm
+61464 MySQL tpm
+61830 MySQL tpm
+59994 MySQL tpm
+Vuser 1:16 ...,
+59442 MySQL tpm
+59700 MySQL tpm
+60378 MySQL tpm
+59334 MySQL tpm
+60636 MySQL tpm
+62088 MySQL tpm
+Vuser 1:17 ...,
+60516 MySQL tpm
+56892 MySQL tpm
+58104 MySQL tpm
+59712 MySQL tpm
+59790 MySQL tpm
+60168 MySQL tpm
+Vuser 1:18 ...,
+59784 MySQL tpm
+57930 MySQL tpm
+59664 MySQL tpm
+59538 MySQL tpm
+60330 MySQL tpm
+59070 MySQL tpm
+Vuser 1:19 ...,
+59388 MySQL tpm
+58440 MySQL tpm
+59598 MySQL tpm
+60138 MySQL tpm
+59898 MySQL tpm
+59388 MySQL tpm
+Vuser 1:20 ...,
+Vuser 1:Test complete, Taking end Transaction Count.
+Vuser 1:32 Active Virtual Users configured
+Vuser 1:TEST RESULT : System achieved 25563 NOPM from 59356 MySQL TPM
+Vuser 1:Gathering timing data from Active Virtual Users...
+Vuser 13:FINISHED SUCCESS
+Vuser 29:FINISHED SUCCESS
+Vuser 17:FINISHED SUCCESS
+Vuser 11:FINISHED SUCCESS
+Vuser 5:FINISHED SUCCESS
+Vuser 3:FINISHED SUCCESS
+Vuser 18:FINISHED SUCCESS
+Vuser 16:FINISHED SUCCESS
+Vuser 30:FINISHED SUCCESS
+Vuser 20:FINISHED SUCCESS
+Vuser 26:FINISHED SUCCESS
+60810 MySQL tpm
+Vuser 6:FINISHED SUCCESS
+Vuser 21:FINISHED SUCCESS
+Vuser 32:FINISHED SUCCESS
+Vuser 9:FINISHED SUCCESS
+Vuser 12:FINISHED SUCCESS
+Vuser 28:FINISHED SUCCESS
+Vuser 2:FINISHED SUCCESS
+Vuser 4:FINISHED SUCCESS
+Vuser 25:FINISHED SUCCESS
+Vuser 23:FINISHED SUCCESS
+Vuser 24:FINISHED SUCCESS
+Vuser 7:FINISHED SUCCESS
+Vuser 31:FINISHED SUCCESS
+Vuser 27:FINISHED SUCCESS
+Vuser 15:FINISHED SUCCESS
+Vuser 14:FINISHED SUCCESS
+Vuser 33:FINISHED SUCCESS
+Vuser 19:FINISHED SUCCESS
+Vuser 10:FINISHED SUCCESS
+58926 MySQL tpm
+Vuser 22:FINISHED SUCCESS
+Vuser 8:FINISHED SUCCESS
+Vuser 1:Calculating timings...
+Vuser 1:Writing timing data to /tmp/cloud-mysql-perf.OxBc1L/hammerdb-tmp/hdbxtprofile.log
+Vuser 1:FINISHED SUCCESS
+ALL VIRTUAL USERS COMPLETE
+vudestroy success
+Transaction Counter thread running with threadid:tid0x7b79a27fc6c0
+Stopping Transaction Counter
+JOBID 6AD4FEC78CA003E283339363
+TRANSACTION RESPONSE TIMES
+{
+  "NEWORD": {
+    "elapsed_ms": "1497202.5",
+    "calls": "645997",
+    "min_ms": "3.439",
+    "avg_ms": "39.106",
+    "max_ms": "249.513",
+    "total_ms": "25262466.351",
+    "p99_ms": "105.693",
+    "p95_ms": "77.344",
+    "p75_ms": "48.333",
+    "p50_ms": "34.921",
+    "p25_ms": "24.981",
+    "sd": "19.888",
+    "ratio_pct": "52.728"
+  },
+  "PAYMENT": {
+    "elapsed_ms": "1497202.5",
+    "calls": "645199",
+    "min_ms": "1.361",
+    "avg_ms": "20.737",
+    "max_ms": "229.572",
+    "total_ms": "13379601.271",
+    "p99_ms": "70.833",
+    "p95_ms": "46.007",
+    "p75_ms": "25.301",
+    "p50_ms": "17.439",
+    "p25_ms": "12.233",
+    "sd": "13.075",
+    "ratio_pct": "27.926"
+  },
+  "DELIVERY": {
+    "elapsed_ms": "1497202.5",
+    "calls": "64400",
+    "min_ms": "9.522",
+    "avg_ms": "87.505",
+    "max_ms": "468.262",
+    "total_ms": "5635349.189",
+    "p99_ms": "240.235",
+    "p95_ms": "180.291",
+    "p75_ms": "109.771",
+    "p50_ms": "78.261",
+    "p25_ms": "53.457",
+    "sd": "47.005",
+    "ratio_pct": "11.762"
+  },
+  "SLEV": {
+    "elapsed_ms": "1497202.5",
+    "calls": "64476",
+    "min_ms": "1.532",
+    "avg_ms": "34.475",
+    "max_ms": "338.061",
+    "total_ms": "2222808.045",
+    "p99_ms": "215.16",
+    "p95_ms": "153.778",
+    "p75_ms": "26.203",
+    "p50_ms": "14.341",
+    "p25_ms": "8.937",
+    "sd": "48.425",
+    "ratio_pct": "4.64"
+  },
+  "OSTAT": {
+    "elapsed_ms": "1497202.5",
+    "calls": "64692",
+    "min_ms": "1.082",
+    "avg_ms": "21.107",
+    "max_ms": "180.322",
+    "total_ms": "1365468.147",
+    "p99_ms": "69.989",
+    "p95_ms": "47.967",
+    "p75_ms": "26.238",
+    "p50_ms": "17.592",
+    "p25_ms": "12.098",
+    "sd": "13.583",
+    "ratio_pct": "2.85"
+  }
+}
+
+TRANSACTION COUNT
+{"MySQL tpm": {
+    "2026-10-18 17:15:51": "0",
+    "2026-10-18 17:16:01": "31614",
+    "2026-10-18 17:16:11": "47808",
+    "2026-10-18 17:16:21": "50700",
+    "2026-10-18 17:16:31": "54246",
+    "2026-10-18 17:16:41": "55986",
+    "2026-10-18 17:16:51": "56628",
+    "2026-10-18 17:17:01": "60204",
+    "2026-10-18 17:17:11": "60594",
+    "2026-10-18 17:17:21": "59382",
+    "2026-10-18 17:17:31": "59868",
+    "2026-10-18 17:17:41": "59952",
+    "2026-10-18 17:17:51": "58290",
+    "2026-10-18 17:18:01": "60372",
+    "2026-10-18 17:18:11": "58320",
+    "2026-10-18 17:18:21": "56964",
+    "2026-10-18 17:18:31": "60120",
+    "2026-10-18 17:18:41": "59778",
+    "2026-10-18 17:18:51": "58122",
+    "2026-10-18 17:19:01": "60858",
+    "2026-10-18 17:19:11": "59664",
+    "2026-10-18 17:19:21": "57912",
+    "2026-10-18 17:19:31": "60186",
+    "2026-10-18 17:19:41": "58842",
+    "2026-10-18 17:19:51": "57996",
+    "2026-10-18 17:20:01": "57156",
+    "2026-10-18 17:20:11": "57570",
+    "2026-10-18 17:20:22": "57312",
+    "2026-10-18 17:20:32": "58146",
+    "2026-10-18 17:20:42": "60036",
+    "2026-10-18 17:20:52": "61518",
+    "2026-10-18 17:21:02": "61422",
+    "2026-10-18 17:21:12": "59886",
+    "2026-10-18 17:21:22": "58824",
+    "2026-10-18 17:21:32": "58998",
+    "2026-10-18 17:21:42": "61272",
+    "2026-10-18 17:21:52": "60072",
+    "2026-10-18 17:22:02": "58980",
+    "2026-10-18 17:22:12": "59748",
+    "2026-10-18 17:22:22": "58668",
+    "2026-10-18 17:22:32": "60792",
+    "2026-10-18 17:22:42": "61086",
+    "2026-10-18 17:22:52": "59742",
+    "2026-10-18 17:23:02": "57366",
+    "2026-10-18 17:23:12": "59238",
+    "2026-10-18 17:23:22": "57558",
+    "2026-10-18 17:23:32": "59184",
+    "2026-10-18 17:23:42": "59484",
+    "2026-10-18 17:23:52": "59196",
+    "2026-10-18 17:24:02": "58188",
+    "2026-10-18 17:24:12": "55758",
+    "2026-10-18 17:24:22": "56898",
+    "2026-10-18 17:24:32": "54954",
+    "2026-10-18 17:24:42": "56412",
+    "2026-10-18 17:24:52": "55140",
+    "2026-10-18 17:25:02": "56754",
+    "2026-10-18 17:25:12": "55560",
+    "2026-10-18 17:25:22": "55728",
+    "2026-10-18 17:25:32": "56646",
+    "2026-10-18 17:25:42": "58974",
+    "2026-10-18 17:25:52": "57816",
+    "2026-10-18 17:26:02": "56526",
+    "2026-10-18 17:26:12": "57852",
+    "2026-10-18 17:26:22": "58176",
+    "2026-10-18 17:26:32": "60312",
+    "2026-10-18 17:26:42": "60036",
+    "2026-10-18 17:26:52": "57180",
+    "2026-10-18 17:27:02": "57864",
+    "2026-10-18 17:27:12": "58692",
+    "2026-10-18 17:27:22": "58206",
+    "2026-10-18 17:27:32": "58452",
+    "2026-10-18 17:27:42": "59076",
+    "2026-10-18 17:27:52": "58458",
+    "2026-10-18 17:28:02": "56598",
+    "2026-10-18 17:28:12": "58188",
+    "2026-10-18 17:28:22": "58266",
+    "2026-10-18 17:28:32": "58704",
+    "2026-10-18 17:28:42": "60474",
+    "2026-10-18 17:28:52": "59688",
+    "2026-10-18 17:29:02": "61086",
+    "2026-10-18 17:29:12": "61452",
+    "2026-10-18 17:29:22": "59964",
+    "2026-10-18 17:29:32": "59958",
+    "2026-10-18 17:29:42": "61482",
+    "2026-10-18 17:29:52": "60840",
+    "2026-10-18 17:30:02": "59598",
+    "2026-10-18 17:30:12": "56040",
+    "2026-10-18 17:30:23": "58236",
+    "2026-10-18 17:30:33": "60522",
+    "2026-10-18 17:30:43": "62646",
+    "2026-10-18 17:30:53": "62088",
+    "2026-10-18 17:31:03": "61236",
+    "2026-10-18 17:31:13": "61686",
+    "2026-10-18 17:31:23": "60624",
+    "2026-10-18 17:31:33": "62388",
+    "2026-10-18 17:31:43": "61092",
+    "2026-10-18 17:31:53": "58866",
+    "2026-10-18 17:32:03": "59592",
+    "2026-10-18 17:32:13": "61158",
+    "2026-10-18 17:32:23": "60636",
+    "2026-10-18 17:32:33": "60720",
+    "2026-10-18 17:32:43": "61476",
+    "2026-10-18 17:32:53": "60732",
+    "2026-10-18 17:33:03": "60036",
+    "2026-10-18 17:33:13": "60168",
+    "2026-10-18 17:33:23": "57888",
+    "2026-10-18 17:33:33": "59334",
+    "2026-10-18 17:33:43": "58566",
+    "2026-10-18 17:33:53": "58734",
+    "2026-10-18 17:34:03": "60666",
+    "2026-10-18 17:34:13": "61452",
+    "2026-10-18 17:34:23": "61032",
+    "2026-10-18 17:34:33": "59460",
+    "2026-10-18 17:34:43": "60168",
+    "2026-10-18 17:34:53": "60480",
+    "2026-10-18 17:35:03": "58980",
+    "2026-10-18 17:35:13": "60132",
+    "2026-10-18 17:35:23": "61974",
+    "2026-10-18 17:35:33": "61248",
+    "2026-10-18 17:35:43": "60858",
+    "2026-10-18 17:35:53": "60306",
+    "2026-10-18 17:36:03": "59214",
+    "2026-10-18 17:36:13": "61290",
+    "2026-10-18 17:36:23": "61464",
+    "2026-10-18 17:36:33": "61830",
+    "2026-10-18 17:36:43": "59994",
+    "2026-10-18 17:36:53": "59442",
+    "2026-10-18 17:37:03": "59700",
+    "2026-10-18 17:37:13": "60378",
+    "2026-10-18 17:37:23": "59334",
+    "2026-10-18 17:37:33": "60636",
+    "2026-10-18 17:37:43": "62088",
+    "2026-10-18 17:37:53": "60516",
+    "2026-10-18 17:38:03": "56892",
+    "2026-10-18 17:38:13": "58104",
+    "2026-10-18 17:38:23": "59712",
+    "2026-10-18 17:38:33": "59790",
+    "2026-10-18 17:38:43": "60168",
+    "2026-10-18 17:38:53": "59784",
+    "2026-10-18 17:39:03": "57930",
+    "2026-10-18 17:39:13": "59664",
+    "2026-10-18 17:39:23": "59538",
+    "2026-10-18 17:39:33": "60330",
+    "2026-10-18 17:39:43": "59070",
+    "2026-10-18 17:39:53": "59388",
+    "2026-10-18 17:40:03": "58440",
+    "2026-10-18 17:40:13": "59598",
+    "2026-10-18 17:40:23": "60138",
+    "2026-10-18 17:40:34": "59898",
+    "2026-10-18 17:40:44": "59388",
+    "2026-10-18 17:40:54": "60810",
+    "2026-10-18 17:41:04": "58926"
+  }}
+
+HAMMERDB RESULT
+[
+  "6AD4FEC78CA003E283339363",
+  "2026-10-18 17:15:51",
+  "32 Active Virtual Users configured",
+  "TEST RESULT : System achieved 25563 NOPM from 59356 MySQL TPM"
+]
+

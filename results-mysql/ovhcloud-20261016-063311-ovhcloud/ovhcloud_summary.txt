@@ -1,0 +1,38 @@
+provider          ovhcloud
+started_utc       2026-10-16T06:33:11Z
+client_host       ovhcloud4vcpu16gb
+client_cpus       4
+client_sysbench   sysbench 1.0.20
+client_mysql      mysql  Ver 8.4.11-0ubuntu0.26.04.1 for Linux on x86_64 ((Ubuntu))
+hammerdb_home     /opt/HammerDB-6.0
+target            avnadmin@mysql-84cd30a3-o59368f7f.database.cloud.ovh.net:20184 (ssl=0)
+benchmarks        sysbench
+runs              3
+threads           4 8 16 32
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+configurations    36 (sysbench 36, hammerdb 0)
+schema_rebuild    dropped and reloaded before every measured run
+status_sampling   every 10s
+innodb_status     off (--innodb-status to enable)
+estimated_runtime 900 min (~15h, excluding 36 schema rebuilds)
+
+sysbench oltp_read_write - mean over 3 run(s), 10 tables
+  rows/table     threads           tps          qps       avg_ms       p95_ms
+  10000000       4              648.33     12966.64         6.20         7.67
+  10000000       8              843.86     16877.19         9.49        13.06
+  10000000       16            1086.92     21738.23        14.74        21.65
+  10000000       32            1287.53     25750.12        24.86        40.62
+  20000000       4              440.52      8810.30         9.09        12.30
+  20000000       8              584.83     11696.55        13.68        25.51
+  20000000       16             777.42     15548.12        20.70        47.76
+  20000000       32             952.78     19055.30        33.67        96.40
+  40000000       4              337.82      6756.41        11.85        21.99
+  40000000       8              441.46      8829.25        18.13        48.92
+  40000000       16             607.76     12154.91        26.48        78.68
+  40000000       32             784.92     15698.05        40.78       119.01
+
+finished_utc      2026-10-17T14:57:06Z
+results           /home/ubuntu/2026-cloud-perf/results/ovhcloud-20261016-063311-ovhcloud

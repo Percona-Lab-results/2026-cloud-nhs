@@ -1,0 +1,29 @@
+
+== PREFLIGHT ==
+[09:54:18] connected to upcloud-perf-odqiztpebptc.db.upclouddatabases.com:11569
+
+== SYSBENCH PREPARE run1_s20M_t4 (10 tables x 20000000 rows) ==
+[09:54:18] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[10:09:33] prepare done (40.19 GB)
+
+== SYSBENCH run 1/1 10x20M rows threads=4 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t8 (10 tables x 20000000 rows) ==
+[10:34:33] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[10:49:08] prepare done (40.22 GB)
+
+== SYSBENCH run 1/1 10x20M rows threads=8 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t16 (10 tables x 20000000 rows) ==
+[11:14:08] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[11:29:07] prepare done (39.97 GB)
+
+== SYSBENCH run 1/1 10x20M rows threads=16 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t32 (10 tables x 20000000 rows) ==
+[11:54:07] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[12:09:12] prepare done (40.16 GB)
+
+== SYSBENCH run 1/1 10x20M rows threads=32 (5m ramp + 20m) ==
+
+== SUMMARY ==

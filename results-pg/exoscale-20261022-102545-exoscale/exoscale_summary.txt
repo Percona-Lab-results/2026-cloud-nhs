@@ -1,0 +1,45 @@
+provider          exoscale
+engine            postgresql
+started_utc       2026-10-22T10:25:45Z
+client_host       exoscale-compute
+client_cpus       4
+client_sysbench   n/a
+client_psql       psql (PostgreSQL) 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)
+hammerdb_home     /opt/HammerDB-6.0
+target            avnadmin@exoscale-pg-4vcpu-16gb-exoscale-37d268a1-816e-4c65-8e0e-ff9912d.e.aivencloud.com:26071 (sslmode=prefer)
+maintenance_db    defaultdb
+benchmarks        hammerdb
+runs              1
+threads           4 8 16 32 64
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+hammerdb_procs    stored_procs=true, schema owner=avnadmin
+configurations    15 (sysbench 0, hammerdb 15)
+schema_rebuild    dropped and reloaded before every measured run
+vacuum_after_load VACUUM ANALYZE
+status_sampling   every 10s
+detail_stats      off (--detail-stats to enable)
+estimated_runtime 375 min (~6h, excluding 15 schema rebuilds)
+
+HammerDB TPC-C - mean over 1 run(s)
+  warehouses     vu               nopm          tpm
+  160            4             63027.0     146046.0
+  160            8             65929.0     152732.0
+  160            16            66677.0     154094.0
+  160            32            65478.0     151559.0
+  160            64            64221.0     148572.0
+  320            4             42718.0      99102.0
+  320            8             47628.0     110546.0
+  320            16            49234.0     114374.0
+  320            32            49230.0     114004.0
+  320            64            49000.0     113554.0
+  640            4             30978.0      72142.0
+  640            8             37650.0      87609.0
+  640            16            37267.0      86715.0
+  640            32            37959.0      88300.0
+  640            64            37878.0      88056.0
+
+finished_utc      2026-10-22T20:44:45Z
+results           /home/ubuntu/2026-cloud-perf/results/exoscale-20261022-102545-exoscale

@@ -1,0 +1,113 @@
+
+== PREFLIGHT ==
+[09:59:53] connected to exoscale4vcpu16gb-exoscale-37d268a1-816e-4c65-8e0e-ff9912ddcfcf.k.aivencloud.com:26071
+
+== SYSBENCH PREPARE run1_s10M_t64 (10 tables x 10000000 rows) ==
+[09:59:53] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[10:04:48] prepare done (20.50 GB)
+
+== SYSBENCH run 1/3 10x10M rows threads=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s20M_t64 (10 tables x 20000000 rows) ==
+[10:29:48] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[10:39:48] prepare done (39.80 GB)
+
+== SYSBENCH run 1/3 10x20M rows threads=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run1_s40M_t64 (10 tables x 40000000 rows) ==
+[11:04:49] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[11:24:41] prepare done (79.64 GB)
+
+== SYSBENCH run 1/3 10x40M rows threads=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run1_w160_vu64 (160 warehouses) ==
+[11:49:41] dropping tpcc and building 160 warehouses with 16 virtual users (no_stored_procs=false)
+[11:58:35] schema build done
+
+== HAMMERDB TPC-C run 1/3 160w vu=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run1_w320_vu64 (320 warehouses) ==
+[12:24:04] dropping tpcc and building 320 warehouses with 16 virtual users (no_stored_procs=false)
+[12:41:33] schema build done
+
+== HAMMERDB TPC-C run 1/3 320w vu=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run1_w640_vu64 (640 warehouses) ==
+[13:07:01] dropping tpcc and building 640 warehouses with 16 virtual users (no_stored_procs=false)
+[13:39:36] schema build done
+
+== HAMMERDB TPC-C run 1/3 640w vu=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run2_s10M_t64 (10 tables x 10000000 rows) ==
+[14:05:06] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[14:09:59] prepare done (20.20 GB)
+
+== SYSBENCH run 2/3 10x10M rows threads=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run2_s20M_t64 (10 tables x 20000000 rows) ==
+[14:34:59] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[14:45:13] prepare done (39.50 GB)
+
+== SYSBENCH run 2/3 10x20M rows threads=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run2_s40M_t64 (10 tables x 40000000 rows) ==
+[15:10:13] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[15:30:38] prepare done (79.76 GB)
+
+== SYSBENCH run 2/3 10x40M rows threads=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run2_w160_vu64 (160 warehouses) ==
+[15:55:38] dropping tpcc and building 160 warehouses with 16 virtual users (no_stored_procs=false)
+[16:04:22] schema build done
+
+== HAMMERDB TPC-C run 2/3 160w vu=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run2_w320_vu64 (320 warehouses) ==
+[16:29:51] dropping tpcc and building 320 warehouses with 16 virtual users (no_stored_procs=false)
+[16:47:00] schema build done
+
+== HAMMERDB TPC-C run 2/3 320w vu=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run2_w640_vu64 (640 warehouses) ==
+[17:12:26] dropping tpcc and building 640 warehouses with 16 virtual users (no_stored_procs=false)
+[17:44:25] schema build done
+
+== HAMMERDB TPC-C run 2/3 640w vu=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run3_s10M_t64 (10 tables x 10000000 rows) ==
+[18:09:51] dropping sbtest and running sysbench oltp_read_write prepare (10 x 10000000 rows, threads=10)
+[18:14:39] prepare done (20.28 GB)
+
+== SYSBENCH run 3/3 10x10M rows threads=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run3_s20M_t64 (10 tables x 20000000 rows) ==
+[18:39:39] dropping sbtest and running sysbench oltp_read_write prepare (10 x 20000000 rows, threads=10)
+[18:49:29] prepare done (40.22 GB)
+
+== SYSBENCH run 3/3 10x20M rows threads=64 (5m ramp + 20m) ==
+
+== SYSBENCH PREPARE run3_s40M_t64 (10 tables x 40000000 rows) ==
+[19:14:30] dropping sbtest and running sysbench oltp_read_write prepare (10 x 40000000 rows, threads=10)
+[19:34:18] prepare done (79.97 GB)
+
+== SYSBENCH run 3/3 10x40M rows threads=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run3_w160_vu64 (160 warehouses) ==
+[19:59:18] dropping tpcc and building 160 warehouses with 16 virtual users (no_stored_procs=false)
+[20:07:52] schema build done
+
+== HAMMERDB TPC-C run 3/3 160w vu=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run3_w320_vu64 (320 warehouses) ==
+[20:33:21] dropping tpcc and building 320 warehouses with 16 virtual users (no_stored_procs=false)
+[20:50:31] schema build done
+
+== HAMMERDB TPC-C run 3/3 320w vu=64 (5m ramp + 20m) ==
+
+== HAMMERDB SCHEMA BUILD run3_w640_vu64 (640 warehouses) ==
+[21:15:57] dropping tpcc and building 640 warehouses with 16 virtual users (no_stored_procs=false)
+[21:48:41] schema build done
+
+== HAMMERDB TPC-C run 3/3 640w vu=64 (5m ramp + 20m) ==
+
+== SUMMARY ==

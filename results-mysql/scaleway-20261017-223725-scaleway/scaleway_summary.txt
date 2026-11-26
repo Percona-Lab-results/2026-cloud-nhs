@@ -1,0 +1,38 @@
+provider          scaleway
+started_utc       2026-10-17T22:37:25Z
+client_host       scaleway-compute
+client_cpus       4
+client_sysbench   sysbench 1.0.20
+client_mysql      mysql  Ver 8.4.11-0ubuntu0.26.04.1 for Linux on x86_64 ((Ubuntu))
+hammerdb_home     /opt/HammerDB-6.0
+target            scaledbs@151.115.40.71:27590 (ssl=0)
+benchmarks        hammerdb
+runs              3
+threads           4 8 16 32
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+configurations    36 (sysbench 0, hammerdb 36)
+schema_rebuild    dropped and reloaded before every measured run
+status_sampling   every 10s
+innodb_status     off (--innodb-status to enable)
+estimated_runtime 900 min (~15h, excluding 36 schema rebuilds)
+
+HammerDB TPC-C - mean over 3 run(s)
+  warehouses     vu               nopm          tpm
+  160            4              8362.3      19434.7
+  160            8             13135.7      30528.7
+  160            16            18777.3      43597.0
+  160            32            22911.7      53221.0
+  320            4              5471.3      12660.3
+  320            8              8102.7      18806.7
+  320            16            10741.7      24941.7
+  320            32            12180.7      28313.3
+  640            4              4334.3      10065.7
+  640            8              6413.3      14904.7
+  640            16             8044.3      18690.0
+  640            32             9465.3      21993.0
+
+finished_utc      2026-10-19T08:36:24Z
+results           /root/2026-cloud-perf/results/scaleway-20261017-223725-scaleway

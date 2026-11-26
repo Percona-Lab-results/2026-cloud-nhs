@@ -1,0 +1,38 @@
+provider          vultr
+started_utc       2026-10-15T09:43:20Z
+client_host       vultr-compute
+client_cpus       4
+client_sysbench   sysbench 1.0.20
+client_mysql      mysql  Ver 8.4.11-0ubuntu0.26.04.1 for Linux on x86_64 ((Ubuntu))
+hammerdb_home     /opt/HammerDB-6.0
+target            vultradmin@vultr-prod-8bc13ae7-fb94-4ef0-975c-9177772f624a-vultr-prod-def3.vultrdb.com:23473 (ssl=0)
+benchmarks        sysbench
+runs              3
+threads           4 8 16 32
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+configurations    36 (sysbench 36, hammerdb 0)
+schema_rebuild    dropped and reloaded before every measured run
+status_sampling   every 10s
+innodb_status     off (--innodb-status to enable)
+estimated_runtime 900 min (~15h, excluding 36 schema rebuilds)
+
+sysbench oltp_read_write - mean over 3 run(s), 10 tables
+  rows/table     threads           tps          qps       avg_ms       p95_ms
+  10000000       4              625.39     12507.89         6.39         7.70
+  10000000       8              785.97     15719.34        10.18        14.21
+  10000000       16            1045.86     20917.13        15.30        22.28
+  10000000       32            1266.72     25334.02        25.26        39.18
+  20000000       4              538.66     10773.19         7.43         9.01
+  20000000       8              809.08     16181.65         9.89        14.21
+  20000000       16             933.78     18675.50        17.13        27.01
+  20000000       32            1147.47     22949.12        27.89        46.63
+  40000000       4              479.11      9582.23         8.35        10.09
+  40000000       8              759.00     15179.95        10.54        14.66
+  40000000       16             876.58     17531.48        18.25        32.14
+  40000000       32            1018.14     20362.42        31.55        56.42
+
+finished_utc      2026-10-16T10:56:51Z
+results           /root/2026-cloud-perf/results/vultr-20261015-094320-vultr

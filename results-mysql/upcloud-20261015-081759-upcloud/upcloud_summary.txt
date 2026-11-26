@@ -1,0 +1,36 @@
+provider          upcloud
+started_utc       2026-10-15T08:17:59Z
+client_host       upcloud-compute
+client_cpus       4
+client_sysbench   sysbench 1.0.20
+client_mysql      mysql  Ver 8.4.11-0ubuntu0.26.04.1 for Linux on x86_64 ((Ubuntu))
+hammerdb_home     /opt/HammerDB-6.0
+target            upadmin@upcloud-perf-odqiztpebptc.db.upclouddatabases.com:11569 (ssl=0)
+benchmarks        sysbench
+runs              3
+threads           4 8 16 32
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+configurations    36 (sysbench 36, hammerdb 0)
+schema_rebuild    dropped and reloaded before every measured run
+status_sampling   every 10s
+innodb_status     off (--innodb-status to enable)
+estimated_runtime 900 min (~15h, excluding 36 schema rebuilds)
+
+sysbench oltp_read_write - mean over 3 run(s), 10 tables
+  rows/table     threads           tps          qps       avg_ms       p95_ms
+  10000000       4              443.13      8862.50         9.02        18.95
+  10000000       8              634.93     12698.53        12.60        27.66
+  10000000       16             887.02     17740.32        18.03        35.59
+  10000000       32            1148.22     22964.19        27.87        53.85
+  20000000       4              395.24      7904.75        10.12        22.28
+  20000000       8              662.75     13255.04        12.07        24.83
+  20000000       16             901.76     18035.13        17.74        38.25
+  20000000       32            1071.84     21436.52        29.85        69.29
+  40000000       4              408.58      8171.54         9.79        20.37
+  40000000       8              674.50     13489.92        11.86        23.95
+
+finished_utc      2026-10-15T15:22:10Z
+results           /root/2026-cloud-perf/results/upcloud-20261015-081759-upcloud

@@ -1,0 +1,5 @@
+sysbench 1.0.20 (using system LuaJIT 2.1.1761786044)
+
+Dropping table 'sbtest1'...
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'DROP TABLE IF EXISTS sbtest1'
+FATAL: `cleanup' function failed: /usr/share/sysbench/oltp_common.lua:392: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement

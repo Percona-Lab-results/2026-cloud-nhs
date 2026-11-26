@@ -1,0 +1,45 @@
+provider          vultr
+engine            postgresql
+started_utc       2026-10-29T11:48:41Z
+client_host       vultr
+client_cpus       4
+client_sysbench   n/a
+client_psql       psql (PostgreSQL) 18.6 (Ubuntu 18.6-3build2)
+hammerdb_home     /opt/HammerDB-6.0
+target            vultradmin@vultr-prod-32c5bec6-a843-43c2-bfb7-a9fd902f0bf8-vultr-prod-def3.vultrdb.com:23473 (sslmode=prefer)
+maintenance_db    defaultdb
+benchmarks        hammerdb
+runs              2
+threads           4 8 16 32 64
+rampup_min        5
+duration_min      20
+sysbench_schema   sbtest, 10 tables x {10000000 20000000 40000000} rows per table
+hammerdb_schema   tpcc, {160 320 640} warehouses, allwarehouse=true
+hammerdb_procs    stored_procs=true, schema owner=vultradmin
+configurations    30 (sysbench 0, hammerdb 30)
+schema_rebuild    dropped and reloaded before every measured run
+vacuum_after_load VACUUM ANALYZE
+status_sampling   every 10s
+detail_stats      off (--detail-stats to enable)
+estimated_runtime 750 min (~12h, excluding 30 schema rebuilds)
+
+HammerDB TPC-C - mean over 2 run(s)
+  warehouses     vu               nopm          tpm
+  160            4             47428.0     110036.5
+  160            8             47271.0     109653.5
+  160            16            45181.0     104659.5
+  160            32            45310.0     104999.5
+  160            64            41651.5      96642.5
+  320            4             30516.0      71186.5
+  320            8             33165.0      77078.5
+  320            16            30431.5      70880.5
+  320            32            26900.0      62660.5
+  320            64            27159.0      63303.5
+  640            4             22516.0      52636.5
+  640            8             24490.5      57145.0
+  640            16            23514.5      54995.5
+  640            32            21167.0      49462.5
+  640            64            23154.5      54094.5
+
+finished_utc      2026-10-30T11:44:03Z
+results           /root/2026-cloud-perf/results/vultr-20261029-114841-vultr

@@ -1,0 +1,94 @@
+sysbench 1.0.20 (using system LuaJIT 2.1.1761786044)
+
+Initializing worker threads...
+
+Creating table 'sbtest9'...
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest9(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+Creating table 'sbtest4'...
+Creating table 'sbtest1'...
+Creating table 'sbtest7'...
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest4(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+Creating table 'sbtest6'...
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest1(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest7(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+Creating table 'sbtest10'...
+Creating table 'sbtest5'...
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest10(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest5(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+Creating table 'sbtest8'...
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest8(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest6(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+Creating table 'sbtest3'...
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest3(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
+Creating table 'sbtest2'...
+FATAL: mysql_drv_query() returned error 1290 (The MySQL server is running with the --read-only option so it cannot execute this statement) for query 'CREATE TABLE sbtest2(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  k INTEGER DEFAULT '0' NOT NULL,
+  c CHAR(120) DEFAULT '' NOT NULL,
+  pad CHAR(60) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+) /*! ENGINE = innodb */ '
+FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1290, state = 'HY000': The MySQL server is running with the --read-only option so it cannot execute this statement
