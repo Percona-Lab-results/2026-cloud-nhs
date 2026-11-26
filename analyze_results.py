@@ -1046,7 +1046,7 @@ def chart_cost(work: HostWork, mode: str, out: Path, title: str,
     rows = sorted(((work.per_usd(p), p) for p in work.providers),
                   key=lambda r: (r[0] is not None, r[0] or 0), reverse=True)
 
-    fig, ax = plt.subplots(figsize=(8.6, 0.72 * len(rows) + 3.0))
+    fig, ax = plt.subplots(figsize=(8.6, 0.72 * len(rows) + 2.3))
     chrome(ax, t, "Transactions committed per USD at peak throughput", orient="h")
     # Counts run to the millions; full digits on every tick would be a wall of
     # zeroes.  The exact figures are in the table and the CSV.
@@ -1059,34 +1059,10 @@ def chart_cost(work: HostWork, mode: str, out: Path, title: str,
     # axes box exists, because what has to fit there is text.
     ax.set_xlim(0, xmax * 1.38)
 
-    note = (
-        "From the server's own counters (commits + rollbacks), taken just before "
-        "and just after each measured run, so ramp-ups count and nothing between "
-        "the runs does. Each run is read as a rate - what it committed over the "
-        "hours it took - and the runs of one (benchmark, data size, concurrency) "
-        "point are averaged, so no single lucky run sets a price. The best point "
-        "a provider reached is the bar: an hour at that rate, over what the hour "
-        "costs at its rate. The campaign's own length cancels out of that, which "
-        "is the intent - this prices how fast a host can go, not how long these "
-        "runs happened to keep it switched on. The schema builds, data loads and "
-        "idle time between the runs are in neither half."
-    )
-    # Only worth saying where something did fail; on a clean campaign it would
-    # be a sentence about nothing.
-    dropped = sum(work.total(p)["failed_runs"] for p in work.providers)
-    if dropped:
-        note += (
-            f" {dropped} iteration{'' if dropped == 1 else 's'} whose benchmark "
-            f"failed to run {'is' if dropped == 1 else 'are'} dropped outright, "
-            "and cannot stand as anyone's peak."
-        )
-    lines = textwrap.wrap(note, width=int((fig.get_figwidth() - 0.3) / 0.0666))
-    foot = 0.012 + 0.0145 * len(lines)
-
+    # The method behind the numbers is documented in the README, not printed
+    # under the chart.
     titles(fig, title, subtitle, t)
-    fig.tight_layout(rect=(0.0, foot + 0.05, 1.0, 0.86))
-    fig.text(0.012, 0.010, "\n".join(lines), ha="left", va="bottom",
-             fontsize=8, color=t["muted"], linespacing=1.5)
+    fig.tight_layout(rect=(0.0, 0.03, 1.0, 0.86))
     fig.canvas.draw()
 
     # The quotient's inputs, so the bar is never an unexplained ratio: the rate
