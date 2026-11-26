@@ -1033,8 +1033,15 @@ TEMPLATE = r"""<!DOCTYPE html>
           levels.forEach(function (c) {
             var v = cell(p.key, ds.value, c);
             if (!v) return;
-            max = Math.max(max, v.max);
-            if (v.min > 0) min = Math.min(min, v.min);
+            // Fit what is drawn: each run's own value in the individual view,
+            // the mean otherwise.
+            var vals = individual
+              ? (v.vals || []).map(function (rv) { return rv[1]; })
+              : [v.mean];
+            vals.forEach(function (x) {
+              max = Math.max(max, x);
+              if (x > 0) min = Math.min(min, x);
+            });
           });
         });
       });
@@ -1104,8 +1111,7 @@ TEMPLATE = r"""<!DOCTYPE html>
         });
         if (!pts.length) return;
         if (individual) {
-          // One polyline per run. No min-max band: the runs *are* the spread,
-          // and a wash behind them would only restate it.
+          // One polyline per run.
           var byRun = {};
           pts.forEach(function (q) {
             (q.v.vals || []).forEach(function (rv) {
@@ -1126,14 +1132,6 @@ TEMPLATE = r"""<!DOCTYPE html>
             });
           });
         } else {
-          // min-max band as a 10% wash, never a saturated block.
-          if (pts.length > 1) {
-            var up = pts.map(function (q) { return q.x + "," + yOf(q.v.max); });
-            var down = pts.slice().reverse().map(function (q) { return q.x + "," + yOf(q.v.min); });
-            svg.appendChild(svgEl("polygon", {
-              points: up.concat(down).join(" "), fill: color, opacity: 0.10,
-            }));
-          }
           svg.appendChild(svgEl("polyline", {
             points: pts.map(function (q) { return q.x + "," + yOf(q.v.mean); }).join(" "),
             fill: "none", stroke: color, "stroke-width": 2,

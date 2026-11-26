@@ -695,10 +695,6 @@ class Agg:
         hit = self.stats.get((provider, dataset, conc))
         return hit[0] if hit else None
 
-    def band(self, provider: str, dataset: int, conc: int):
-        hit = self.stats.get((provider, dataset, conc))
-        return (hit[1], hit[2]) if hit else (None, None)
-
     def peak(self, provider: str, dataset: int):
         """Best mean over the concurrency sweep, with the level that reached it."""
         best = (None, None)
@@ -882,21 +878,17 @@ def chart_scaling(agg: Agg, mode: str, out: Path, metric: str, conc_label: str,
     colors = SERIES[mode]
     fig, ax = plt.subplots(figsize=(10.3, 5.4))
     xs = np.arange(len(agg.concurrency))
-    scope = [v for k, v in agg.stats.items() if k[1] == dataset]
-    ymax = max((v[2] for v in scope), default=1.0)
-    ymin = min((v[1] for v in scope if v[1] > 0), default=1.0)
+    scope = [v[0] for k, v in agg.stats.items() if k[1] == dataset]
+    ymax = max(scope, default=1.0)
+    ymin = min((v for v in scope if v > 0), default=1.0)
 
     chrome(ax, t, metric)
     for i, provider in enumerate(agg.providers):
         means = [agg.mean(provider, dataset, c) for c in agg.concurrency]
-        lo = [agg.band(provider, dataset, c)[0] for c in agg.concurrency]
-        hi = [agg.band(provider, dataset, c)[1] for c in agg.concurrency]
         keep = [j for j, v in enumerate(means) if v is not None]
         if not keep:
             continue
         kx = xs[keep]
-        ax.fill_between(kx, [lo[j] for j in keep], [hi[j] for j in keep],
-                        color=colors[i], alpha=0.10, linewidth=0, zorder=1)
         ax.plot(kx, [means[j] for j in keep], color=colors[i], linewidth=2,
                 solid_capstyle="round", solid_joinstyle="round",
                 marker=MARKERS[i], markersize=6.5, markeredgecolor=t["surface"],
@@ -1429,13 +1421,13 @@ BENCH_SPEC = {
         metric="TPS (transactions/s)", conc_label="Threads", conc_short="t",
         dataset_col="rows_per_table", conc_col="threads",
         title="sysbench oltp_read_write - throughput",
-        sub="Managed MySQL, 10 tables; mean of the measured 20 min window across runs, band = min-max",
+        sub="Managed MySQL, 10 tables; mean of the measured 20 min window across runs",
         peak_title="sysbench oltp_read_write - peak throughput",
         peak_sub="Best thread level per provider, at the selected data-set size",
         table="summary_sysbench_tps.csv",
         p95_metric="p95 latency (ms) - lower is better",
         p95_title="sysbench oltp_read_write - 95th percentile latency",
-        p95_sub="sysbench's own p95 over the measured 20 min window; mean across runs, band = min-max",
+        p95_sub="sysbench's own p95 over the measured 20 min window; mean across runs",
         p95_note="sysbench reports a fresh statistics block after the ramp-up, so this "
                  "percentile covers the measured window only - the same window as the TPS above.",
         p95_table="summary_sysbench_p95_ms.csv",
@@ -1444,7 +1436,7 @@ BENCH_SPEC = {
         metric="NOPM (new orders/min)", conc_label="Virtual users", conc_short="vu",
         dataset_col="warehouses", conc_col="vu",
         title="HammerDB TPC-C - throughput",
-        sub="Managed MySQL; mean of the measured 20 min window across runs, band = min-max",
+        sub="Managed MySQL; mean of the measured 20 min window across runs",
         peak_title="HammerDB TPC-C - peak throughput",
         peak_sub="Best virtual-user level per provider, at the selected warehouse count",
         table="summary_hammerdb_nopm.csv",
@@ -1453,7 +1445,7 @@ BENCH_SPEC = {
         # HammerDB's time profile is never reset between ramp-up and the measured
         # window, so unlike NOPM this percentile includes the ramp-up.
         p95_sub="HammerDB xtprof p95 merged across virtual users, ramp-up included; "
-                "mean across runs, band = min-max",
+                "mean across runs",
         p95_note="HammerDB's time profile is never reset, so unlike the NOPM above this "
                  "percentile includes the 5 min ramp-up - it reads a little better than a "
                  "window-only figure would, and is not directly comparable with sysbench's.",
