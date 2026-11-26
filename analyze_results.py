@@ -66,7 +66,7 @@ SERIES = {
 }
 THEME = {
     "light": dict(
-        surface="#fcfcfb", plane="#f9f9f7", primary="#0b0b0b",
+        surface="#ffffff", plane="#ffffff", primary="#0b0b0b",
         secondary="#52514e", muted="#898781", grid="#e1e0d9", axis="#c3c2b7",
     ),
     "dark": dict(
