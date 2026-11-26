@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Managed PostgreSQL cloud performance - TPS / NOPM</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --plane: #f9f9f7;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
+  --series-6: #008300;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface-1: #1a1a19;
+      --plane: #0d0d0d;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted: #898781;
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-1: #3987e5;
+      --series-2: #d95926;
+      --series-3: #199e70;
+      --series-4: #c98500;
+      --series-5: #d55181;
+      --series-6: #008300;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --plane: #0d0d0d;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+  --series-6: #008300;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 0 64px;
+    background: var(--plane);
+    color: var(--text-primary);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+  header.page { padding: 40px 0 8px; display: flex; gap: 24px; align-items: flex-start; }
+  header.page .grow { flex: 1 1 auto; min-width: 0; }
+  h1 { margin: 0 0 6px; font-size: 26px; font-weight: 650; letter-spacing: -0.01em; }
+  .sub { margin: 0; color: var(--text-secondary); font-size: 14px; }
+  .meta { margin: 10px 0 0; color: var(--text-muted); font-size: 12.5px; }
+
+  button {
+    font: inherit; font-size: 13px; color: var(--text-secondary);
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 12px; cursor: pointer;
+  }
+  button:hover { color: var(--text-primary); }
+  button:focus-visible { outline: 2px solid var(--series-1); outline-offset: 2px; }
+  button[aria-pressed="true"],
+  button[aria-expanded="true"] { color: var(--text-primary); border-color: var(--axis); }
+
+  section.bench { margin-top: 44px; }
+  /* Anything the URL can land on keeps a little air above it, so a figure
+     scrolled to does not sit jammed against the top of the window. */
+  section.bench, figure.card { scroll-margin-top: 18px; }
+  h2 {
+    margin: 0 0 4px; font-size: 19px; font-weight: 650;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+
+  figure.card {
+    margin: 24px 0 0; padding: 20px 20px 16px;
+    background: var(--surface-1);
+    border: 1px solid var(--border); border-radius: 12px;
+    position: relative;
+  }
+  figure.card figcaption { margin-bottom: 18px; display: flex; gap: 16px; align-items: flex-start; }
+  figcaption .grow { flex: 1 1 auto; min-width: 0; }
+  .fig-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .fig-sub { margin-top: 3px; font-size: 13px; color: var(--text-secondary); }
+
+  /* One filter row above everything it scopes - never inside a chart card. */
+  .filters {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 10px 14px; margin-top: 18px;
+  }
+  .filters .filter-group { display: inline-flex; align-items: center; gap: 10px; }
+  .filters .filter-label { font-size: 13px; color: var(--text-secondary); }
+  .segmented {
+    display: inline-flex; gap: 4px; padding: 4px;
+    border: 1px solid var(--border); border-radius: 10px;
+  }
+  .segmented button {
+    background: none; border: 1px solid transparent; border-radius: 7px;
+    padding: 6px 14px;
+  }
+  .segmented button[aria-checked="true"] {
+    background: var(--surface-1); border-color: var(--axis);
+    color: var(--text-primary); font-weight: 600;
+  }
+
+  /* Scoped to the plot: a blanket `svg { width: 100% }` would also stretch the
+     legend's key swatch across its button and draw it over the label. */
+  .plot { min-width: 0; }
+  .plot > svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .plot > svg:focus-visible { outline: 2px solid var(--series-1); outline-offset: 3px; border-radius: 4px; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 4px; justify-content: center; margin-top: 16px; }
+  .legend button {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: none; border: 1px solid transparent; padding: 4px 9px; border-radius: 999px;
+    color: var(--text-secondary); font-size: 13px;
+  }
+  .legend button:hover { background: var(--plane); }
+  .legend button[aria-pressed="false"] { opacity: 0.4; }
+  .legend .key { flex: 0 0 auto; display: block; width: 22px; height: 12px; overflow: visible; }
+
+  .note { margin-top: 14px; font-size: 12.5px; color: var(--text-muted); }
+
+  .tooltip {
+    position: absolute; z-index: 10; pointer-events: none; opacity: 0;
+    transition: opacity .09s linear;
+    min-width: 150px; padding: 10px 12px;
+    background: var(--surface-1); color: var(--text-primary);
+    border: 1px solid var(--border); border-radius: 9px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
+    font-size: 13px;
+  }
+  .tooltip[data-open="1"] { opacity: 1; }
+  .tt-head { font-size: 12px; color: var(--text-secondary); margin-bottom: 7px; }
+  .tt-row { display: flex; align-items: baseline; gap: 8px; margin-top: 4px; }
+  .tt-row .stroke { flex: 0 0 12px; height: 2px; border-radius: 1px; align-self: center; }
+  .tt-row .val { font-weight: 650; font-variant-numeric: tabular-nums; }
+  .tt-row .name { color: var(--text-secondary); font-size: 12.5px; }
+  .tt-row .range { color: var(--text-muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+
+  .table-wrap { display: none; margin-top: 18px; overflow-x: auto; }
+  .table-wrap[data-open="1"] { display: block; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  caption { text-align: left; color: var(--text-secondary); font-size: 12.5px; padding-bottom: 8px; }
+  th, td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--text-secondary); font-weight: 600; }
+  tbody td { font-variant-numeric: tabular-nums; color: var(--text-primary); }
+  tbody td .range { color: var(--text-muted); font-size: 11.5px; }
+  .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 7px; vertical-align: baseline; }
+
+  .inventory { margin-top: 28px; }
+  .inventory table { max-width: 760px; }
+  .warn-dot { color: var(--text-secondary); }
+
+  @media print { body { background: #fff; } figure.card { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div class="grow">
+      <h1>Managed PostgreSQL cloud performance</h1>
+      <p class="sub">sysbench <code>oltp_read_write</code> throughput (TPS) and HammerDB TPC-C throughput (NOPM) across cloud providers, the 95th-percentile latency each sustained while delivering it, and how many transactions each provider's database host committed per dollar billed for running it.</p>
+      <p class="meta" id="meta"></p>
+    </div>
+    <button id="theme-toggle" type="button" aria-live="polite">Theme</button>
+  </header>
+
+  <div id="benches"></div>
+
+  <!-- Cost efficiency is one measure for the whole host, not one per
+       benchmark, so it sits on its own rather than inside either section. -->
+  <div id="cost"></div>
+
+  <section class="inventory">
+    <h2>Instance cost</h2>
+    <div id="pricing"></div>
+  </section>
+
+  <section class="inventory">
+    <h2>Benchmark sessions</h2>
+    <div id="inventory"></div>
+  </section>
+</div>
+
+<script id="payload" type="application/json">{"generated": "2026-11-26 05:38 UTC", "root": "/home/dbs153/2026-cloud-nhs/results-pg", "sessions": [{"provider": "exoscale", "name": "Exoscale", "stamp": "20261022-102545", "bench": "hammerdb", "rows": 15, "dropped": 0, "dir": "exoscale-20261022-102545-exoscale"}, {"provider": "exoscale", "name": "Exoscale", "stamp": "20261023-010826", "bench": "hammerdb", "rows": 30, "dropped": 0, "dir": "exoscale-20261023-010826-exoscale"}, {"provider": "ovhcloud", "name": "OVHcloud", "stamp": "20261022-120706", "bench": "hammerdb", "rows": 15, "dropped": 0, "dir": "ovhcloud-20261022-120706-ovhcloud"}, {"provider": "ovhcloud", "name": "OVHcloud", "stamp": "20261023-010913", "bench": "hammerdb", "rows": 30, "dropped": 0, "dir": "ovhcloud-20261023-010913-ovhcloud"}, {"provider": "scaleway", "name": "Scaleway", "stamp": "20261022-105440", "bench": "hammerdb", "rows": 15, "dropped": 0, "dir": "scaleway-20261022-105440-scaleway"}, {"provider": "scaleway", "name": "Scaleway", "stamp": "20261023-010843", "bench": "hammerdb", "rows": 30, "dropped": 0, "dir": "scaleway-20261023-010843-scaleway"}, {"provider": "upcloud", "name": "UpCloud", "stamp": "20261022-115808", "bench": "hammerdb", "rows": 15, "dropped": 0, "dir": "upcloud-20261022-115808-upcloud"}, {"provider": "upcloud", "name": "UpCloud", "stamp": "20261023-010854", "bench": "hammerdb", "rows": 30, "dropped": 0, "dir": "upcloud-20261023-010854-upcloud"}, {"provider": "vultr", "name": "Vultr", "stamp": "20261029-114841", "bench": "hammerdb", "rows": 30, "dropped": 0, "dir": "vultr-20261029-114841-vultr"}], "cost": {"title": "Managed database - cost efficiency", "sub": "An hour at the best throughput each host reached, over what that hour costs at the provider's rate", "providers": [{"key": "exoscale", "name": "Exoscale", "light": "#2a78d6", "dark": "#3987e5", "marker": "circle", "perUsd": 13874373.446539225, "peak": {"rate": 9018343, "label": "HammerDB 160 warehouses vu32", "short": "HammerDB 160w vu32", "runs": 3}, "txn": 127183901, "rows": 718653587, "outside": 18584937, "outsideRows": 7546046035, "runs": 45, "sessionCount": 2, "benches": ["hammerdb"], "failedTxn": 0, "usdPerHour": 0.65, "hours": 18.9, "costUsd": 12.28, "hoursInit": 12.1, "hoursWall": 31.0, "hoursDropped": 0, "failedRuns": 0}, {"key": "ovhcloud", "name": "OVHcloud", "light": "#eb6834", "dark": "#d95926", "marker": "square", "perUsd": 8332832.211428706, "peak": {"rate": 4083088, "label": "HammerDB 160 warehouses vu64", "short": "HammerDB 160w vu64", "runs": 3}, "txn": 47707476, "rows": 269351965, "outside": 18588555, "outsideRows": 7620291047, "runs": 45, "sessionCount": 2, "benches": ["hammerdb"], "failedTxn": 0, "usdPerHour": 0.49, "hours": 18.9, "costUsd": 9.28, "hoursInit": 14.5, "hoursWall": 33.4, "hoursDropped": 0, "failedRuns": 0}, {"key": "scaleway", "name": "Scaleway", "light": "#1baf7a", "dark": "#199e70", "marker": "triangle", "perUsd": 8643766.94463168, "peak": {"rate": 4926947, "label": "HammerDB 160 warehouses vu64", "short": "HammerDB 160w vu64", "runs": 3}, "txn": 49861807, "rows": 281602390, "outside": 18582645, "outsideRows": 7607920610, "runs": 45, "sessionCount": 2, "benches": ["hammerdb"], "failedTxn": 0, "usdPerHour": 0.57, "hours": 18.9, "costUsd": 10.8, "hoursInit": 16.6, "hoursWall": 35.6, "hoursDropped": 0, "failedRuns": 0}, {"key": "upcloud", "name": "UpCloud", "light": "#eda100", "dark": "#c98500", "marker": "diamond", "perUsd": 19507160.000127096, "peak": {"rate": 5871655, "label": "HammerDB 160 warehouses vu32", "short": "HammerDB 160w vu32", "runs": 3}, "txn": 82645488, "rows": 466849125, "outside": 18590144, "outsideRows": 7595621408, "runs": 45, "sessionCount": 2, "benches": ["hammerdb"], "failedTxn": 0, "usdPerHour": 0.301, "hours": 18.9, "costUsd": 5.69, "hoursInit": 14.7, "hoursWall": 33.5, "hoursDropped": 0, "failedRuns": 0}, {"key": "vultr", "name": "Vultr", "light": "#e87ba4", "dark": "#d55181", "marker": "triangleDown", "perUsd": 14781677.919809535, "peak": {"rate": 6341340, "label": "HammerDB 160 warehouses vu4", "short": "HammerDB 160w vu4", "runs": 2}, "txn": 55351546, "rows": 312717068, "outside": 12400845, "outsideRows": 5068032799, "runs": 30, "sessionCount": 1, "benches": ["hammerdb"], "failedTxn": 0, "usdPerHour": 0.429, "hours": 12.7, "costUsd": 5.43, "hoursInit": 11.3, "hoursWall": 23.9, "hoursDropped": 0, "failedRuns": 0}], "skipped": []}, "benches": [{"key": "hammerdb", "title": "HammerDB TPC-C", "metric": "NOPM", "metricLong": "NOPM (new orders/min)", "concLabel": "Virtual users", "concShort": "vu", "scalingTitle": "HammerDB TPC-C - throughput", "scalingSub": "Managed PostgreSQL; mean of the measured 20 min window across runs, band = min-max", "peakTitle": "HammerDB TPC-C - peak throughput", "peakSub": "Best virtual-user level per provider, at the selected warehouse count", "datasetCol": "warehouses", "concCol": "vu", "providers": [{"key": "exoscale", "name": "Exoscale", "light": "#2a78d6", "dark": "#3987e5", "marker": "circle", "usdPerHour": 0.65, "hours": 18.9, "costUsd": 12.28, "hoursInit": 12.1, "hoursWall": 31.0, "hoursDropped": 0, "failedRuns": 0}, {"key": "ovhcloud", "name": "OVHcloud", "light": "#eb6834", "dark": "#d95926", "marker": "square", "usdPerHour": 0.49, "hours": 18.9, "costUsd": 9.28, "hoursInit": 14.5, "hoursWall": 33.4, "hoursDropped": 0, "failedRuns": 0}, {"key": "scaleway", "name": "Scaleway", "light": "#1baf7a", "dark": "#199e70", "marker": "triangle", "usdPerHour": 0.57, "hours": 18.9, "costUsd": 10.8, "hoursInit": 16.6, "hoursWall": 35.6, "hoursDropped": 0, "failedRuns": 0}, {"key": "upcloud", "name": "UpCloud", "light": "#eda100", "dark": "#c98500", "marker": "diamond", "usdPerHour": 0.301, "hours": 18.9, "costUsd": 5.69, "hoursInit": 14.7, "hoursWall": 33.5, "hoursDropped": 0, "failedRuns": 0}, {"key": "vultr", "name": "Vultr", "light": "#e87ba4", "dark": "#d55181", "marker": "triangleDown", "usdPerHour": 0.429, "hours": 12.7, "costUsd": 5.43, "hoursInit": 11.3, "hoursWall": 23.9, "hoursDropped": 0, "failedRuns": 0}], "datasets": [{"value": 160, "label": "160 warehouses"}, {"value": 320, "label": "320 warehouses"}, {"value": 640, "label": "640 warehouses"}], "concurrency": [4, 8, 16, 32, 64], "cells": {"exoscale|160|4": {"mean": 61347.33, "min": 59142.0, "max": 63027.0, "runs": 3, "vals": [[1, 59142.0], [1, 63027.0], [2, 61873.0]]}, "exoscale|160|8": {"mean": 64640.33, "min": 62752.0, "max": 65929.0, "runs": 3, "vals": [[1, 62752.0], [1, 65929.0], [2, 65240.0]]}, "exoscale|160|16": {"mean": 67413.0, "min": 66677.0, "max": 68875.0, "runs": 3, "vals": [[1, 66677.0], [1, 68875.0], [2, 66687.0]]}, "exoscale|160|32": {"mean": 67463.67, "min": 65478.0, "max": 69041.0, "runs": 3, "vals": [[1, 65478.0], [1, 67872.0], [2, 69041.0]]}, "exoscale|160|64": {"mean": 65591.0, "min": 64221.0, "max": 66761.0, "runs": 3, "vals": [[1, 64221.0], [1, 66761.0], [2, 65791.0]]}, "exoscale|320|4": {"mean": 43191.33, "min": 42369.0, "max": 44487.0, "runs": 3, "vals": [[1, 42718.0], [1, 44487.0], [2, 42369.0]]}, "exoscale|320|8": {"mean": 48492.33, "min": 47591.0, "max": 50258.0, "runs": 3, "vals": [[1, 47591.0], [1, 47628.0], [2, 50258.0]]}, "exoscale|320|16": {"mean": 49722.33, "min": 49234.0, "max": 49978.0, "runs": 3, "vals": [[1, 49234.0], [1, 49978.0], [2, 49955.0]]}, "exoscale|320|32": {"mean": 50307.67, "min": 49230.0, "max": 51725.0, "runs": 3, "vals": [[1, 49230.0], [1, 49968.0], [2, 51725.0]]}, "exoscale|320|64": {"mean": 49272.67, "min": 49000.0, "max": 49419.0, "runs": 3, "vals": [[1, 49000.0], [1, 49399.0], [2, 49419.0]]}, "exoscale|640|4": {"mean": 30595.67, "min": 30404.0, "max": 30978.0, "runs": 3, "vals": [[1, 30405.0], [1, 30978.0], [2, 30404.0]]}, "exoscale|640|8": {"mean": 37050.0, "min": 35705.0, "max": 37795.0, "runs": 3, "vals": [[1, 37650.0], [1, 37795.0], [2, 35705.0]]}, "exoscale|640|16": {"mean": 36963.0, "min": 36077.0, "max": 37545.0, "runs": 3, "vals": [[1, 37267.0], [1, 37545.0], [2, 36077.0]]}, "exoscale|640|32": {"mean": 38678.67, "min": 37959.0, "max": 39410.0, "runs": 3, "vals": [[1, 37959.0], [1, 38667.0], [2, 39410.0]]}, "exoscale|640|64": {"mean": 37871.33, "min": 36013.0, "max": 39723.0, "runs": 3, "vals": [[1, 36013.0], [1, 37878.0], [2, 39723.0]]}, "ovhcloud|160|4": {"mean": 25012.33, "min": 21048.0, "max": 32881.0, "runs": 3, "vals": [[1, 21048.0], [1, 32881.0], [2, 21108.0]]}, "ovhcloud|160|8": {"mean": 27281.33, "min": 24976.0, "max": 30962.0, "runs": 3, "vals": [[1, 25906.0], [1, 30962.0], [2, 24976.0]]}, "ovhcloud|160|16": {"mean": 25803.67, "min": 24380.0, "max": 27724.0, "runs": 3, "vals": [[1, 25307.0], [1, 27724.0], [2, 24380.0]]}, "ovhcloud|160|32": {"mean": 28952.0, "min": 26080.0, "max": 34251.0, "runs": 3, "vals": [[1, 26525.0], [1, 34251.0], [2, 26080.0]]}, "ovhcloud|160|64": {"mean": 29717.67, "min": 25838.0, "max": 32172.0, "runs": 3, "vals": [[1, 25838.0], [1, 31143.0], [2, 32172.0]]}, "ovhcloud|320|4": {"mean": 12860.67, "min": 12306.0, "max": 13769.0, "runs": 3, "vals": [[1, 12507.0], [1, 13769.0], [2, 12306.0]]}, "ovhcloud|320|8": {"mean": 16205.67, "min": 15703.0, "max": 16773.0, "runs": 3, "vals": [[1, 15703.0], [1, 16773.0], [2, 16141.0]]}, "ovhcloud|320|16": {"mean": 20236.67, "min": 16231.0, "max": 23124.0, "runs": 3, "vals": [[1, 21355.0], [1, 23124.0], [2, 16231.0]]}, "ovhcloud|320|32": {"mean": 19312.0, "min": 17440.0, "max": 21886.0, "runs": 3, "vals": [[1, 18610.0], [1, 21886.0], [2, 17440.0]]}, "ovhcloud|320|64": {"mean": 19822.67, "min": 17785.0, "max": 22602.0, "runs": 3, "vals": [[1, 19081.0], [1, 22602.0], [2, 17785.0]]}, "ovhcloud|640|4": {"mean": 7999.33, "min": 6620.0, "max": 8760.0, "runs": 3, "vals": [[1, 8618.0], [1, 8760.0], [2, 6620.0]]}, "ovhcloud|640|8": {"mean": 11436.0, "min": 8779.0, "max": 15895.0, "runs": 3, "vals": [[1, 9634.0], [1, 15895.0], [2, 8779.0]]}, "ovhcloud|640|16": {"mean": 11539.33, "min": 10999.0, "max": 12114.0, "runs": 3, "vals": [[1, 11505.0], [1, 12114.0], [2, 10999.0]]}, "ovhcloud|640|32": {"mean": 13039.67, "min": 10951.0, "max": 16347.0, "runs": 3, "vals": [[1, 11821.0], [1, 16347.0], [2, 10951.0]]}, "ovhcloud|640|64": {"mean": 11451.33, "min": 10089.0, "max": 12178.0, "runs": 3, "vals": [[1, 10089.0], [1, 12178.0], [2, 12087.0]]}, "scaleway|160|4": {"mean": 12076.33, "min": 11424.0, "max": 13038.0, "runs": 3, "vals": [[1, 11767.0], [1, 13038.0], [2, 11424.0]]}, "scaleway|160|8": {"mean": 17673.0, "min": 15536.0, "max": 19430.0, "runs": 3, "vals": [[1, 15536.0], [1, 19430.0], [2, 18053.0]]}, "scaleway|160|16": {"mean": 26892.67, "min": 26304.0, "max": 27858.0, "runs": 3, "vals": [[1, 26304.0], [1, 27858.0], [2, 26516.0]]}, "scaleway|160|32": {"mean": 30696.67, "min": 29670.0, "max": 32091.0, "runs": 3, "vals": [[1, 30329.0], [1, 32091.0], [2, 29670.0]]}, "scaleway|160|64": {"mean": 36345.33, "min": 36054.0, "max": 36793.0, "runs": 3, "vals": [[1, 36054.0], [1, 36793.0], [2, 36189.0]]}, "scaleway|320|4": {"mean": 9136.33, "min": 8454.0, "max": 9558.0, "runs": 3, "vals": [[1, 8454.0], [1, 9558.0], [2, 9397.0]]}, "scaleway|320|8": {"mean": 15558.0, "min": 15010.0, "max": 16105.0, "runs": 3, "vals": [[1, 15010.0], [1, 16105.0], [2, 15559.0]]}, "scaleway|320|16": {"mean": 22409.67, "min": 22210.0, "max": 22714.0, "runs": 3, "vals": [[1, 22305.0], [1, 22714.0], [2, 22210.0]]}, "scaleway|320|32": {"mean": 24633.33, "min": 24262.0, "max": 24820.0, "runs": 3, "vals": [[1, 24262.0], [1, 24818.0], [2, 24820.0]]}, "scaleway|320|64": {"mean": 25697.0, "min": 25534.0, "max": 25797.0, "runs": 3, "vals": [[1, 25534.0], [1, 25760.0], [2, 25797.0]]}, "scaleway|640|4": {"mean": 7735.0, "min": 7622.0, "max": 7840.0, "runs": 3, "vals": [[1, 7743.0], [1, 7840.0], [2, 7622.0]]}, "scaleway|640|8": {"mean": 13464.33, "min": 13322.0, "max": 13733.0, "runs": 3, "vals": [[1, 13338.0], [1, 13733.0], [2, 13322.0]]}, "scaleway|640|16": {"mean": 17020.33, "min": 16834.0, "max": 17197.0, "runs": 3, "vals": [[1, 16834.0], [1, 17030.0], [2, 17197.0]]}, "scaleway|640|32": {"mean": 17887.0, "min": 17645.0, "max": 18032.0, "runs": 3, "vals": [[1, 17645.0], [1, 18032.0], [2, 17984.0]]}, "scaleway|640|64": {"mean": 17754.33, "min": 17569.0, "max": 18090.0, "runs": 3, "vals": [[1, 17604.0], [1, 18090.0], [2, 17569.0]]}, "upcloud|160|4": {"mean": 33615.67, "min": 28272.0, "max": 36290.0, "runs": 3, "vals": [[1, 28272.0], [1, 36290.0], [2, 36285.0]]}, "upcloud|160|8": {"mean": 38252.33, "min": 32773.0, "max": 41562.0, "runs": 3, "vals": [[1, 32773.0], [1, 41562.0], [2, 40422.0]]}, "upcloud|160|16": {"mean": 42302.0, "min": 41820.0, "max": 43169.0, "runs": 3, "vals": [[1, 41820.0], [1, 41917.0], [2, 43169.0]]}, "upcloud|160|32": {"mean": 43025.33, "min": 39765.0, "max": 45835.0, "runs": 3, "vals": [[1, 39765.0], [1, 43476.0], [2, 45835.0]]}, "upcloud|160|64": {"mean": 42436.0, "min": 35033.0, "max": 46177.0, "runs": 3, "vals": [[1, 35033.0], [1, 46177.0], [2, 46098.0]]}, "upcloud|320|4": {"mean": 21855.33, "min": 13415.0, "max": 29946.0, "runs": 3, "vals": [[1, 13415.0], [1, 22205.0], [2, 29946.0]]}, "upcloud|320|8": {"mean": 29054.0, "min": 25631.0, "max": 31189.0, "runs": 3, "vals": [[1, 25631.0], [1, 30342.0], [2, 31189.0]]}, "upcloud|320|16": {"mean": 34324.67, "min": 30672.0, "max": 36578.0, "runs": 3, "vals": [[1, 30672.0], [1, 35724.0], [2, 36578.0]]}, "upcloud|320|32": {"mean": 34999.33, "min": 32472.0, "max": 36670.0, "runs": 3, "vals": [[1, 32472.0], [1, 35856.0], [2, 36670.0]]}, "upcloud|320|64": {"mean": 32127.67, "min": 25211.0, "max": 35707.0, "runs": 3, "vals": [[1, 25211.0], [1, 35707.0], [2, 35465.0]]}, "upcloud|640|4": {"mean": 20443.33, "min": 19354.0, "max": 21977.0, "runs": 3, "vals": [[1, 19354.0], [1, 19999.0], [2, 21977.0]]}, "upcloud|640|8": {"mean": 27104.67, "min": 26790.0, "max": 27590.0, "runs": 3, "vals": [[1, 26790.0], [1, 26934.0], [2, 27590.0]]}, "upcloud|640|16": {"mean": 27790.0, "min": 25626.0, "max": 30858.0, "runs": 3, "vals": [[1, 25626.0], [1, 26886.0], [2, 30858.0]]}, "upcloud|640|32": {"mean": 27945.0, "min": 26368.0, "max": 28825.0, "runs": 3, "vals": [[1, 26368.0], [1, 28642.0], [2, 28825.0]]}, "upcloud|640|64": {"mean": 27197.0, "min": 26302.0, "max": 27780.0, "runs": 3, "vals": [[1, 26302.0], [1, 27509.0], [2, 27780.0]]}, "vultr|160|4": {"mean": 47428.0, "min": 44171.0, "max": 50685.0, "runs": 2, "vals": [[1, 50685.0], [2, 44171.0]]}, "vultr|160|8": {"mean": 47271.0, "min": 46137.0, "max": 48405.0, "runs": 2, "vals": [[1, 46137.0], [2, 48405.0]]}, "vultr|160|16": {"mean": 45181.0, "min": 42310.0, "max": 48052.0, "runs": 2, "vals": [[1, 42310.0], [2, 48052.0]]}, "vultr|160|32": {"mean": 45310.0, "min": 43806.0, "max": 46814.0, "runs": 2, "vals": [[1, 43806.0], [2, 46814.0]]}, "vultr|160|64": {"mean": 41651.5, "min": 37775.0, "max": 45528.0, "runs": 2, "vals": [[1, 37775.0], [2, 45528.0]]}, "vultr|320|4": {"mean": 30516.0, "min": 30100.0, "max": 30932.0, "runs": 2, "vals": [[1, 30100.0], [2, 30932.0]]}, "vultr|320|8": {"mean": 33165.0, "min": 31393.0, "max": 34937.0, "runs": 2, "vals": [[1, 31393.0], [2, 34937.0]]}, "vultr|320|16": {"mean": 30431.5, "min": 29395.0, "max": 31468.0, "runs": 2, "vals": [[1, 29395.0], [2, 31468.0]]}, "vultr|320|32": {"mean": 26900.0, "min": 26691.0, "max": 27109.0, "runs": 2, "vals": [[1, 26691.0], [2, 27109.0]]}, "vultr|320|64": {"mean": 27159.0, "min": 26984.0, "max": 27334.0, "runs": 2, "vals": [[1, 27334.0], [2, 26984.0]]}, "vultr|640|4": {"mean": 22516.0, "min": 22032.0, "max": 23000.0, "runs": 2, "vals": [[1, 23000.0], [2, 22032.0]]}, "vultr|640|8": {"mean": 24490.5, "min": 24095.0, "max": 24886.0, "runs": 2, "vals": [[1, 24886.0], [2, 24095.0]]}, "vultr|640|16": {"mean": 23514.5, "min": 20810.0, "max": 26219.0, "runs": 2, "vals": [[1, 26219.0], [2, 20810.0]]}, "vultr|640|32": {"mean": 21167.0, "min": 19223.0, "max": 23111.0, "runs": 2, "vals": [[1, 23111.0], [2, 19223.0]]}, "vultr|640|64": {"mean": 23154.5, "min": 21997.0, "max": 24312.0, "runs": 2, "vals": [[1, 24312.0], [2, 21997.0]]}}, "peaks": {"exoscale|160": {"value": 67463.67, "at": 32}, "exoscale|320": {"value": 50307.67, "at": 32}, "exoscale|640": {"value": 38678.67, "at": 32}, "ovhcloud|160": {"value": 29717.67, "at": 64}, "ovhcloud|320": {"value": 20236.67, "at": 16}, "ovhcloud|640": {"value": 13039.67, "at": 32}, "scaleway|160": {"value": 36345.33, "at": 64}, "scaleway|320": {"value": 25697.0, "at": 64}, "scaleway|640": {"value": 17887.0, "at": 32}, "upcloud|160": {"value": 43025.33, "at": 32}, "upcloud|320": {"value": 34999.33, "at": 32}, "upcloud|640": {"value": 27945.0, "at": 32}, "vultr|160": {"value": 47428.0, "at": 4}, "vultr|320": {"value": 33165.0, "at": 8}, "vultr|640": {"value": 24490.5, "at": 8}}, "incomplete": [], "p95": {"metric": "p95", "metricLong": "New-Order p95 latency (ms) - lower is better", "title": "HammerDB TPC-C - 95th percentile New-Order latency", "sub": "HammerDB xtprof p95 merged across virtual users, ramp-up included; mean across runs, band = min-max", "table": "summary_hammerdb_p95_ms.csv", "concurrency": [4, 8, 16, 32, 64], "cells": {"exoscale|160|4": {"mean": 4.26, "min": 3.99, "max": 4.61, "runs": 3, "vals": [[1, 3.99], [1, 4.61], [2, 4.18]]}, "exoscale|160|8": {"mean": 7.79, "min": 7.49, "max": 8.09, "runs": 3, "vals": [[1, 7.49], [1, 8.09], [2, 7.79]]}, "exoscale|160|16": {"mean": 14.97, "min": 14.88, "max": 15.17, "runs": 3, "vals": [[1, 14.88], [1, 14.88], [2, 15.17]]}, "exoscale|160|32": {"mean": 32.09, "min": 31.14, "max": 32.66, "runs": 3, "vals": [[1, 31.14], [1, 32.47], [2, 32.66]]}, "exoscale|160|64": {"mean": 77.34, "min": 71.33, "max": 82.59, "runs": 3, "vals": [[1, 71.33], [1, 78.09], [2, 82.59]]}, "exoscale|320|4": {"mean": 5.58, "min": 5.29, "max": 6.13, "runs": 3, "vals": [[1, 5.29], [1, 5.33], [2, 6.13]]}, "exoscale|320|8": {"mean": 9.86, "min": 9.62, "max": 10.17, "runs": 3, "vals": [[1, 9.78], [1, 10.17], [2, 9.62]]}, "exoscale|320|16": {"mean": 18.66, "min": 18.27, "max": 18.9, "runs": 3, "vals": [[1, 18.83], [1, 18.9], [2, 18.27]]}, "exoscale|320|32": {"mean": 41.05, "min": 39.73, "max": 42.86, "runs": 3, "vals": [[1, 40.58], [1, 42.86], [2, 39.73]]}, "exoscale|320|64": {"mean": 112.48, "min": 108.41, "max": 120.32, "runs": 3, "vals": [[1, 108.41], [1, 120.32], [2, 108.7]]}, "exoscale|640|4": {"mean": 7.79, "min": 7.67, "max": 7.95, "runs": 3, "vals": [[1, 7.67], [1, 7.75], [2, 7.95]]}, "exoscale|640|8": {"mean": 11.19, "min": 10.57, "max": 12.16, "runs": 3, "vals": [[1, 10.57], [1, 10.83], [2, 12.16]]}, "exoscale|640|16": {"mean": 20.67, "min": 20.18, "max": 21.19, "runs": 3, "vals": [[1, 20.18], [1, 20.65], [2, 21.19]]}, "exoscale|640|32": {"mean": 42.76, "min": 38.74, "max": 45.53, "runs": 3, "vals": [[1, 38.74], [1, 45.53], [2, 44.0]]}, "exoscale|640|64": {"mean": 127.36, "min": 94.47, "max": 148.3, "runs": 3, "vals": [[1, 139.31], [1, 148.3], [2, 94.47]]}, "ovhcloud|160|4": {"mean": 12.54, "min": 11.8, "max": 13.03, "runs": 3, "vals": [[1, 11.8], [1, 13.03], [2, 12.8]]}, "ovhcloud|160|8": {"mean": 18.65, "min": 17.6, "max": 20.03, "runs": 3, "vals": [[1, 17.6], [1, 18.3], [2, 20.03]]}, "ovhcloud|160|16": {"mean": 37.31, "min": 34.94, "max": 38.74, "runs": 3, "vals": [[1, 34.94], [1, 38.74], [2, 38.25]]}, "ovhcloud|160|32": {"mean": 63.87, "min": 58.22, "max": 70.39, "runs": 3, "vals": [[1, 63.0], [1, 70.39], [2, 58.22]]}, "ovhcloud|160|64": {"mean": 203.32, "min": 126.19, "max": 331.25, "runs": 3, "vals": [[1, 126.19], [1, 331.25], [2, 152.52]]}, "ovhcloud|320|4": {"mean": 20.08, "min": 19.07, "max": 21.81, "runs": 3, "vals": [[1, 19.07], [1, 21.81], [2, 19.35]]}, "ovhcloud|320|8": {"mean": 26.21, "min": 24.86, "max": 27.71, "runs": 3, "vals": [[1, 26.07], [1, 27.71], [2, 24.86]]}, "ovhcloud|320|16": {"mean": 36.92, "min": 34.02, "max": 41.3, "runs": 3, "vals": [[1, 34.02], [1, 35.44], [2, 41.3]]}, "ovhcloud|320|32": {"mean": 79.61, "min": 76.7, "max": 83.25, "runs": 3, "vals": [[1, 76.7], [1, 83.25], [2, 78.88]]}, "ovhcloud|320|64": {"mean": 156.79, "min": 141.02, "max": 165.52, "runs": 3, "vals": [[1, 163.84], [1, 165.52], [2, 141.02]]}, "ovhcloud|640|4": {"mean": 27.47, "min": 25.37, "max": 31.63, "runs": 3, "vals": [[1, 25.37], [1, 25.4], [2, 31.63]]}, "ovhcloud|640|8": {"mean": 38.68, "min": 26.9, "max": 46.17, "runs": 3, "vals": [[1, 26.9], [1, 46.17], [2, 42.96]]}, "ovhcloud|640|16": {"mean": 53.2, "min": 49.33, "max": 56.49, "runs": 3, "vals": [[1, 49.33], [1, 56.49], [2, 53.77]]}, "ovhcloud|640|32": {"mean": 92.33, "min": 75.58, "max": 106.19, "runs": 3, "vals": [[1, 75.58], [1, 95.23], [2, 106.19]]}, "ovhcloud|640|64": {"mean": 610.67, "min": 188.9, "max": 922.81, "runs": 3, "vals": [[1, 188.9], [1, 922.81], [2, 720.3]]}, "scaleway|160|4": {"mean": 19.67, "min": 17.08, "max": 21.35, "runs": 3, "vals": [[1, 17.08], [1, 21.35], [2, 20.57]]}, "scaleway|160|8": {"mean": 25.5, "min": 21.13, "max": 29.96, "runs": 3, "vals": [[1, 21.13], [1, 29.96], [2, 25.41]]}, "scaleway|160|16": {"mean": 31.78, "min": 29.85, "max": 32.82, "runs": 3, "vals": [[1, 32.65], [1, 32.82], [2, 29.85]]}, "scaleway|160|32": {"mean": 92.58, "min": 89.84, "max": 95.86, "runs": 3, "vals": [[1, 89.84], [1, 92.05], [2, 95.86]]}, "scaleway|160|64": {"mean": 134.74, "min": 131.03, "max": 141.3, "runs": 3, "vals": [[1, 131.9], [1, 141.3], [2, 131.03]]}, "scaleway|320|4": {"mean": 25.06, "min": 22.9, "max": 28.7, "runs": 3, "vals": [[1, 22.9], [1, 28.7], [2, 23.57]]}, "scaleway|320|8": {"mean": 27.99, "min": 26.73, "max": 29.95, "runs": 3, "vals": [[1, 26.73], [1, 29.95], [2, 27.29]]}, "scaleway|320|16": {"mean": 39.9, "min": 38.3, "max": 41.06, "runs": 3, "vals": [[1, 38.3], [1, 40.34], [2, 41.06]]}, "scaleway|320|32": {"mean": 111.53, "min": 109.08, "max": 114.77, "runs": 3, "vals": [[1, 109.08], [1, 114.77], [2, 110.74]]}, "scaleway|320|64": {"mean": 174.65, "min": 170.62, "max": 180.45, "runs": 3, "vals": [[1, 170.62], [1, 172.89], [2, 180.45]]}, "scaleway|640|4": {"mean": 26.73, "min": 26.01, "max": 27.53, "runs": 3, "vals": [[1, 26.01], [1, 27.53], [2, 26.64]]}, "scaleway|640|8": {"mean": 31.4, "min": 29.36, "max": 33.28, "runs": 3, "vals": [[1, 29.36], [1, 31.56], [2, 33.28]]}, "scaleway|640|16": {"mean": 54.89, "min": 49.34, "max": 59.38, "runs": 3, "vals": [[1, 49.34], [1, 55.94], [2, 59.38]]}, "scaleway|640|32": {"mean": 137.69, "min": 136.83, "max": 139.37, "runs": 3, "vals": [[1, 136.87], [1, 139.37], [2, 136.83]]}, "scaleway|640|64": {"mean": 239.91, "min": 230.94, "max": 248.23, "runs": 3, "vals": [[1, 230.94], [1, 240.55], [2, 248.23]]}, "upcloud|160|4": {"mean": 7.88, "min": 6.88, "max": 9.86, "runs": 3, "vals": [[1, 6.88], [1, 9.86], [2, 6.9]]}, "upcloud|160|8": {"mean": 12.2, "min": 9.93, "max": 14.98, "runs": 3, "vals": [[1, 11.7], [1, 14.98], [2, 9.93]]}, "upcloud|160|16": {"mean": 22.57, "min": 21.52, "max": 24.53, "runs": 3, "vals": [[1, 21.66], [1, 24.53], [2, 21.52]]}, "upcloud|160|32": {"mean": 52.85, "min": 49.35, "max": 57.63, "runs": 3, "vals": [[1, 49.35], [1, 57.63], [2, 51.56]]}, "upcloud|160|64": {"mean": 112.07, "min": 103.73, "max": 128.63, "runs": 3, "vals": [[1, 103.86], [1, 128.63], [2, 103.73]]}, "upcloud|320|4": {"mean": 13.98, "min": 6.77, "max": 22.69, "runs": 3, "vals": [[1, 12.49], [1, 22.69], [2, 6.77]]}, "upcloud|320|8": {"mean": 16.38, "min": 12.56, "max": 22.69, "runs": 3, "vals": [[1, 13.88], [1, 22.69], [2, 12.56]]}, "upcloud|320|16": {"mean": 26.99, "min": 22.32, "max": 32.6, "runs": 3, "vals": [[1, 26.07], [1, 32.6], [2, 22.32]]}, "upcloud|320|32": {"mean": 51.93, "min": 47.65, "max": 54.26, "runs": 3, "vals": [[1, 53.87], [1, 54.26], [2, 47.65]]}, "upcloud|320|64": {"mean": 119.72, "min": 102.55, "max": 151.0, "runs": 3, "vals": [[1, 105.61], [1, 151.0], [2, 102.55]]}, "upcloud|640|4": {"mean": 10.2, "min": 9.98, "max": 10.38, "runs": 3, "vals": [[1, 9.98], [1, 10.24], [2, 10.38]]}, "upcloud|640|8": {"mean": 14.31, "min": 13.9, "max": 14.67, "runs": 3, "vals": [[1, 14.35], [1, 14.67], [2, 13.9]]}, "upcloud|640|16": {"mean": 30.42, "min": 24.14, "max": 36.73, "runs": 3, "vals": [[1, 30.39], [1, 36.73], [2, 24.14]]}, "upcloud|640|32": {"mean": 71.58, "min": 61.69, "max": 88.83, "runs": 3, "vals": [[1, 64.21], [1, 88.83], [2, 61.69]]}, "upcloud|640|64": {"mean": 299.35, "min": 273.61, "max": 331.54, "runs": 3, "vals": [[1, 292.91], [1, 331.54], [2, 273.61]]}, "vultr|160|4": {"mean": 5.82, "min": 5.59, "max": 6.04, "runs": 2, "vals": [[1, 5.59], [2, 6.04]]}, "vultr|160|8": {"mean": 12.14, "min": 11.57, "max": 12.71, "runs": 2, "vals": [[1, 12.71], [2, 11.57]]}, "vultr|160|16": {"mean": 26.63, "min": 25.26, "max": 28.0, "runs": 2, "vals": [[1, 28.0], [2, 25.26]]}, "vultr|160|32": {"mean": 56.11, "min": 52.64, "max": 59.58, "runs": 2, "vals": [[1, 59.58], [2, 52.64]]}, "vultr|160|64": {"mean": 134.71, "min": 124.36, "max": 145.05, "runs": 2, "vals": [[1, 145.05], [2, 124.36]]}, "vultr|320|4": {"mean": 8.27, "min": 8.1, "max": 8.43, "runs": 2, "vals": [[1, 8.1], [2, 8.43]]}, "vultr|320|8": {"mean": 16.44, "min": 15.6, "max": 17.27, "runs": 2, "vals": [[1, 17.27], [2, 15.6]]}, "vultr|320|16": {"mean": 33.0, "min": 32.28, "max": 33.72, "runs": 2, "vals": [[1, 33.72], [2, 32.28]]}, "vultr|320|32": {"mean": 77.45, "min": 77.45, "max": 77.45, "runs": 2, "vals": [[1, 77.45], [2, 77.45]]}, "vultr|320|64": {"mean": 173.94, "min": 173.52, "max": 174.37, "runs": 2, "vals": [[1, 174.37], [2, 173.52]]}, "vultr|640|4": {"mean": 9.48, "min": 9.15, "max": 9.81, "runs": 2, "vals": [[1, 9.81], [2, 9.15]]}, "vultr|640|8": {"mean": 17.77, "min": 17.19, "max": 18.36, "runs": 2, "vals": [[1, 18.36], [2, 17.19]]}, "vultr|640|16": {"mean": 38.23, "min": 36.44, "max": 40.01, "runs": 2, "vals": [[1, 36.44], [2, 40.01]]}, "vultr|640|32": {"mean": 87.79, "min": 80.3, "max": 95.28, "runs": 2, "vals": [[1, 80.3], [2, 95.28]]}, "vultr|640|64": {"mean": 180.19, "min": 170.96, "max": 189.42, "runs": 2, "vals": [[1, 170.96], [2, 189.42]]}}, "note": "HammerDB's time profile is never reset, so unlike the NOPM above this percentile includes the 5 min ramp-up - it reads a little better than a window-only figure would, and is not directly comparable with sysbench's.", "missing": 0}}]}</script>
+<script>
+(function () {
+  "use strict";
+
+  var DATA = JSON.parse(document.getElementById("payload").textContent);
+  var root = document.documentElement;
+
+  // ------------------------------------------------------------- helpers ----
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = String(text);
+    return n;
+  }
+  function svgEl(tag, attrs) {
+    var n = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (var k in attrs) {
+      if (Object.prototype.hasOwnProperty.call(attrs, k)) n.setAttribute(k, attrs[k]);
+    }
+    return n;
+  }
+  function cssVar(name) {
+    return getComputedStyle(root).getPropertyValue(name).trim();
+  }
+  function fmt(v) {
+    if (v === null || v === undefined) return "n/a";
+    return Math.round(v).toLocaleString("en-US");
+  }
+  // Throughput per dollar lands in the tens for sysbench, so rounding to a
+  // whole number there would throw away a digit that matters.
+  function fmtp(v) {
+    if (v === null || v === undefined) return "n/a";
+    // A decimal only where it carries information: axis ticks land on whole
+    // numbers and "20.0" is just noise there.
+    if (v >= 100 || Math.abs(v - Math.round(v)) < 0.05) return Math.round(v).toLocaleString("en-US");
+    return v.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+  // Transaction counts run into the tens of millions. Full digits on every
+  // tick would be a wall of zeroes, so they are scaled and suffixed; the exact
+  // figure stays in the table view and the CSV.
+  function fmtc(v) {
+    if (v === null || v === undefined) return "n/a";
+    var u = [[1e9, "B"], [1e6, "M"], [1e3, "k"]];
+    for (var i = 0; i < u.length; i++) {
+      if (Math.abs(v) >= u[i][0]) {
+        var q = v / u[i][0];
+        return (Math.abs(q) < 100
+          ? q.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+          : Math.round(q).toLocaleString("en-US")) + u[i][1];
+      }
+    }
+    return Math.round(v).toLocaleString("en-US");
+  }
+  function usd(v) {
+    if (v === null || v === undefined) return "n/a";
+    return "$" + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  // Hours always carry one decimal, so a column of them lines up and 31.0
+  // beside 33.5 does not read as a coarser measurement than its neighbour.
+  function hrs(v) {
+    if (v === null || v === undefined) return "n/a";
+    return v.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+  // An hourly rate carries three decimals because one of these providers
+  // charges in tenths of a cent, and rounding it would price it as a rival's.
+  function rate(v) {
+    if (v === null || v === undefined) return "n/a";
+    return "$" + v.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + "/h";
+  }
+  function isDark() {
+    var t = root.getAttribute("data-theme");
+    if (t === "dark") return true;
+    if (t === "light") return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  // Color follows the provider, never its rank, so isolating a series in the
+  // legend cannot repaint the survivors.
+  function colorOf(p) { return isDark() ? p.dark : p.light; }
+
+  // ------------------------------------------------------- table heat ramp ---
+  // Ranking wash for the table cells: best green, worst red, through a neutral
+  // grey rather than a third hue, so the middle of the field reads as "middle"
+  // instead of as its own category.
+  //
+  // These are status steps, deliberately not the categorical hues - those belong
+  // to providers, and a provider must not look like a verdict. The wash is never
+  // the only encoding either: every cell it tints prints its own number, carries
+  // its rank in the title, and the shading is explained in the caption, so a
+  // reader who cannot separate red from green loses nothing but a scanning aid.
+  var HEAT = {
+    light: { good: [22, 122, 73], bad: [176, 36, 40], mid: [140, 138, 130], gain: 0.22 },
+    dark: { good: [46, 166, 105], bad: [206, 74, 66], mid: [140, 138, 130], gain: 0.34 },
+  };
+
+  // t runs 0 (worst) to 1 (best); null leaves the cell alone.
+  function heat(t) {
+    if (t === null) return "";
+    var h = HEAT[isDark() ? "dark" : "light"];
+    var pole = t < 0.5 ? h.bad : h.good;
+    var w = Math.abs(t - 0.5) * 2;
+    var rgb = [0, 1, 2].map(function (i) {
+      return Math.round(h.mid[i] + (pole[i] - h.mid[i]) * w);
+    });
+    return "rgba(" + rgb.join(",") + "," + (0.05 + h.gain * w).toFixed(3) + ")";
+  }
+
+  // Where one value sits in the spread of its column. By value, not by rank, so
+  // a field with one runaway winner looks like one - four near-equal providers
+  // do not get spaced out into four distinct verdicts.
+  function heatT(vals, v, higherIsBetter) {
+    if (v === null || v === undefined || vals.length < 2) return null;
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    if (!(hi > lo)) return null;
+    var t = (v - lo) / (hi - lo);
+    return higherIsBetter ? t : 1 - t;
+  }
+
+  // "1 of 6" for the best, counting from the good end whichever end that is.
+  function heatRank(vals, v, higherIsBetter) {
+    var better = vals.filter(function (o) {
+      return higherIsBetter ? o > v : o < v;
+    }).length;
+    return (better + 1) + " of " + vals.length;
+  }
+
+  // The wash and the title in one place, so no table can tint without saying
+  // what the tint means.
+  function shade(td, vals, v, higherIsBetter, what) {
+    var t = heatT(vals, v, higherIsBetter);
+    if (t === null) return;
+    td.style.background = heat(t);
+    td.title = "Rank " + heatRank(vals, v, higherIsBetter) + " " + what;
+  }
+
+  var HEAT_CAPTION = " Cells are shaded by where each provider lands in the "
+    + "column, green best to red worst; the value is printed in every cell.";
+
+  // Nice round axis ticks, so the labels carry the values that are not
+  // directly labelled. The axis always rounds UP to a whole step - otherwise
+  // the top gridline lands under the maximum and the data runs into the frame -
+  // and among the round candidates it takes the one closest to the wanted tick
+  // count, breaking ties towards the tighter axis so the plot is not left with
+  // a band of empty space above the data.
+  function ticks(max, target) {
+    max = Math.max(max, 1);
+    var mag = Math.pow(10, Math.floor(Math.log10(max / target)));
+    var best = null;
+    [mag / 10, mag, mag * 10].forEach(function (m) {
+      [1, 2, 2.5, 5].forEach(function (f) {
+        var step = m * f;
+        if (!(step > 0)) return;
+        var niceMax = Math.ceil(max / step - 0.0000001) * step;
+        var n = Math.round(niceMax / step);
+        if (n < 3 || n > 12) return;
+        var score = [Math.abs(n - target), niceMax, -n];
+        if (!best || score[0] < best.score[0] ||
+            (score[0] === best.score[0] && (score[1] < best.score[1] ||
+            (score[1] === best.score[1] && score[2] < best.score[2])))) {
+          best = { step: step, niceMax: niceMax, n: n, score: score };
+        }
+      });
+    });
+    if (!best) best = { step: max, niceMax: max, n: 1 };
+    var out = [];
+    for (var i = 0; i <= best.n; i++) out.push(i * best.step);
+    return { ticks: out, top: best.niceMax };
+  }
+
+  // A log axis for any view that asks for one (none do now that latency is
+  // linear, and the control is one flag away). 1-2-5 per decade, with the frame
+  // snapped out to the next step past the data so no point sits on the edge.
+  function logTicks(lo, hi) {
+    lo = Math.max(lo, 1e-6);
+    hi = Math.max(hi, lo * 1.001);
+    var all = [];
+    for (var e = Math.floor(Math.log10(lo)) - 1; e <= Math.ceil(Math.log10(hi)); e++) {
+      [1, 2, 5].forEach(function (f) { all.push(f * Math.pow(10, e)); });
+    }
+    var bottom = all[0], top = all[all.length - 1];
+    all.forEach(function (t) {
+      if (t <= lo) bottom = Math.max(bottom, t);
+    });
+    for (var i = all.length - 1; i >= 0; i--) if (all[i] >= hi) top = all[i];
+    return {
+      ticks: all.filter(function (t) { return t >= bottom && t <= top; }),
+      bottom: bottom, top: top,
+    };
+  }
+
+  var MARKER_R = 4.2;   // >= 8px mark
+  // The individual-runs view draws three times as many marks, so it asks for a
+  // smaller r; the hit target there is the column crosshair, not the mark.
+  function marker(shape, x, y, color, ring, r, ringW) {
+    var g = svgEl("g", {});
+    r = r || MARKER_R;
+    var node;
+    if (shape === "square") {
+      node = svgEl("rect", { x: x - r, y: y - r, width: r * 2, height: r * 2, rx: 0.8 });
+    } else if (shape === "triangle") {
+      node = svgEl("polygon", { points: [x, y - r * 1.2, x + r * 1.15, y + r * 0.85, x - r * 1.15, y + r * 0.85].join(" ") });
+    } else if (shape === "triangleDown") {
+      node = svgEl("polygon", { points: [x, y + r * 1.2, x + r * 1.15, y - r * 0.85, x - r * 1.15, y - r * 0.85].join(" ") });
+    } else if (shape === "plus") {
+      var a = r * 0.42, b = r * 1.2;
+      node = svgEl("polygon", { points: [
+        x - a, y - b, x + a, y - b, x + a, y - a, x + b, y - a,
+        x + b, y + a, x + a, y + a, x + a, y + b, x - a, y + b,
+        x - a, y + a, x - b, y + a, x - b, y - a, x - a, y - a].join(" ") });
+    } else if (shape === "diamond") {
+      node = svgEl("polygon", { points: [x, y - r * 1.3, x + r * 1.1, y, x, y + r * 1.3, x - r * 1.1, y].join(" ") });
+    } else {
+      node = svgEl("circle", { cx: x, cy: y, r: r });
+    }
+    node.setAttribute("fill", color);
+    // 2px surface ring keeps the mark legible where it crosses another line.
+    node.setAttribute("stroke", ring);
+    node.setAttribute("stroke-width", ringW || 2);
+    g.appendChild(node);
+    return g;
+  }
+  function legendKey(p, color, forBar) {
+    var s = svgEl("svg", {
+      width: 22, height: 12, viewBox: "0 0 22 12", class: "key",
+      style: "width:22px;height:12px;flex:0 0 auto",
+    });
+    if (forBar) {
+      var rect = svgEl("rect", { x: 5, y: 1, width: 12, height: 10, rx: 2, fill: color });
+      s.appendChild(rect);
+    } else {
+      var line = svgEl("line", { x1: 0, y1: 6, x2: 22, y2: 6, stroke: color, "stroke-width": 2, "stroke-linecap": "round" });
+      s.appendChild(line);
+      s.appendChild(marker(p.marker, 11, 6, color, cssVar("--surface-1")));
+    }
+    return s;
+  }
+
+  // 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yTop, yBase, r) {
+    r = Math.min(r, w / 2, Math.max(0, yBase - yTop));
+    var L = x, R = x + w;
+    return "M" + L + "," + yBase +
+           " L" + L + "," + (yTop + r) +
+           " Q" + L + "," + yTop + " " + (L + r) + "," + yTop +
+           " L" + (R - r) + "," + yTop +
+           " Q" + R + "," + yTop + " " + R + "," + (yTop + r) +
+           " L" + R + "," + yBase + " Z";
+  }
+
+  // The same rounding, laid on its side: rounded data-end, square at the baseline.
+  function barPathH(y, h, xBase, xEnd, r) {
+    r = Math.min(r, h / 2, Math.max(0, xEnd - xBase));
+    var T = y, B = y + h;
+    return "M" + xBase + "," + T +
+           " L" + (xEnd - r) + "," + T +
+           " Q" + xEnd + "," + T + " " + xEnd + "," + (T + r) +
+           " L" + xEnd + "," + (B - r) +
+           " Q" + xEnd + "," + B + " " + (xEnd - r) + "," + B +
+           " L" + xBase + "," + B + " Z";
+  }
+
+  // One labelled segmented control; single-select, arrow-key navigable.
+  // `initial` is the index that starts selected - the caller has already put the
+  // matching value in its own state, so this only sets the chip, and onPick is
+  // not fired at boot.
+  function segmented(host, label, options, onPick, initial) {
+    var start = initial > 0 && initial < options.length ? initial : 0;
+    var group = el("div", "filter-group");
+    group.appendChild(el("span", "filter-label", label));
+    var seg = el("div", "segmented");
+    seg.setAttribute("role", "radiogroup");
+    seg.setAttribute("aria-label", label);
+    var btns = options.map(function (o, i) {
+      var b = el("button", null, o.label);
+      b.type = "button";
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", i === start ? "true" : "false");
+      b.tabIndex = i === start ? 0 : -1;
+      seg.appendChild(b);
+      return b;
+    });
+    function select(i, focus) {
+      if (i < 0 || i >= btns.length) return;
+      btns.forEach(function (b, j) {
+        b.setAttribute("aria-checked", j === i ? "true" : "false");
+        b.tabIndex = j === i ? 0 : -1;
+      });
+      if (focus) btns[i].focus();
+      onPick(options[i].value);
+    }
+    btns.forEach(function (b, i) {
+      b.addEventListener("click", function () { select(i, false); });
+      b.addEventListener("keydown", function (ev) {
+        if (ev.key === "ArrowRight" || ev.key === "ArrowDown") { select((i + 1) % btns.length, true); ev.preventDefault(); }
+        else if (ev.key === "ArrowLeft" || ev.key === "ArrowUp") { select((i - 1 + btns.length) % btns.length, true); ev.preventDefault(); }
+      });
+    });
+    group.appendChild(seg);
+    host.appendChild(group);
+  }
+
+  function datasetOf(bench, value) {
+    for (var i = 0; i < bench.datasets.length; i++) {
+      if (bench.datasets[i].value === value) return bench.datasets[i];
+    }
+    return bench.datasets[0];
+  }
+
+  // A data-set size can be pinned in the URL, one key per benchmark, so a
+  // particular slice is linkable rather than something the reader has to be
+  // told to click:
+  //
+  //   index.html?sysbench=40&hammerdb=320
+  //
+  // Read once at boot, then the controls own the state.
+  var QUERY = (function () {
+    var out = {};
+    try {
+      new URLSearchParams(window.location.search).forEach(function (v, k) {
+        out[k.trim().toLowerCase()] = v;
+      });
+    } catch (e) { /* no URL API: the defaults stand */ }
+    return out;
+  })();
+
+  // Which of a benchmark's data sets a URL value names, or null for none. The
+  // short form each benchmark is spoken in is accepted alongside the raw value,
+  // because the number in a query string is typed by a person: for sysbench
+  // 40, 40m, 40M and 40000000 all name the same data set, and for HammerDB the
+  // warehouse count is already the short form.
+  function datasetFromToken(bench, token) {
+    if (token === null || token === undefined) return null;
+    var want = String(token).trim().toLowerCase().replace(/[\s,_]/g, "");
+    if (!want) return null;
+    for (var i = 0; i < bench.datasets.length; i++) {
+      var d = bench.datasets[i];
+      var label = d.label.toLowerCase().replace(/[\s,_]/g, "");
+      var cands = [String(d.value), label];
+      if (d.value >= 1e6 && d.value % 1e6 === 0) {
+        cands.push(String(d.value / 1e6));
+        cands.push(String(d.value / 1e6) + "m");
+      }
+      for (var j = 0; j < cands.length; j++) {
+        if (cands[j] === want) return d.value;
+      }
+      // "40mrows" against "40mrows/table". Only a token carrying a letter may
+      // match on a prefix: a bare number must be exact, or ?hammerdb=32 would
+      // quietly land on 320 warehouses instead of saying it found nothing.
+      if (/[a-z]/.test(want) && label.indexOf(want) === 0) return d.value;
+    }
+    return null;
+  }
+
+  // The form a person types: 40 for 40,000,000 rows a table, 640 for 640
+  // warehouses. The parser takes the raw value too, but there is no reason to
+  // put eight digits in a shared link.
+  function shortSize(value) {
+    if (value === null || value === undefined) return "";
+    if (value >= 1e6 && value % 1e6 === 0) return String(value / 1e6);
+    return String(value);
+  }
+
+  // A figure can be named in the URL as well as a size, so a link lands on the
+  // chart being discussed instead of at the top of a long page:
+  //
+  //   index.html?hammerdb=320&go=peak
+  //   index.html?go=sysbench-latency
+  //
+  // The words a reader would actually type are accepted, not just the internal
+  // slugs - "latency" and "p95" are the same chart, "peak" and "best" the same
+  // bars. A bare name takes the benchmark the link already pins a size for, so
+  // ?sysbench=40&go=peak needs no second mention of sysbench; a bare benchmark
+  // key lands on that whole section.
+  var GO_PART = {
+    throughput: "throughput", scaling: "throughput", tps: "throughput",
+    nopm: "throughput", sweep: "throughput",
+    peak: "peak", best: "peak", top: "peak",
+    latency: "p95", p95: "p95", tail: "p95",
+    cost: "cost", efficiency: "cost", usd: "cost",
+  };
+
+  // The element id a "go" value names, or null if it names nothing here. Ids
+  // are minted by tableToggle (figures) and the boot loop (sections).
+  function goTarget(token) {
+    if (token === null || token === undefined) return null;
+    var want = String(token).trim().toLowerCase().replace(/[\s_]+/g, "-");
+    if (!want) return null;
+    var bench = null;
+    DATA.benches.forEach(function (b) {
+      if (bench !== null) return;
+      if (want === b.key) { bench = b.key; want = ""; }
+      else if (want.indexOf(b.key + "-") === 0) {
+        bench = b.key;
+        want = want.slice(b.key.length + 1);
+      }
+    });
+    if (!want) return bench === null ? null : "sec-" + bench;
+    var part = GO_PART[want];
+    if (!part) return null;
+    if (part === "cost") return "fig-cost";
+    if (bench === null) {
+      // No benchmark named: the size key in the link says which section this
+      // reader is already looking at, and failing that the first one.
+      DATA.benches.forEach(function (b) {
+        if (bench === null && (b.key in QUERY)) bench = b.key;
+      });
+      if (bench === null && DATA.benches.length) bench = DATA.benches[0].key;
+    }
+    return bench === null ? null : "fig-" + bench + "-" + part;
+  }
+
+  // Picking a size rewrites the address bar, so whatever the reader is looking
+  // at is the thing they copy out of it. replaceState rather than pushState:
+  // the chips are a lens on one page, and filling the back button with a step
+  // per click would make Back mean something the reader did not ask for.
+  //
+  // One section per link: the URL names the benchmark that was just picked and
+  // drops the other benchmark's key, so a shared link reads as "this chart at
+  // this size" rather than as a snapshot of every control on the page.
+  // Anything else in the query string is left alone.
+  function pinSize(bench, value) {
+    DATA.benches.forEach(function (b) { delete QUERY[b.key]; });
+    QUERY[bench.key] = shortSize(value);
+    // The click scrolls to this section, so a scroll target left over from
+    // another one would describe a page the reader is no longer on.
+    var target = "go" in QUERY ? goTarget(QUERY.go) : null;
+    if (target !== null && target.indexOf("fig-" + bench.key + "-") !== 0
+        && target !== "sec-" + bench.key) {
+      delete QUERY.go;
+    }
+    pushQuery();
+  }
+
+  // QUERY is the single source of truth for the address bar; every control
+  // edits it and then asks for one rewrite, so two controls can never disagree
+  // about what the link says.
+  function pushQuery() {
+    try {
+      var url = new URL(window.location.href);
+      url.search = "";
+      Object.keys(QUERY).forEach(function (k) {
+        if (QUERY[k] !== null && QUERY[k] !== undefined && QUERY[k] !== "") {
+          url.searchParams.set(k, QUERY[k]);
+        }
+      });
+      // A comma is legal unencoded in a query string, and the list of open
+      // tables is meant to be read and edited by hand, so %2C is put back.
+      history.replaceState(null, "",
+        url.pathname + url.search.replace(/%2C/g, ",") + url.hash);
+    } catch (e) {
+      // Opened straight off disk, where the origin is opaque and the browser
+      // refuses to rewrite the URL. The controls still work; only the link does
+      // not follow.
+    }
+  }
+
+  // The link names one section, so picking a size takes the reader to that
+  // section rather than leaving them to find it. Animated unless the reader has
+  // asked for less motion.
+  function reveal(sec) {
+    try {
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      sec.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" });
+    } catch (e) {
+      sec.scrollIntoView(true);
+    }
+  }
+
+  function initialDataset(bench) {
+    var fallback = bench.datasets.length ? bench.datasets[0].value : null;
+    if (!(bench.key in QUERY)) return fallback;
+    var hit = datasetFromToken(bench, QUERY[bench.key]);
+    if (hit !== null) return hit;
+    // Said out loud rather than silently ignored: a link naming a size this
+    // report does not hold is a broken link, not a preference.
+    if (window.console && console.warn) {
+      console.warn("no " + bench.key + " data set matches "
+        + JSON.stringify(String(QUERY[bench.key])) + "; showing "
+        + bench.datasets.map(function (d) { return d.label; }).join(", ")
+        + " - defaulted to the first");
+    }
+    return fallback;
+  }
+
+  // -------------------------------------------------------------- tooltip ---
+  function Tooltip(host) {
+    var node = el("div", "tooltip");
+    node.setAttribute("role", "status");
+    host.appendChild(node);
+    return {
+      node: node,
+      // Values lead, labels follow - the reader has the series and wants the number.
+      show: function (head, rows, anchorX, anchorY) {
+        node.textContent = "";
+        node.appendChild(el("div", "tt-head", head));
+        rows.forEach(function (r) {
+          var row = el("div", "tt-row");
+          var stroke = el("span", "stroke");
+          stroke.style.background = r.color;
+          row.appendChild(stroke);
+          row.appendChild(el("span", "val", r.value));
+          row.appendChild(el("span", "name", r.name));
+          if (r.range) row.appendChild(el("span", "range", r.range));
+          node.appendChild(row);
+        });
+        node.setAttribute("data-open", "1");
+        var hb = host.getBoundingClientRect(), tb = node.getBoundingClientRect();
+        var x = anchorX - hb.left + 14, y = anchorY - hb.top - tb.height / 2;
+        if (x + tb.width > hb.width - 4) x = anchorX - hb.left - tb.width - 14;
+        node.style.left = Math.max(4, x) + "px";
+        node.style.top = Math.max(4, Math.min(y, hb.height - tb.height - 4)) + "px";
+      },
+      hide: function () { node.removeAttribute("data-open"); },
+    };
+  }
+
+  // ----------------------------------------------------------- line chart ---
+  // Two readings of the same sweep: how much work got through, and what the
+  // slow tail cost while it did. The geometry, the crosshair and the table twin
+  // are identical, so the figure takes a view that supplies the grid it reads,
+  // its axis scale and its number format - one axis each, never two on one
+  // chart. Both views answer to the section's data-set and averaging controls.
+  function throughputView(bench) {
+    return {
+      slug: "throughput",
+      cells: bench.cells, concurrency: bench.concurrency,
+      metric: bench.metric, metricLong: bench.metricLong,
+      title: bench.scalingTitle, sub: bench.scalingSub,
+      indivSub: "One line per run over the measured 20 min window - not averaged.",
+      log: false, fitY: false, nf: fmt, higherIsBetter: true, note: "",
+    };
+  }
+  function latencyView(bench) {
+    var p = bench.p95;
+    if (!p) return null;
+    return {
+      slug: "p95",
+      cells: p.cells, concurrency: p.concurrency,
+      metric: "p95", metricLong: p.metricLong,
+      title: p.title, sub: p.sub,
+      indivSub: "One run's own p95 per line - not averaged. " + p.sub,
+      log: false, fitY: true, nf: fmtp, higherIsBetter: false,
+      // What the percentile covers belongs beside it, and a thinned line
+      // should say why it is thin rather than look like a provider that
+      // simply stopped scaling.
+      note: p.note + (p.missing
+        ? " " + p.missing + " measurement" + (p.missing === 1 ? "" : "s")
+          + " reported throughput but no percentile and " + (p.missing === 1 ? "is" : "are")
+          + " not plotted here."
+        : ""),
+    };
+  }
+
+  // Throughput against the concurrency sweep for the selected data-set size.
+  function scalingFigure(bench, state, view) {
+    var fig = el("figure", "card");
+    var cap = el("figcaption");
+    var grow = el("div", "grow");
+    var titleNode = el("div", "fig-title", view.title);
+    grow.appendChild(titleNode);
+    var subNode = el("div", "fig-sub", view.sub);
+    grow.appendChild(subNode);
+    cap.appendChild(grow);
+    var tableBtn = el("button", null, "Table view");
+    tableBtn.type = "button";
+    cap.appendChild(tableBtn);
+    fig.appendChild(cap);
+
+    var plot = el("div", "plot");
+    fig.appendChild(plot);
+    var legend = el("div", "legend");
+    fig.appendChild(legend);
+    var tableWrap = el("div", "table-wrap");
+    fig.appendChild(tableWrap);
+    var tip = Tooltip(fig);
+
+    var hidden = {};
+    tableToggle(tableBtn, tableWrap, bench.key + "-" + view.slug);
+    var levels = view.concurrency;
+    function cell(p, d, c) { return view.cells[p + "|" + d + "|" + c] || null; }
+
+    function render() {
+      plot.textContent = "";
+      legend.textContent = "";
+      tip.hide();
+
+      var d = datasetOf(bench, state.dataset);
+      var individual = state.mode === "individual";
+      titleNode.textContent = view.title + " - " + d.label;
+      subNode.textContent = individual ? view.indivSub : view.sub;
+
+      var surface = cssVar("--surface-1"), grid = cssVar("--grid"),
+          axis = cssVar("--axis"), muted = cssVar("--text-muted"),
+          secondary = cssVar("--text-secondary"),
+          primary = cssVar("--text-primary"), border = cssVar("--border");
+
+      // The y-scale spans every data set, not just the selected one, so
+      // switching the control does not silently rescale the comparison.
+      // view.fitY opts out and fits the selected size alone: latency is read
+      // within a size - where the knee is - and the sizes are far enough apart
+      // that the quiet ones would otherwise be flat lines along the floor.
+      var max = 0, min = Infinity;
+      var sizes = view.fitY ? [d] : bench.datasets;
+      bench.providers.forEach(function (p) {
+        if (hidden[p.key]) return;
+        sizes.forEach(function (ds) {
+          levels.forEach(function (c) {
+            var v = cell(p.key, ds.value, c);
+            if (!v) return;
+            max = Math.max(max, v.max);
+            if (v.min > 0) min = Math.min(min, v.min);
+          });
+        });
+      });
+      var scale0 = view.log ? logTicks(min === Infinity ? 1 : min, max) : ticks(max, 6);
+      var tk = scale0.ticks, top = scale0.top, bottom = scale0.bottom || 0;
+
+      var W = 1100, H = 520, M = { t: 22, r: 132, b: 58, l: 86 };
+      var pw = W - M.l - M.r, ph = H - M.t - M.b;
+      var xs = levels.map(function (_, i) {
+        return M.l + (levels.length === 1 ? pw / 2 : (pw * i) / (levels.length - 1));
+      });
+      var lspan = view.log ? Math.log10(top) - Math.log10(bottom) : 0;
+      function yOf(v) {
+        if (!view.log) return M.t + ph - (v / top) * ph;
+        var q = (Math.log10(Math.max(v, bottom)) - Math.log10(bottom)) / lspan;
+        return M.t + ph - q * ph;
+      }
+
+      var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0" });
+      svg.setAttribute("aria-label", view.title + ", " + d.label +
+        ". Use the arrow keys to read each " + bench.concLabel.toLowerCase() + " level.");
+
+      // Recessive chrome: hairline solid gridlines, no top/right frame.
+      tk.forEach(function (t) {
+        svg.appendChild(svgEl("line", {
+          x1: M.l, y1: yOf(t), x2: M.l + pw, y2: yOf(t),
+          stroke: grid, "stroke-width": 1,
+        }));
+        var lab = svgEl("text", {
+          x: M.l - 11, y: yOf(t) + 4, "text-anchor": "end", fill: muted, "font-size": 12.5,
+        });
+        lab.textContent = view.nf(t);
+        svg.appendChild(lab);
+      });
+      svg.appendChild(svgEl("line", { x1: M.l, y1: M.t, x2: M.l, y2: M.t + ph, stroke: axis, "stroke-width": 1 }));
+      svg.appendChild(svgEl("line", { x1: M.l, y1: M.t + ph, x2: M.l + pw, y2: M.t + ph, stroke: axis, "stroke-width": 1 }));
+
+      levels.forEach(function (c, i) {
+        var t = svgEl("text", { x: xs[i], y: M.t + ph + 21, "text-anchor": "middle", fill: muted, "font-size": 12.5 });
+        t.textContent = c;
+        svg.appendChild(t);
+      });
+      var xlab = svgEl("text", { x: M.l + pw / 2, y: H - 10, "text-anchor": "middle", fill: secondary, "font-size": 13 });
+      xlab.textContent = bench.concLabel;
+      svg.appendChild(xlab);
+      var ylab = svgEl("text", {
+        fill: secondary, "font-size": 13, "text-anchor": "middle",
+        transform: "translate(17," + (M.t + ph / 2) + ") rotate(-90)",
+      });
+      ylab.textContent = view.metricLong;
+      svg.appendChild(ylab);
+
+      var crosshair = svgEl("line", {
+        x1: 0, y1: M.t, x2: 0, y2: M.t + ph,
+        stroke: axis, "stroke-width": 1, opacity: 0,
+      });
+      svg.appendChild(crosshair);
+
+      var ends = [];
+      bench.providers.forEach(function (p) {
+        if (hidden[p.key]) return;
+        var color = colorOf(p);
+        var pts = [];
+        levels.forEach(function (c, i) {
+          var v = cell(p.key, d.value, c);
+          if (v) pts.push({ i: i, x: xs[i], v: v });
+        });
+        if (!pts.length) return;
+        if (individual) {
+          // One polyline per run. No min-max band: the runs *are* the spread,
+          // and a wash behind them would only restate it.
+          var byRun = {};
+          pts.forEach(function (q) {
+            (q.v.vals || []).forEach(function (rv) {
+              (byRun[rv[0]] = byRun[rv[0]] || []).push({ i: q.i, x: q.x, value: rv[1] });
+            });
+          });
+          Object.keys(byRun).sort(function (a, b) { return a - b; }).forEach(function (rk) {
+            var rp = byRun[rk];
+            if (rp.length > 1) {
+              svg.appendChild(svgEl("polyline", {
+                points: rp.map(function (q) { return q.x + "," + yOf(q.value); }).join(" "),
+                fill: "none", stroke: color, "stroke-width": 1.6, opacity: 0.85,
+                "stroke-linecap": "round", "stroke-linejoin": "round",
+              }));
+            }
+            rp.forEach(function (q) {
+              svg.appendChild(marker(p.marker, q.x, yOf(q.value), color, surface, 3.6, 1.5));
+            });
+          });
+        } else {
+          // min-max band as a 10% wash, never a saturated block.
+          if (pts.length > 1) {
+            var up = pts.map(function (q) { return q.x + "," + yOf(q.v.max); });
+            var down = pts.slice().reverse().map(function (q) { return q.x + "," + yOf(q.v.min); });
+            svg.appendChild(svgEl("polygon", {
+              points: up.concat(down).join(" "), fill: color, opacity: 0.10,
+            }));
+          }
+          svg.appendChild(svgEl("polyline", {
+            points: pts.map(function (q) { return q.x + "," + yOf(q.v.mean); }).join(" "),
+            fill: "none", stroke: color, "stroke-width": 2,
+            "stroke-linecap": "round", "stroke-linejoin": "round",
+          }));
+          pts.forEach(function (q) {
+            svg.appendChild(marker(p.marker, q.x, yOf(q.v.mean), color, surface));
+          });
+        }
+        var last = pts[pts.length - 1];
+        // Only a series that reaches the end of the sweep gets an end label; a
+        // truncated one would drop its label mid-plot, on top of the others.
+        if (last.i === levels.length - 1) {
+          ends.push({ p: p, color: color, y: yOf(last.v.mean), value: last.v.mean });
+        }
+      });
+
+      // Lines -> one value at the end of each, in the margin. Labels that would
+      // collide are stacked to a minimum pitch and tied back to their own line
+      // with a leader, rather than dropped - two providers finishing a few
+      // pixels apart is exactly when the reader wants both numbers. In
+      // individual mode the label is the run mean, keyed by a full-size mark;
+      // the run ends bracket it.
+      var LPITCH = 17, lx = M.l + pw + 12;
+      ends.sort(function (a, b) { return a.y - b.y; });
+      var prevL = -Infinity;
+      ends.forEach(function (e) {
+        e.ly = Math.max(e.y, prevL + LPITCH);
+        prevL = e.ly;
+      });
+      var spill = prevL - (M.t + ph);
+      if (spill > 0 && ends.length) {
+        var lift = Math.min(spill, Math.max(0, ends[0].ly - M.t));
+        ends.forEach(function (e) { e.ly -= lift; });
+      }
+      ends.forEach(function (e) {
+        if (Math.abs(e.ly - e.y) > 3) {
+          svg.appendChild(svgEl("polyline", {
+            points: [M.l + pw + 3, e.y, lx - 4, e.ly, lx + 1, e.ly].join(" "),
+            fill: "none", stroke: e.color, "stroke-width": 1, opacity: 0.55,
+          }));
+        }
+        svg.appendChild(marker(e.p.marker, lx + 5, e.ly, e.color, surface));
+        var t = svgEl("text", { x: lx + 16, y: e.ly + 4.5, fill: secondary, "font-size": 12.5 });
+        t.textContent = view.nf(e.value);
+        svg.appendChild(t);
+      });
+
+      // The crosshair finds the X: readers aim at a thread level, not a line.
+      var active = -1;
+      function focusAt(idx, clientX, clientY) {
+        if (idx < 0 || idx >= levels.length) return;
+        active = idx;
+        var box = svg.getBoundingClientRect();
+        var scale = box.width / W;
+        crosshair.setAttribute("x1", xs[idx]);
+        crosshair.setAttribute("x2", xs[idx]);
+        crosshair.setAttribute("opacity", 1);
+        var rows = [];
+        bench.providers.forEach(function (p) {
+          if (hidden[p.key]) return;
+          var v = cell(p.key, d.value, levels[idx]);
+          rows.push({
+            color: colorOf(p), name: p.name,
+            value: v ? view.nf(v.mean) : "no data",
+            range: !v ? "" : individual
+              ? "runs: " + (v.vals || []).map(function (rv) { return view.nf(rv[1]); }).join(", ")
+              : view.nf(v.min) + "\u2013" + view.nf(v.max) + " over " + v.runs + " run" + (v.runs === 1 ? "" : "s"),
+          });
+        });
+        // Best first, which on a latency axis means smallest.
+        rows.sort(function (a, b) {
+          var av = parseFloat(a.value.replace(/,/g, "")), bv = parseFloat(b.value.replace(/,/g, ""));
+          if (isNaN(av)) return 1;
+          if (isNaN(bv)) return -1;
+          return view.higherIsBetter ? bv - av : av - bv;
+        });
+        var ax = clientX === undefined ? box.left + xs[idx] * scale : clientX;
+        var ay = clientY === undefined ? box.top + box.height / 2 : clientY;
+        tip.show(d.label + " - " + bench.concLabel.toLowerCase() + " " + levels[idx], rows, ax, ay);
+      }
+      function clear() {
+        active = -1;
+        crosshair.setAttribute("opacity", 0);
+        tip.hide();
+      }
+      svg.addEventListener("pointermove", function (ev) {
+        var box = svg.getBoundingClientRect();
+        var ux = ((ev.clientX - box.left) / box.width) * W;
+        var best = 0, bd = Infinity;
+        xs.forEach(function (x, i) {
+          var dd = Math.abs(x - ux);
+          if (dd < bd) { bd = dd; best = i; }
+        });
+        focusAt(best, ev.clientX, ev.clientY);
+      });
+      svg.addEventListener("pointerleave", clear);
+      // Same details on keyboard focus as on hover.
+      svg.addEventListener("focus", function () { focusAt(active < 0 ? 0 : active); });
+      svg.addEventListener("blur", clear);
+      svg.addEventListener("keydown", function (ev) {
+        if (ev.key === "ArrowRight") { focusAt(Math.min((active < 0 ? -1 : active) + 1, levels.length - 1)); ev.preventDefault(); }
+        else if (ev.key === "ArrowLeft") { focusAt(Math.max((active < 0 ? 1 : active) - 1, 0)); ev.preventDefault(); }
+        else if (ev.key === "Escape") { clear(); }
+      });
+
+      plot.appendChild(svg);
+      if (view.note) plot.appendChild(el("div", "note", view.note));
+      buildLegend(legend, bench, hidden, false, render);
+      buildSweepTable(tableWrap, bench, d, individual, view);
+    }
+
+    render();
+    fig.addEventListener("viz:rerender", render);
+    return fig;
+  }
+
+  // ------------------------------------------------------ ranked bar chart --
+  // With the data set chosen by the control this is a ranking of five named
+  // categories, so it is bars with the names on the axis - no legend needed,
+  // and the value rides the tip of each bar.
+  function peakFigure(bench, state) {
+    var fig = el("figure", "card");
+    var cap = el("figcaption");
+    var grow = el("div", "grow");
+    var titleNode = el("div", "fig-title", bench.peakTitle);
+    grow.appendChild(titleNode);
+    var subNode = el("div", "fig-sub", bench.peakSub);
+    grow.appendChild(subNode);
+    cap.appendChild(grow);
+    var tableBtn = el("button", null, "Table view");
+    tableBtn.type = "button";
+    cap.appendChild(tableBtn);
+    fig.appendChild(cap);
+
+    var plot = el("div", "plot");
+    fig.appendChild(plot);
+    var tableWrap = el("div", "table-wrap");
+    fig.appendChild(tableWrap);
+    var tip = Tooltip(fig);
+
+    tableToggle(tableBtn, tableWrap, bench.key + "-peak");
+
+    function peak(p, d) { return bench.peaks[p + "|" + d] || null; }
+
+    function render() {
+      plot.textContent = "";
+      tip.hide();
+
+      var d = datasetOf(bench, state.dataset);
+      var individual = state.mode === "individual";
+      var nf = fmt;
+      titleNode.textContent = bench.peakTitle + " - " + d.label;
+      subNode.textContent = bench.peakSub + (individual ? " Each run marked on the bar." : "");
+
+      var surface = cssVar("--surface-1"), grid = cssVar("--grid"),
+          axis = cssVar("--axis"), muted = cssVar("--text-muted"),
+          secondary = cssVar("--text-secondary"), primary = cssVar("--text-primary");
+
+      function peakOf(p, dsv) {
+        var q = peak(p.key, dsv);
+        return q ? { value: q.value, at: q.at } : null;
+      }
+      function detailOf(p, dsv, at) {
+        if (at === null) return null;
+        var c0 = bench.cells[p.key + "|" + dsv + "|" + at];
+        return !c0 ? null : {
+          min: c0.min, max: c0.max, runs: c0.runs,
+          vals: c0.vals.map(function (rv) { return rv[1]; }),
+        };
+      }
+
+      // One shared scale across the data sets, so the bars do not re-stretch
+      // when the control changes.
+      var max = 0;
+      bench.providers.forEach(function (p) {
+        bench.datasets.forEach(function (ds) {
+          var q = peakOf(p, ds.value);
+          if (!q) return;
+          max = Math.max(max, q.value);
+          // A single run can sit above the mean it fed, so in individual mode
+          // the axis has to reach the marks, not just the bar ends.
+          var c0 = individual ? detailOf(p, ds.value, q.at) : null;
+          if (c0) c0.vals.forEach(function (rv) { max = Math.max(max, rv); });
+        });
+      });
+      var scale0 = ticks(max, 6);
+      var tk = scale0.ticks, top = scale0.top;
+
+      // Rows are ordered by value - the chart's job is the ranking - but the
+      // hue still follows the provider, so reordering never repaints anyone.
+      var rows = bench.providers.map(function (p) {
+        return { p: p, q: peakOf(p, d.value) };
+      });
+      rows.sort(function (a, b) {
+        return (b.q ? b.q.value : -1) - (a.q ? a.q.value : -1);
+      });
+
+      var PITCH = 56, BAR = 24;                     // bars capped at 24px
+      var W = 1100, M = { t: 16, r: 268, b: 50, l: 146 };
+      var ph = PITCH * rows.length;
+      var H = M.t + ph + M.b;
+      var pw = W - M.l - M.r;
+      function xOf(v) { return M.l + (v / top) * pw; }
+
+      var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img" });
+      svg.setAttribute("aria-label", bench.peakTitle + ", " + d.label + ". "
+        + bench.peakSub + ".");
+
+      tk.forEach(function (t) {
+        svg.appendChild(svgEl("line", {
+          x1: xOf(t), y1: M.t, x2: xOf(t), y2: M.t + ph, stroke: grid, "stroke-width": 1,
+        }));
+        var lab = svgEl("text", { x: xOf(t), y: M.t + ph + 22, "text-anchor": "middle", fill: muted, "font-size": 12.5 });
+        lab.textContent = nf(t);
+        svg.appendChild(lab);
+      });
+      svg.appendChild(svgEl("line", { x1: M.l, y1: M.t, x2: M.l, y2: M.t + ph, stroke: axis, "stroke-width": 1 }));
+      var xlab = svgEl("text", { x: M.l + pw / 2, y: H - 8, "text-anchor": "middle", fill: secondary, "font-size": 13 });
+      xlab.textContent = bench.metricLong;
+      svg.appendChild(xlab);
+
+      rows.forEach(function (r, i) {
+        var yTop = M.t + i * PITCH, yc = yTop + PITCH / 2;
+        var g = svgEl("g", { tabindex: "0", role: "img" });
+        g.setAttribute("aria-label", r.p.name + ", " + d.label + ": " + (r.q
+          ? nf(r.q.value) + " " + bench.metric + " at " + bench.concShort + "=" + r.q.at
+          : "no data"));
+
+        var name = svgEl("text", { x: M.l - 14, y: yc + 4.5, "text-anchor": "end", fill: secondary, "font-size": 13 });
+        name.textContent = r.p.name;
+        g.appendChild(name);
+        // Identity comes from the colored mark beside the text, never from
+        // coloring the text itself.
+        g.appendChild(svgEl("rect", {
+          x: M.l - 9, y: yc - 4.5, width: 9, height: 9, rx: 2, fill: colorOf(r.p),
+        }));
+
+        if (!r.q) {
+          var none = svgEl("text", { x: M.l + 12, y: yc + 4.5, fill: muted, "font-size": 12.5 });
+          none.textContent = "no data";
+          g.appendChild(none);
+          svg.appendChild(g);
+          return;
+        }
+
+        var color = colorOf(r.p);
+        var bar = svgEl("path", {
+          d: barPathH(yc - BAR / 2, BAR, M.l, xOf(r.q.value), 4), fill: color,
+        });
+        g.appendChild(bar);
+        // Bars -> value at the tip, outside the bar end so it is never clipped.
+        // The mean leads; the level that reached it and the min-max spread of
+        // the runs behind it follow underneath.
+        var at = detailOf(r.p, d.value, r.q.at);
+        var tipFrom = r.q.value;
+        if (individual && at) {
+          at.vals.forEach(function (rv) { tipFrom = Math.max(tipFrom, rv); });
+        }
+        var tipX = xOf(tipFrom) + 12 + (individual ? 4 : 0);
+        var v1 = svgEl("text", { x: tipX, y: yc - 1, fill: primary, "font-size": 13, "font-weight": 600 });
+        v1.textContent = nf(r.q.value);
+        g.appendChild(v1);
+        var v2 = svgEl("text", { x: tipX, y: yc + 12, fill: muted, "font-size": 10.5 });
+        v2.textContent = bench.concShort + "=" + r.q.at + (!at ? "" : individual
+          ? "  \u00b7  " + at.vals.map(function (rv) { return fmt(rv); }).join("  \u00b7  ")
+          : "  \u00b7  " + fmt(at.min) + "\u2013" + fmt(at.max) + " / n=" + at.runs);
+        g.appendChild(v2);
+
+        // The bar is the mean; in individual mode each run that went into it is
+        // marked where it actually landed, so the average never hides a flyer.
+        if (individual && at) {
+          at.vals.forEach(function (rv) {
+            g.appendChild(marker("circle", xOf(rv), yc, color, surface, 3.6, 2));
+          });
+        }
+
+        // The hit target is the whole row, far bigger than the mark.
+        var hit = svgEl("rect", { x: M.l, y: yTop, width: pw, height: PITCH, fill: "transparent" });
+        g.appendChild(hit);
+
+        function show(ev) {
+          bar.setAttribute("stroke", surface);
+          bar.setAttribute("stroke-width", 2);
+          var box = svg.getBoundingClientRect(), scale = box.width / W;
+          var c0 = at;
+          tip.show(r.p.name + " - " + d.label, [{
+            color: color,
+            name: bench.metric + " at " + bench.concShort + "=" + r.q.at,
+            value: nf(r.q.value),
+            range: !c0 ? "" : individual
+                ? "runs: " + c0.vals.map(function (rv) { return fmt(rv); }).join(", ")
+                : fmt(c0.min) + "\u2013" + fmt(c0.max) + " over " + c0.runs +
+                  " run" + (c0.runs === 1 ? "" : "s"),
+          }], ev && ev.clientX !== undefined ? ev.clientX : box.left + xOf(r.q.value) * scale,
+             ev && ev.clientY !== undefined ? ev.clientY : box.top + yc * scale);
+        }
+        function hide() {
+          bar.removeAttribute("stroke");
+          bar.removeAttribute("stroke-width");
+          tip.hide();
+        }
+        g.addEventListener("pointermove", show);
+        g.addEventListener("pointerleave", hide);
+        g.addEventListener("focus", show);
+        g.addEventListener("blur", hide);
+        svg.appendChild(g);
+      });
+
+      plot.appendChild(svg);
+      buildPeakTable(tableWrap, bench, d);
+    }
+
+    render();
+    fig.addEventListener("viz:rerender", render);
+    return fig;
+  }
+
+  // --------------------------------------------------------------- legend ---
+  function buildLegend(host, bench, hidden, forBar, rerender) {
+    bench.providers.forEach(function (p) {
+      var b = el("button", null, null);
+      b.type = "button";
+      b.setAttribute("aria-pressed", hidden[p.key] ? "false" : "true");
+      b.appendChild(legendKey(p, colorOf(p), forBar));
+      b.appendChild(el("span", null, p.name));
+      b.title = "Show or hide " + p.name;
+      b.addEventListener("click", function () {
+        var next = !hidden[p.key];
+        var visible = bench.providers.filter(function (q) { return !hidden[q.key]; });
+        if (next && visible.length <= 1) return;   // never empty the chart
+        hidden[p.key] = next;
+        rerender();
+      });
+      host.appendChild(b);
+    });
+  }
+
+  // ----------------------------------------------------------- table views --
+  // One disclosure for all three kinds of card. The table view is the chart's
+  // accessibility twin, so every card carries the same control - and it is
+  // written once rather than copied per figure, where one copy can drift.
+  //
+  // Visibility is set inline as well as through the attribute, so no stylesheet
+  // rule can out-specify it; the label flips to "Hide table" so a click that
+  // registered is visible even if the table itself were empty; and opening
+  // scrolls the table into view, because it appears below a chart that is
+  // usually taller than the viewport.
+  //
+  // Which tables are open is part of the link as well - one "tables" key
+  // carrying the open ones, or the word "all" - so a URL can hand someone the
+  // numbers rather than the picture.
+  var OPEN = (function () {
+    var want = String(QUERY.tables === undefined ? "" : QUERY.tables).toLowerCase();
+    var out = { all: /(^|,)\s*all\s*(,|$)/.test(want), set: {} };
+    want.split(",").forEach(function (s) {
+      s = s.trim().replace(/[\s_]/g, "");
+      if (s && s !== "all") out.set[s] = true;
+    });
+    return out;
+  })();
+
+  function pinTables() {
+    var open = Object.keys(OPEN.set).filter(function (k) { return OPEN.set[k]; }).sort();
+    if (open.length) QUERY.tables = open.join(",");
+    else delete QUERY.tables;
+    pushQuery();
+  }
+
+  function tableToggle(btn, wrap, slug) {
+    wrap.id = "tableview-" + slug;
+    // The figure takes the same slug as its id, so the URL's scroll target and
+    // the table's id are one name said twice rather than two lists to keep in
+    // step. Every figure on the page has a table, so every figure gets an id.
+    var card = wrap.closest ? wrap.closest("figure") : null;
+    if (card && !card.id) card.id = "fig-" + slug;
+    btn.setAttribute("aria-controls", wrap.id);
+    function set(open) {
+      wrap.setAttribute("data-open", open ? "1" : "0");
+      wrap.style.display = open ? "block" : "none";
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      btn.textContent = open ? "Hide table" : "Table view";
+      OPEN.set[slug] = open;
+    }
+    // ?tables=all opens every one; otherwise only the ones the link names.
+    set(OPEN.all || !!OPEN.set[slug]);
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") !== "true";
+      set(open);
+      pinTables();
+      // The table unfolds under a chart that is often taller than the viewport,
+      // so opening it changes nothing the reader can see. Bring it to them.
+      if (open) reveal(wrap);
+    });
+  }
+
+  function tableShell(host, caption) {
+    host.textContent = "";
+    var t = el("table");
+    var cap = el("caption", null, caption);
+    t.appendChild(cap);
+    host.appendChild(t);
+    return t;
+  }
+  function providerCell(p) {
+    var td = el("td");
+    var sw = el("span", "swatch");
+    sw.style.background = colorOf(p);
+    td.appendChild(sw);
+    td.appendChild(document.createTextNode(p.name));
+    return td;
+  }
+
+  // The table is the chart's accessibility twin, so it shows the same data set
+  // the chart is drawing - the control governs both, and the selected size is
+  // named in the caption rather than repeated down a column.
+  function buildSweepTable(host, bench, d, individual, view) {
+    var nf = view.nf, levels = view.concurrency;
+    var t = tableShell(host, view.metricLong + " at " + d.label
+      + " - mean across runs, with "
+      + (individual ? "each run's own value" : "the min-max range") + "."
+      + HEAT_CAPTION);
+    var thead = el("thead"), hr = el("tr");
+    hr.appendChild(el("th", null, "Provider"));
+    levels.forEach(function (c) {
+      hr.appendChild(el("th", null, bench.concLabel + " " + c));
+    });
+    thead.appendChild(hr);
+    t.appendChild(thead);
+    // Providers are compared against each other at the same concurrency level,
+    // so the wash runs down each column and never across a row - a row spans
+    // the sweep, where rising or falling is the point, not better or worse.
+    var column = {};
+    levels.forEach(function (c) {
+      column[c] = bench.providers.map(function (p) {
+        var v = view.cells[p.key + "|" + d.value + "|" + c];
+        return v ? v.mean : null;
+      }).filter(function (v) { return v !== null; });
+    });
+    var tb = el("tbody");
+    bench.providers.forEach(function (p) {
+      var tr = el("tr");
+      tr.appendChild(providerCell(p));
+      levels.forEach(function (c) {
+        var v = view.cells[p.key + "|" + d.value + "|" + c];
+        var td = el("td");
+        if (!v) {
+          td.appendChild(document.createTextNode("-"));
+        } else {
+          td.appendChild(document.createTextNode(nf(v.mean)));
+          td.appendChild(el("div", "range", individual
+            ? (v.vals || []).map(function (rv) { return nf(rv[1]); }).join(" \u00b7 ")
+            : nf(v.min) + "\u2013" + nf(v.max) + " / n=" + v.runs));
+          shade(td, column[c], v.mean, view.higherIsBetter,
+                "at " + bench.concLabel.toLowerCase() + " " + c);
+        }
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+
+  // Same data set as the bars above it, in the same ranked order, so reading
+  // down the table and down the chart give the same answer.
+  function buildPeakTable(host, bench, d) {
+    var t = tableShell(host, "Peak " + bench.metric + " at " + d.label
+      + ", with the " + bench.concLabel.toLowerCase() + " level that reached it "
+      + "and the min-max range of the runs behind it." + HEAT_CAPTION);
+    var thead = el("thead"), hr = el("tr");
+    hr.appendChild(el("th", null, "Provider"));
+    hr.appendChild(el("th", null, "Peak " + bench.metric));
+    hr.appendChild(el("th", null, bench.concLabel));
+    thead.appendChild(hr);
+    t.appendChild(thead);
+    var tb = el("tbody");
+    var rows = bench.providers.map(function (p) {
+      return { p: p, q: bench.peaks[p.key + "|" + d.value] || null };
+    }).sort(function (a, b) {
+      return (b.q ? b.q.value : -1) - (a.q ? a.q.value : -1);
+    });
+    var peaks = rows.filter(function (r) { return r.q; })
+      .map(function (r) { return r.q.value; });
+    rows.forEach(function (r) {
+      var tr = el("tr");
+      tr.appendChild(providerCell(r.p));
+      var td = el("td");
+      if (!r.q) {
+        td.appendChild(document.createTextNode("-"));
+        tr.appendChild(td);
+        tr.appendChild(el("td", null, "-"));
+      } else {
+        td.appendChild(document.createTextNode(fmt(r.q.value)));
+        var c0 = bench.cells[r.p.key + "|" + d.value + "|" + r.q.at];
+        if (c0) {
+          td.appendChild(el("div", "range",
+            fmt(c0.min) + "\u2013" + fmt(c0.max) + " / n=" + c0.runs));
+        }
+        shade(td, peaks, r.q.value, true, "on peak " + bench.metric);
+        tr.appendChild(td);
+        tr.appendChild(el("td", null, bench.concShort + "=" + r.q.at));
+      }
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+
+  // --------------------------------------------------- cost efficiency ------
+  // One figure for the whole report rather than one per benchmark: the bill
+  // covers every hour the host ran, whatever it was doing, so the measure
+  // counts every transaction the database host committed - measured runs,
+  // ramp-ups, schema builds, data loads, idle time - against what the provider
+  // has charged for running it. Five named categories ranked by value, so bars
+  // with the names on the axis, and no legend: the axis already carries identity.
+  function costFigure() {
+    var cost = DATA.cost;
+    var fig = el("figure", "card");
+    var cap = el("figcaption");
+    var grow = el("div", "grow");
+    grow.appendChild(el("div", "fig-title", cost.title));
+    grow.appendChild(el("div", "fig-sub", cost.sub));
+    cap.appendChild(grow);
+    var tableBtn = el("button", null, "Table view");
+    tableBtn.type = "button";
+    cap.appendChild(tableBtn);
+    fig.appendChild(cap);
+
+    var plot = el("div", "plot");
+    fig.appendChild(plot);
+    var tableWrap = el("div", "table-wrap");
+    fig.appendChild(tableWrap);
+    var tip = Tooltip(fig);
+
+    tableToggle(tableBtn, tableWrap, "cost");
+
+    function render() {
+      plot.textContent = "";
+      tip.hide();
+
+      var surface = cssVar("--surface-1"), grid = cssVar("--grid"),
+          axis = cssVar("--axis"), muted = cssVar("--text-muted"),
+          secondary = cssVar("--text-secondary"), primary = cssVar("--text-primary");
+
+      // Priced hosts with counters first, in rank order; anything that cannot
+      // be placed on the scale is listed after them rather than dropped, so a
+      // missing provider is visible as missing.
+      var rows = cost.providers.slice().sort(function (a, b) {
+        return (b.perUsd || -1) - (a.perUsd || -1);
+      });
+
+      var max = 0;
+      rows.forEach(function (p) { if (p.perUsd) max = Math.max(max, p.perUsd); });
+      var scale0 = ticks(max, 6);
+      var tk = scale0.ticks, top = scale0.top;
+
+      var PITCH = 56, BAR = 24;                     // bars capped at 24px
+      var W = 1100, M = { t: 16, r: 300, b: 50, l: 146 };
+      var ph = PITCH * rows.length;
+      var H = M.t + ph + M.b;
+      var pw = W - M.l - M.r;
+      function xOf(v) { return M.l + (v / top) * pw; }
+
+      var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img" });
+      svg.setAttribute("aria-label", cost.title + ". " + cost.sub + ".");
+
+      tk.forEach(function (t) {
+        svg.appendChild(svgEl("line", {
+          x1: xOf(t), y1: M.t, x2: xOf(t), y2: M.t + ph, stroke: grid, "stroke-width": 1,
+        }));
+        var lab = svgEl("text", { x: xOf(t), y: M.t + ph + 22, "text-anchor": "middle", fill: muted, "font-size": 12.5 });
+        lab.textContent = fmtc(t);
+        svg.appendChild(lab);
+      });
+      svg.appendChild(svgEl("line", { x1: M.l, y1: M.t, x2: M.l, y2: M.t + ph, stroke: axis, "stroke-width": 1 }));
+      var xlab = svgEl("text", { x: M.l + pw / 2, y: H - 8, "text-anchor": "middle", fill: secondary, "font-size": 13 });
+      xlab.textContent = "Transactions committed per USD at peak throughput";
+      svg.appendChild(xlab);
+
+      rows.forEach(function (p, i) {
+        var yTop = M.t + i * PITCH, yc = yTop + PITCH / 2;
+        var g = svgEl("g", { tabindex: "0", role: "img" });
+        g.setAttribute("aria-label", p.name + ": " + (p.perUsd
+          ? fmtc(p.perUsd) + " transactions per USD at peak, "
+            + fmt(p.peak.rate) + " transactions an hour on " + p.peak.label
+            + " at " + rate(p.usdPerHour)
+          : p.usdPerHour ? "no counter data" : "not priced"));
+
+        var name = svgEl("text", { x: M.l - 14, y: yc + 4.5, "text-anchor": "end", fill: secondary, "font-size": 13 });
+        name.textContent = p.name;
+        g.appendChild(name);
+        // Identity comes from the colored mark beside the text, never from
+        // coloring the text itself.
+        g.appendChild(svgEl("rect", {
+          x: M.l - 9, y: yc - 4.5, width: 9, height: 9, rx: 2, fill: colorOf(p),
+        }));
+
+        if (!p.perUsd) {
+          var none = svgEl("text", { x: M.l + 12, y: yc + 4.5, fill: muted, "font-size": 12.5 });
+          none.textContent = p.usdPerHour ? "no counter data" : "not priced";
+          g.appendChild(none);
+          svg.appendChild(g);
+          return;
+        }
+
+        var color = colorOf(p);
+        var bar = svgEl("path", {
+          d: barPathH(yc - BAR / 2, BAR, M.l, xOf(p.perUsd), 4), fill: color,
+        });
+        g.appendChild(bar);
+        // Value at the tip, outside the bar end so it is never clipped; the
+        // rate the peak ran at, the point it was measured at and the hourly
+        // price it was divided by sit underneath - the ratio alone hides all
+        // three.
+        var tipX = xOf(p.perUsd) + 12;
+        // The labels sit out in the gridded field, so each is painted over a
+        // 2px surface halo - otherwise a gridline runs through the digits.
+        var halo = { stroke: surface, "stroke-width": 2.5, "paint-order": "stroke" };
+        var v1 = svgEl("text", { x: tipX, y: yc - 1, fill: primary, "font-size": 13, "font-weight": 600 });
+        for (var hk in halo) v1.setAttribute(hk, halo[hk]);
+        v1.textContent = fmtc(p.perUsd);
+        g.appendChild(v1);
+        var v2 = svgEl("text", { x: tipX, y: yc + 12, fill: muted, "font-size": 10.5 });
+        for (var hk2 in halo) v2.setAttribute(hk2, halo[hk2]);
+        v2.textContent = fmtc(p.peak.rate) + " txn/h at " + p.peak.short
+          + " (n=" + p.peak.runs + ")  \u00b7  " + rate(p.usdPerHour);
+        g.appendChild(v2);
+
+        // The hit target is the whole row, far bigger than the mark.
+        g.appendChild(svgEl("rect", { x: M.l, y: yTop, width: pw, height: PITCH, fill: "transparent" }));
+
+        function show(ev) {
+          bar.setAttribute("stroke", surface);
+          bar.setAttribute("stroke-width", 2);
+          var box = svg.getBoundingClientRect(), scale = box.width / W;
+          tip.show(p.name, [{
+            color: color,
+            name: "Transactions per USD at peak throughput",
+            value: fmtc(p.perUsd),
+            range: fmt(p.peak.rate) + " transactions an hour on " + p.peak.label
+              + ", mean of " + p.peak.runs + " run"
+              + (p.peak.runs === 1 ? "" : "s") + ", at " + rate(p.usdPerHour),
+          }, {
+            color: color,
+            name: "The campaign the peak was drawn from",
+            value: fmtc(p.txn),
+            range: p.runs + " measured runs over " + hrs(p.hours) + " h in "
+              + p.sessionCount + " session" + (p.sessionCount === 1 ? "" : "s")
+              + " of " + p.benches.join(" and ") + ", costing " + usd(p.costUsd)
+              + "; " + fmtc(p.outside) + " committed between the runs, over "
+              + hrs(p.hoursInit) + " h of schema builds, data loads and idle time"
+              + (p.failedRuns ? "; " + p.failedRuns + " iterations failed and are "
+                 + "no candidate" : ""),
+          }], ev && ev.clientX !== undefined ? ev.clientX : box.left + xOf(p.perUsd) * scale,
+             ev && ev.clientY !== undefined ? ev.clientY : box.top + yc * scale);
+        }
+        function hide() {
+          bar.removeAttribute("stroke");
+          bar.removeAttribute("stroke-width");
+          tip.hide();
+        }
+        g.addEventListener("pointermove", show);
+        g.addEventListener("pointerleave", hide);
+        g.addEventListener("focus", show);
+        g.addEventListener("blur", hide);
+        svg.appendChild(g);
+      });
+
+      plot.appendChild(svg);
+      plot.appendChild(el("div", "note", costNote(rows)));
+      buildCostEffTable(tableWrap);
+    }
+
+    render();
+    fig.addEventListener("viz:rerender", render);
+    return fig;
+  }
+
+  // What belongs next to the number: what the counter counts, what the cost
+  // covers, and - just as much - what it leaves out.
+  function costNote(rows) {
+    var runs = 0, runHours = 0, bad = 0;
+    rows.forEach(function (p) {
+      runs += p.runs || 0;
+      runHours += p.hours || 0;
+      bad += p.failedRuns || 0;
+    });
+    var behind = runs === 0 ? "" : " The peaks are picked out of " + fmt(runs)
+      + " measured runs across all providers, " + hrs(runHours) + " h of them.";
+    // Said only where something failed; on a clean campaign it would be a
+    // sentence about nothing.
+    var dropped = bad === 0 ? "" : " " + bad + " iteration" + (bad === 1 ? "" : "s")
+      + " whose benchmark failed to run " + (bad === 1 ? "is" : "are")
+      + " dropped outright, and cannot stand as anyone's peak.";
+    return "Counted as commits plus rollbacks on the database server itself, captured "
+      + "just before and just after each measured run, so the ramp-up counts and "
+      + "nothing between the runs does. The benchmark database is dropped and reloaded "
+      + "before every run, which restarts its counters, so a run's own commits are "
+      + "accumulated across the reset rather than subtracted end to end. Each run is "
+      + "then read as a rate - what it committed over the hours it took - and the runs "
+      + "of one benchmark, data size and concurrency are averaged, so no single lucky "
+      + "run sets a price. The best point a provider reached is its bar: an hour at "
+      + "that rate, over what the hour costs. The length of the campaign cancels out "
+      + "of that, which is the intent - this prices how fast a host can go, not how "
+      + "long these runs happened to keep it switched on. The schema builds, data "
+      + "loads and idle time between the runs are in neither half."
+      + behind + dropped;
+  }
+
+  function buildCostEffTable(host) {
+    var cost = DATA.cost;
+    var t = tableShell(host, "An hour at the best throughput each host reached, over "
+      + "what that hour costs. The peak is one benchmark, data size and concurrency, "
+      + "averaged over the n runs measured there; everything right of Per USD is the "
+      + "campaign it was drawn from, not an input to it - the measured runs behind the "
+      + "peak, what they cost at this rate, what the counters saw between them, and "
+      + "the hours the instance spent initialising schemas, loading data and idle. An "
+      + "iteration whose benchmark failed to run is in none of the columns."
+      + " The Per USD column is shaded by rank, green best to red worst; the other "
+      + "columns are inputs to it or context for it, not verdicts, so they are left "
+      + "plain.");
+    var thead = el("thead"), hr = el("tr");
+    ["Provider", "Rate", "Peak throughput", "Per USD", "Sessions",
+     "Run hours", "Transactions", "Outside the runs", "Init and idle"]
+      .forEach(function (h) {
+      hr.appendChild(el("th", null, h));
+    });
+    thead.appendChild(hr);
+    t.appendChild(thead);
+    var tb = el("tbody");
+    var perUsd = cost.providers.filter(function (p) { return p.perUsd; })
+      .map(function (p) { return p.perUsd; });
+    cost.providers.slice().sort(function (a, b) {
+      return (b.perUsd || -1) - (a.perUsd || -1);
+    }).forEach(function (p) {
+      var tr = el("tr");
+      tr.appendChild(providerCell(p));
+      tr.appendChild(el("td", null, p.usdPerHour ? rate(p.usdPerHour) : "-"));
+      // The numerator and the point it was measured at, which is the whole
+      // claim the bar makes.
+      var pk = el("td");
+      if (p.peak) {
+        pk.appendChild(document.createTextNode(fmt(p.peak.rate) + " txn/h"));
+        pk.appendChild(el("div", "range", p.peak.short + ", n=" + p.peak.runs));
+      } else {
+        pk.appendChild(document.createTextNode("-"));
+      }
+      tr.appendChild(pk);
+      var pu = el("td", null, p.perUsd ? fmtc(p.perUsd) : "-");
+      if (p.perUsd) shade(pu, perUsd, p.perUsd, true, "on transactions per USD");
+      tr.appendChild(pu);
+      var sc = el("td");
+      sc.appendChild(document.createTextNode(String(p.sessionCount)));
+      if (p.benches && p.benches.length) {
+        sc.appendChild(el("div", "range", p.benches.join(" + ")));
+      }
+      tr.appendChild(sc);
+      var hc = el("td");
+      hc.appendChild(document.createTextNode(hrs(p.hours)));
+      hc.appendChild(el("div", "range", p.runs + " measured runs"
+        + (p.failedRuns ? ", " + p.failedRuns + " dropped" : "")));
+      hc.appendChild(el("div", "range", usd(p.costUsd) + " at this rate"));
+      tr.appendChild(hc);
+      var tc = el("td");
+      tc.appendChild(document.createTextNode(fmt(p.txn)));
+      tc.appendChild(el("div", "range", fmt(p.rows) + " rows inserted"));
+      tr.appendChild(tc);
+      // Not inputs to the quotient - what it leaves out, kept beside it.
+      var out = el("td");
+      out.appendChild(document.createTextNode(fmt(p.outside)));
+      out.appendChild(el("div", "range", fmt(p.outsideRows) + " rows inserted"));
+      tr.appendChild(out);
+      var ic = el("td");
+      ic.appendChild(document.createTextNode(hrs(p.hoursInit) + " h"));
+      ic.appendChild(el("div", "range", hrs(p.hoursWall) + " h wall clock"));
+      tr.appendChild(ic);
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+    if (cost.skipped && cost.skipped.length) {
+      host.appendChild(el("div", "note", "Sessions left out of the count: "
+        + cost.skipped.map(function (s) { return s.name + " (" + s.why + ")"; }).join("; ")
+        + "."));
+    }
+  }
+
+  // --------------------------------------------------------------- pricing ---
+  function buildCostTable(host) {
+    var t = tableShell(host, "What the benchmarked instance costs per hour at each "
+      + "provider, all six quoted in USD, and what the campaign came to at that rate. "
+      + "Only the measured benchmark runs are priced: the hours the instance also spent "
+      + "dropping and rebuilding schemas, loading data and sitting idle are shown "
+      + "beside them, unbilled. Cost efficiency above is quoted per hour at each "
+      + "host's peak instead, so these totals are context for it rather than its "
+      + "denominator. The rates are pinned in the report rather than fetched "
+      + "at view time, so the figures do not change under the reader.");
+    var thead = el("thead"), hr = el("tr");
+    ["Provider", "USD per hour", "Run hours", "Cost (USD)", "Init and idle hours",
+     "Wall clock hours"].forEach(function (h) {
+      hr.appendChild(el("th", null, h));
+    });
+    thead.appendChild(hr);
+    t.appendChild(thead);
+    // Every provider the report knows about, once - the same entity appears in
+    // both benchmark sections but is billed once.
+    var seen = {}, list = [];
+    DATA.benches.forEach(function (b) {
+      b.providers.forEach(function (p) {
+        if (seen[p.key]) return;
+        seen[p.key] = 1;
+        list.push(p);
+      });
+    });
+    list.sort(function (a, b) { return (b.costUsd || 0) - (a.costUsd || 0); });
+    var tb = el("tbody");
+    list.forEach(function (p) {
+      var tr = el("tr");
+      tr.appendChild(providerCell(p));
+      tr.appendChild(el("td", null, p.usdPerHour === null || p.usdPerHour === undefined
+        ? "not priced" : rate(p.usdPerHour)));
+      var hc = el("td", null, p.hours ? hrs(p.hours) : "-");
+      if (p.failedRuns) {
+        hc.appendChild(el("div", "range", p.failedRuns + " failed runs dropped"));
+      }
+      tr.appendChild(hc);
+      tr.appendChild(el("td", null, usd(p.costUsd)));
+      tr.appendChild(el("td", null, hrs(p.hoursInit)));
+      tr.appendChild(el("td", null, hrs(p.hoursWall)));
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+
+  // ------------------------------------------------------------ inventory ---
+  function buildInventory(host) {
+    var t = tableShell(host, "One directory per session under " + DATA.root +
+      ". A session is classified by the result CSV it holds, so each provider's "
+      + "sysbench and HammerDB runs stay separate.");
+    var thead = el("thead"), hr = el("tr");
+    ["Provider", "Benchmark", "Started (UTC)", "Measurements", "Dropped"].forEach(function (h) {
+      hr.appendChild(el("th", null, h));
+    });
+    thead.appendChild(hr);
+    t.appendChild(thead);
+    var tb = el("tbody");
+    DATA.sessions.forEach(function (s) {
+      var tr = el("tr");
+      tr.appendChild(el("td", null, s.name));
+      tr.appendChild(el("td", null, s.bench === "sysbench" ? "sysbench" : "HammerDB TPC-C"));
+      tr.appendChild(el("td", null, s.stamp || "-"));
+      tr.appendChild(el("td", null, s.rows));
+      var td = el("td");
+      if (s.dropped) {
+        td.className = "warn-dot";
+        td.textContent = s.dropped + " without a result";
+      } else {
+        td.textContent = "-";
+      }
+      tr.appendChild(td);
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+
+  // ----------------------------------------------------------------- boot ---
+  document.getElementById("meta").textContent =
+    "Generated " + DATA.generated + " from " + DATA.root +
+    " - mean of the measured window across runs, 5 min ramp-up discarded. " +
+    "Cost efficiency is quoted at the peak: every measured run becomes a rate " +
+    "from the server's own counters, the runs of one benchmark, data size and " +
+    "concurrency are averaged, and the best point is priced as one hour at the " +
+    "provider's hourly rate. Schema initialization and the idle time around it " +
+    "are reported but enter neither half, and failed iterations are dropped.";
+
+  var host = document.getElementById("benches");
+  DATA.benches.forEach(function (bench) {
+    var sec = el("section", "bench");
+    sec.id = "sec-" + bench.key;
+    sec.appendChild(el("h2", null, bench.title));
+
+    // One control row above both charts in the section; they re-render against
+    // the same slice. The two benchmarks size their data differently (rows per
+    // table vs warehouses), so each section scopes its own - and each reads its
+    // own URL key, so ?sysbench=40&hammerdb=320 opens both at a chosen size.
+    var state = {
+      dataset: initialDataset(bench),
+      mode: "average",
+    };
+    var filters = el("div", "filters");
+    function rerender() {
+      sec.querySelectorAll("figure.card").forEach(function (f) {
+        f.dispatchEvent(new Event("viz:rerender"));
+      });
+    }
+    var sizes = bench.datasets.map(function (dd) {
+      return { label: dd.label, value: dd.value };
+    });
+    var picked = 0;
+    sizes.forEach(function (o, i) { if (o.value === state.dataset) picked = i; });
+    segmented(filters, "Data set", sizes, function (v) {
+      state.dataset = v;
+      pinSize(bench, v);
+      rerender();
+      reveal(sec);
+    }, picked);
+    segmented(filters, "Runs", [
+      { label: "Average", value: "average" },
+      { label: "Individual", value: "individual" },
+    ], function (v) { state.mode = v; rerender(); });
+    sec.appendChild(filters);
+
+    // The incomplete-sweep caveat stays visible whichever slice is selected -
+    // it qualifies the peaks, so it must not be hidden behind the control.
+    if (bench.incomplete.length) {
+      var txt = bench.incomplete.map(function (g) {
+        return g.name + " " + g.datasetLabel + " (" + bench.concShort + "=" + g.have.join(", ") + " only)";
+      }).join("; ");
+      sec.appendChild(el("div", "note", "Incomplete sweep, peak taken over fewer levels: " + txt));
+    }
+
+    sec.appendChild(scalingFigure(bench, state, throughputView(bench)));
+    sec.appendChild(peakFigure(bench, state));
+    // Latency last, under the throughput it explains, and driven by the same
+    // controls: a provider that holds its TPS by making every statement wait
+    // should be read against the chart that shows it holding.
+    var lat = latencyView(bench);
+    if (lat) sec.appendChild(scalingFigure(bench, state, lat));
+    host.appendChild(sec);
+  });
+
+  var costHost = document.getElementById("cost");
+  var costSec = el("section", "bench");
+  costSec.id = "sec-cost";
+  costSec.appendChild(el("h2", null, "Cost efficiency"));
+  costSec.appendChild(costFigure());
+  costHost.appendChild(costSec);
+
+  buildCostTable(document.getElementById("pricing"));
+  buildInventory(document.getElementById("inventory"));
+
+  // Dark mode is a selected set of steps, not an automatic flip; re-render so
+  // the SVG picks up the other mode's palette.
+  var toggle = document.getElementById("theme-toggle");
+  var ORDER = ["auto", "light", "dark"];
+  var LABEL = { auto: "Theme: auto", light: "Theme: light", dark: "Theme: dark" };
+  function applyTheme(mode) {
+    root.setAttribute("data-theme", mode);
+    toggle.textContent = LABEL[mode];
+    try { localStorage.setItem("viz-theme", mode); } catch (e) { /* private mode */ }
+    requestAnimationFrame(function () {
+      document.querySelectorAll("figure.card").forEach(function (f) {
+        f.dispatchEvent(new Event("viz:rerender"));
+      });
+    });
+  }
+  var stored = null;
+  try { stored = localStorage.getItem("viz-theme"); } catch (e) { stored = null; }
+  applyTheme(ORDER.indexOf(stored) >= 0 ? stored : "auto");
+  toggle.addEventListener("click", function () {
+    applyTheme(ORDER[(ORDER.indexOf(root.getAttribute("data-theme")) + 1) % ORDER.length]);
+  });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+    if (root.getAttribute("data-theme") === "auto") applyTheme("auto");
+  });
+
+  // Last, because scrolling is only meaningful once every chart has taken its
+  // height: the theme pass re-renders on the next frame, so the jump waits for
+  // the frame after that.
+  if ("go" in QUERY) {
+    var goId = goTarget(QUERY.go);
+    var goNode = goId === null ? null : document.getElementById(goId);
+    if (goNode) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { reveal(goNode); });
+      });
+    } else if (window.console && console.warn) {
+      // Said out loud rather than silently ignored, the same as a size that
+      // does not exist: a link naming a chart this report does not hold is a
+      // broken link, not a preference.
+      console.warn("nothing on this page matches ?go="
+        + JSON.stringify(String(QUERY.go)) + "; try "
+        + Object.keys(GO_PART).join(", ")
+        + ", optionally prefixed with "
+        + DATA.benches.map(function (b) { return b.key; }).join(" or "));
+    }
+  }
+})();
+</script>
+</body>
+</html>
